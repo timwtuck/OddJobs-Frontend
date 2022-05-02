@@ -9,7 +9,12 @@ import Home from './navigation/screens/Home';
 export default function App() {
   return (
     <SafeAreaProvider>
-      {/* <Home styles={styles.mapBackground} /> */}
+      {/* 
+      Here, I think we need to write some logic
+      to show the login page(s) when user not
+      logged in, or to show the rest of the App,
+      i.e. the entire view that is immediately below.
+      */}
       <View style={styles.container}>
         <MainContainer />
         <StatusBar style="auto" />
