@@ -3,14 +3,16 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Home } from './screens/Home.js';
+import MainContainer from './navigation/MainContainer';
+import Home from './navigation/screens/Home';
 
 export default function App() {
   return (
     <SafeAreaProvider>
+      {/* <Home styles={styles.mapBackground} /> */}
       <View style={styles.container}>
-        <Home styles={styles.mapBackground} />
-        <StatusBar style='auto' />
+        <MainContainer />
+        <StatusBar style="auto" />
       </View>
     </SafeAreaProvider>
   );
@@ -20,10 +22,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  header: {
-    fontSize: 20,
+    // justifyContent: 'space-between',
   },
 });
