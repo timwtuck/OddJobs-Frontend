@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "OddJobs-Frontend",
+    "slug": "OddJobs-Frontend",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
