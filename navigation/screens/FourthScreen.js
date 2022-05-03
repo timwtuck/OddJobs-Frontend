@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
 import * as yup from 'yup';
-import { Field, Form, Formik, useFormik } from 'formik';
+import { Field, Form, Formik, useFormik, setFieldValue } from 'formik';
 import RNPickerSelect from 'react-native-picker-select';
 
 export const FourthScreen = () => {
-  const formik = useFormik({ initialValues: { category: '' } });
+  // const formik = useFormik({
+  //   initialValues: { title: '', category: '', description: '', price: '' },
+  // });
   return (
     <Formik
       initialValues={{
@@ -31,8 +33,10 @@ export const FourthScreen = () => {
             <View style={styles.formInput}>
               <RNPickerSelect
                 placeholder={{ label: 'Select a category' }}
-                onValueChange={value => (selectedValue = { value })}
-                // selectedValue={value}
+                selectedValue={formikProps.values.category}
+                onValueChange={itemValue =>
+                  formikProps.setFieldValue('category', itemValue)
+                }
                 items={[
                   { label: 'DIY', value: 'DIY' },
                   { label: 'Garden', value: 'Garden' },
