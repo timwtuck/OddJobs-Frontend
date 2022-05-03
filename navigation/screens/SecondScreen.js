@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
 const validation = yup.object().shape({
   firstName: yup
