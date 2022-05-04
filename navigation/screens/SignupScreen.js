@@ -37,7 +37,7 @@ const validation = yup.object().shape({
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
-export const SecondScreen = () => {
+export const SignupScreen = () => {
   return (
     <Formik
       initialValues={{

@@ -2,9 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// Login Screen
-import { LoginScreen } from './navigation/screens/LoginScreen';
-
 // React Navigation
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -20,11 +17,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // Screens
 import { HomeScreen } from './navigation/screens/HomeScreen';
 import { PostJobScreen } from './navigation/screens/PostJobScreen';
-import { SecondScreen } from './navigation/screens/SecondScreen';
+import { SignupScreen } from './navigation/screens/SignupScreen';
+import { LoginScreen } from './navigation/screens/LoginScreen';
 import { EndPointsScreen } from './navigation/screens/EndPointsScreen';
 import { SeeMoreJobsScreen } from './navigation/screens/SeeMoreJobsScreen';
 import { FindAJobScreen } from './navigation/screens/FindAJobScreen';
+import { JobScreen } from './navigation/screens/JobScreen';
 import { JobLogScreen } from './navigation/screens/JobLogScreen';
+import { ChatLogScreen } from './navigation/screens/ChatLogScreen';
+import { JobChatScreen } from './navigation/screens/JobChatScreen';
+import { MyAccountScreen } from './navigation/screens/MyAccountScreen';
+import { EditMyAccountScreen } from './navigation/screens/EditMyAccountScreen';
 
 export default function App() {
   /* eventually need to track login state here
@@ -80,7 +83,7 @@ export default function App() {
               </Stack.Navigator>
             )}
           </Tab.Screen>
-          <Tab.Screen name="Secondary" component={SecondScreen} />
+          <Tab.Screen name="Secondary" component={SignupScreen} />
           <Tab.Screen name="Endpoint" options={{ headerShown: false }}>
             {() => (
               <Stack.Navigator>
@@ -89,7 +92,21 @@ export default function App() {
                   name="FindAJobScreen"
                   component={FindAJobScreen}
                 />
+                <Stack.Screen name="SignupScreen" component={SignupScreen} />
+                <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                <Stack.Screen name="PostJobScreen" component={PostJobScreen} />
+                <Stack.Screen name="JobScreen" component={JobScreen} />
                 <Stack.Screen name="JobLogScreen" component={JobLogScreen} />
+                <Stack.Screen name="ChatLogScreen" component={ChatLogScreen} />
+                <Stack.Screen name="JobChatScreen" component={JobChatScreen} />
+                <Stack.Screen
+                  name="MyAccountScreen"
+                  component={MyAccountScreen}
+                />
+                <Stack.Screen
+                  name="EditMyAccountScreen"
+                  component={EditMyAccountScreen}
+                />
               </Stack.Navigator>
             )}
           </Tab.Screen>
