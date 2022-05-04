@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
-export const FourthScreen = () => {
+export const PostJobScreen = () => {
   return (
     <>
       <View style={styles.container}>
-        <Text>Fourth Screen</Text>
+        <Text>Post Job Screen</Text>
       </View>
     </>
   );
