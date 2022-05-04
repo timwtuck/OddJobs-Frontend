@@ -5,9 +5,13 @@ import { Field, Form, Formik, useFormik, setFieldValue } from 'formik';
 import RNPickerSelect from 'react-native-picker-select';
 
 export const FourthScreen = () => {
-  // const formik = useFormik({
-  //   initialValues: { title: '', category: '', description: '', price: '' },
+  // const [initialValues, setInitialValues] = React.useState({
+  //   title: '',
+  //   category: '',
+  //   description: '',
+  //   price: '',
   // });
+
   return (
     <Formik
       initialValues={{
@@ -28,6 +32,7 @@ export const FourthScreen = () => {
             <TextInput
               placeholder="Job title"
               style={styles.formInput}
+              value={formikProps.values.title}
               onChangeText={formikProps.handleChange('title')}
             />
             <View style={styles.formInput}>
@@ -70,7 +75,17 @@ export const FourthScreen = () => {
             <Button
               style={styles.submit}
               title="submit"
-              onPress={formikProps.handleSubmit}
+              onPress={async () => {
+                await formikProps.handleSubmit();
+                formikProps.resetForm();
+
+                // setInitialValues({
+                //   title: '',
+                //   category: '',
+                //   description: '',
+                //   price: '',
+                // });
+              }}
             />
           </View>
         </React.Fragment>
@@ -78,6 +93,8 @@ export const FourthScreen = () => {
     </Formik>
   );
 };
+
+// onSubmit={( values, { setSubmitting, setErrors, resetForm /* setValues and other goodies */ } ) => {
 
 const styles = StyleSheet.create({
   container: {
