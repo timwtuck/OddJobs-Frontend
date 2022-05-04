@@ -4,8 +4,7 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import RNPickerSelect from 'react-native-picker-select';
 
-const postcodeRegex =
-  /^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$/;
+const postcodeRegex = /^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/;
 
 const validation = yup.object().shape({
   title: yup

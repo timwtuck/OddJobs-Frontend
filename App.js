@@ -21,14 +21,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { HomeScreen } from './navigation/screens/HomeScreen';
 import { PostJobScreen } from './navigation/screens/PostJobScreen';
 import { SecondScreen } from './navigation/screens/SecondScreen';
-import { ChatScreen } from './navigation/screens/ChatScreen';
+import { EndPointsScreen } from './navigation/screens/EndPointsScreen';
 import { SeeMoreJobsScreen } from './navigation/screens/SeeMoreJobsScreen';
-
-// // Screen Names
-// const 'Homer' = 'Home';
-// const SecondTab = 'Second';
-// const ChatTab = 'Chat';
-// const FourthTab = 'Fourth';
+import { FindAJobScreen } from './navigation/screens/FindAJobScreen';
+import { JobLogScreen } from './navigation/screens/JobLogScreen';
 
 export default function App() {
   /* eventually need to track login state here
@@ -63,7 +59,7 @@ export default function App() {
                 iconName = focused ? 'home' : 'home-outline';
               } else if (rn === 'Secondary') {
                 iconName = focused ? 'list' : 'list-outline';
-              } else if (rn === 'Chatty') {
+              } else if (rn === 'Endpoint') {
                 iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
               } else if (rn === 'Donuts') {
                 iconName = focused ? 'bug' : 'bug-outline';
@@ -85,7 +81,18 @@ export default function App() {
             )}
           </Tab.Screen>
           <Tab.Screen name="Secondary" component={SecondScreen} />
-          <Tab.Screen name="Chatty" component={ChatScreen} />
+          <Tab.Screen name="Endpoint" options={{ headerShown: false }}>
+            {() => (
+              <Stack.Navigator>
+                <Stack.Screen name="Endpoints" component={EndPointsScreen} />
+                <Stack.Screen
+                  name="FindAJobScreen"
+                  component={FindAJobScreen}
+                />
+                <Stack.Screen name="JobLogScreen" component={JobLogScreen} />
+              </Stack.Navigator>
+            )}
+          </Tab.Screen>
           <Tab.Screen name="Donuts" component={PostJobScreen} />
         </Tab.Navigator>
       </NavigationContainer>
