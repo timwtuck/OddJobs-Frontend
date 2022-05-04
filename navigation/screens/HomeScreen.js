@@ -1,21 +1,41 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 
-export const Home = () => {
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.mapBackground}>
         <Text>Map Render</Text>
       </View>
-      <View style={styles.postJob}>
+      <Pressable style={styles.postJob} onPressOut={() => alert('working')}>
+        {/* <View style={styles.postJob}> */}
         <Text style={styles.cardHeader}>Post a Job</Text>
         <Text style={styles.cardSubText}>List an odd job today</Text>
-      </View>
-      <View style={styles.seeJobs}>
-        <Text style={styles.cardHeader}>Post a Job</Text>
+        {/* </View> */}
+      </Pressable>
+      <Pressable style={styles.seeJobs} onPressOut={() => alert('working')}>
+        {/* <View style={styles.seeJobs}> */}
+        <Text style={styles.cardHeader}>See More Jobs</Text>
         <Text style={styles.cardSubText}>List an odd job today</Text>
-      </View>
+        {/* </View> */}
+      </Pressable>
     </View>
+  );
+}
+
+const HomeStack = createNativeStackNavigator();
+
+export const HomeStackScreen = () => {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="Home"
+        component={Home}
+        options={{ tabBarLabel: 'Home!' }}
+      />
+    </HomeStack.Navigator>
   );
 };
 
