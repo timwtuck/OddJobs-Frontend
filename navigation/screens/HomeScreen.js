@@ -2,40 +2,34 @@ import * as React from 'react';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { PostJobScreen } from './PostJobScreen';
+import { SeeMoreJobsScreen } from './SeeMoreJobsScreen';
 
-function Home() {
+const HomeStack = createNativeStackNavigator();
+
+export const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.mapBackground}>
         <Text>Map Render</Text>
       </View>
-      <Pressable style={styles.postJob} onPressOut={() => alert('working')}>
+      <Pressable
+        style={styles.postJob}
+        onPressOut={() => navigation.navigate(PostJobScreen)}>
         {/* <View style={styles.postJob}> */}
         <Text style={styles.cardHeader}>Post a Job</Text>
         <Text style={styles.cardSubText}>List an odd job today</Text>
         {/* </View> */}
       </Pressable>
-      <Pressable style={styles.seeJobs} onPressOut={() => alert('working')}>
+      <Pressable
+        style={styles.seeJobs}
+        onPressOut={() => navigation.navigate(SeeMoreJobsScreen)}>
         {/* <View style={styles.seeJobs}> */}
         <Text style={styles.cardHeader}>See More Jobs</Text>
         <Text style={styles.cardSubText}>List an odd job today</Text>
         {/* </View> */}
       </Pressable>
     </View>
-  );
-}
-
-const HomeStack = createNativeStackNavigator();
-
-export const HomeStackScreen = () => {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="Home"
-        component={Home}
-        options={{ tabBarLabel: 'Home!' }}
-      />
-    </HomeStack.Navigator>
   );
 };
 

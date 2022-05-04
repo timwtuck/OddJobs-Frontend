@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
-import { HomeStackScreen } from './screens/HomeScreen';
+import { HomeScreen } from './screens/HomeScreen';
 import { SecondScreen } from './screens/SecondScreen';
 import { ChatScreen } from './screens/ChatScreen';
 import { FourthScreen } from './screens/FourthScreen';
@@ -43,7 +43,7 @@ const BottomNavigation = () => {
       })}>
       <Tab.Screen
         name={HomeTab}
-        component={HomeStackScreen}
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
       <Tab.Screen name={SecondTab} component={SecondScreen} />

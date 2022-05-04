@@ -1,14 +1,38 @@
 import * as React from 'react';
 import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
 import * as yup from 'yup';
-import { Field, Form, Formik, useFormik, setFieldValue } from 'formik';
+import { Formik } from 'formik';
 import RNPickerSelect from 'react-native-picker-select';
 
-export const FourthScreen = () => {
+const postcodeRegex =
+  /^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$/;
+
+const validation = yup.object().shape({
+  title: yup
+    .string()
+    .required()
+    .label('Title')
+    .min(5, 'Must contain at least 5 letters.')
+    .max(40, 'Max length 50 characters.'),
+  postcode: yup
+    .string()
+    .required()
+    .label('password')
+    .matches(postcodeRegex, 'Must be a valid UK postcode'),
+  description: yup
+    .string()
+    .required()
+    .label('Description')
+    .min(25, 'Must contain at least 25 letters.')
+    .max(350, 'Max length 350 characters.'),
+});
+
+export const PostJobScreen = () => {
   return (
     <Formik
       initialValues={{
         title: '',
+        postcode: '',
         category: '',
         description: '',
         price: '',
@@ -26,6 +50,15 @@ export const FourthScreen = () => {
               placeholder="Job title"
               style={styles.formInput}
               onChangeText={formikProps.handleChange('title')}
+              onBlur={formikProps.handleBlur('title')}
+            />
+            <Text style={{ color: 'red' }}>
+              {formikProps.touched.title && formikProps.errors.title}
+            </Text>
+            <TextInput
+              placeholder="Postcode"
+              style={styles.formInput}
+              onChangeText={formikProps.handleChange('postcode')}
             />
             <View style={styles.formInput}>
               <RNPickerSelect
@@ -43,7 +76,7 @@ export const FourthScreen = () => {
             </View>
             <TextInput
               multiline
-              maxLength={250}
+              maxLength={350}
               placeholder="Enter a brief description"
               style={styles.textInput}
               onChangeText={formikProps.handleChange('description')}
@@ -54,6 +87,7 @@ export const FourthScreen = () => {
                 <TextInput
                   placeholder="£10.00"
                   style={styles.tokenForm}
+                  keyboardType="numeric"
                   onChangeText={formikProps.handleChange('price')}
                 />
               </View>

@@ -9,7 +9,26 @@ import { LoginScreen } from './navigation/screens/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
 
 // Bottom Navigation Component
-import BottomNavigation from './navigation/BottomNavigation';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+// Screens
+import { HomeScreen } from './navigation/screens/HomeScreen';
+import { PostJobScreen } from './navigation/screens/PostJobScreen';
+import { SecondScreen } from './navigation/screens/SecondScreen';
+import { ChatScreen } from './navigation/screens/ChatScreen';
+import { SeeMoreJobsScreen } from './navigation/screens/SeeMoreJobsScreen';
+
+// // Screen Names
+// const 'Homer' = 'Home';
+// const SecondTab = 'Second';
+// const ChatTab = 'Chat';
+// const FourthTab = 'Fourth';
 
 export default function App() {
   /* eventually need to track login state here
@@ -32,9 +51,43 @@ export default function App() {
     */}
 
       {/* <LoginScreen /> */}
-
       <NavigationContainer>
-        <BottomNavigation />
+        <Tab.Navigator
+          initialRouteName={'Homer'}
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              let rn = route.name;
+
+              if (rn === 'Homer') {
+                iconName = focused ? 'home' : 'home-outline';
+              } else if (rn === 'Secondary') {
+                iconName = focused ? 'list' : 'list-outline';
+              } else if (rn === 'Chatty') {
+                iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
+              } else if (rn === 'Donuts') {
+                iconName = focused ? 'bug' : 'bug-outline';
+              }
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })}>
+          <Tab.Screen name="Homer" options={{ headerShown: false }}>
+            {() => (
+              <Stack.Navigator>
+                <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                <Stack.Screen name="PostJobScreen" component={PostJobScreen} />
+                <Stack.Screen
+                  name="SeeMoreJobsScreen"
+                  component={SeeMoreJobsScreen}
+                />
+              </Stack.Navigator>
+            )}
+          </Tab.Screen>
+          <Tab.Screen name="Secondary" component={SecondScreen} />
+          <Tab.Screen name="Chatty" component={ChatScreen} />
+          <Tab.Screen name="Donuts" component={PostJobScreen} />
+        </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );
