@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PostJobScreen } from './PostJobScreen';
 import { SeeMoreJobsScreen } from './SeeMoreJobsScreen';
+import { Map } from '../../components/Map';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -11,7 +12,8 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.mapBackground}>
-        <Text>Map Render</Text>
+        <Map />
+        {/* <Text>Map Render</Text> */}
       </View>
       <Pressable
         style={styles.postJob}

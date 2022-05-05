@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const oddJobsApi = axios.create({ baseURL: '' });
+const oddJobsApi = axios.create({
+  baseURL: 'https://odd-jobs-backend.herokuapp.com/api',
+});
 
 export const getAllJobs = (category, price, location) => {
   return oddJobsApi.get('/jobs').then(({ data }) => {
@@ -14,19 +16,19 @@ export const getAllUsers = () => {
   });
 };
 
-export const getSingleJob = (job_id) => {
+export const getSingleJob = job_id => {
   return oddJobsApi.get(`/jobs/${job_id}`).then(({ data }) => {
     return data.job;
   });
 };
 
-export const getSingleUser = (user_id) => {
+export const getSingleUser = user_id => {
   return oddJobsApi.get(`/users/${user_id}`).then(({ data }) => {
     return data.user;
   });
 };
 
-export const getUserMessages = (user_id) => {
+export const getUserMessages = user_id => {
   return oddJobsApi.get(`/users/${user_id}/messages`).then(({ data }) => {
     return data.messages;
   });
@@ -50,7 +52,7 @@ export const postJob = (username, job) => {
 };
 
 //need to check what is being sent from the input and maybe edit the argument??
-export const postUser = (user) => {
+export const postUser = user => {
   return oddJobsApi.post('/users', { user }).then(({ data }) => {
     return data.newUser;
   });
@@ -88,11 +90,11 @@ export const patchMessage = (user_id, message_id, patch) => {
     });
 };
 
-export const deleteJob = (job_id) => {
+export const deleteJob = job_id => {
   return oddJobsApi.delete(`/jobs/${job_id}`);
 };
 
-export const deleteUser = (user_id) => {
+export const deleteUser = user_id => {
   return oddJobsApi.delete(`/users/${user_id}`);
 };
 
