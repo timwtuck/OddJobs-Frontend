@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   postJob: {
     justifyContent: 'center',
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#c7f9cc',
     borderRadius: 15,
     width: '90%',
     height: 130,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   seeJobs: {
     justifyContent: 'center',
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#c7f9cc',
     borderRadius: 15,
     width: '90%',
     height: 130,

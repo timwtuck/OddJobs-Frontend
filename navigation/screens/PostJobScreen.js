@@ -10,18 +10,23 @@ const validation = yup.object().shape({
   title: yup
     .string()
     .required()
-    .label('Title')
+    .label('title')
     .min(5, 'Must contain at least 5 letters.')
     .max(40, 'Max length 50 characters.'),
   postcode: yup
     .string()
     .required()
-    .label('password')
+    .label('postcode')
     .matches(postcodeRegex, 'Must be a valid UK postcode'),
+  category: yup
+    .string()
+    .required()
+    .label('category')
+    .min(1, 'Please select a category'),
   description: yup
     .string()
     .required()
-    .label('Description')
+    .label('description')
     .min(25, 'Must contain at least 25 letters.')
     .max(350, 'Max length 350 characters.'),
 });
@@ -34,14 +39,15 @@ export const PostJobScreen = () => {
         postcode: '',
         category: '',
         description: '',
-        price: '',
+        price: 0,
       }}
       onSubmit={(values, actions) => {
-        alert(JSON.stringify(values, null, 2));
+        alert(JSON.stringify(values));
         setTimeout(() => {
           actions.setSubmitting(false);
         }, 1000);
-      }}>
+      }}
+      validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
           <View style={styles.container}>
@@ -49,6 +55,7 @@ export const PostJobScreen = () => {
               placeholder="Job title"
               style={styles.formInput}
               onChangeText={formikProps.handleChange('title')}
+              autoFocus
               onBlur={formikProps.handleBlur('title')}
             />
             <Text style={{ color: 'red' }}>
@@ -58,7 +65,11 @@ export const PostJobScreen = () => {
               placeholder="Postcode"
               style={styles.formInput}
               onChangeText={formikProps.handleChange('postcode')}
+              onBlur={formikProps.handleBlur('postcode')}
             />
+            <Text style={{ color: 'red' }}>
+              {formikProps.touched.postcode && formikProps.errors.postcode}
+            </Text>
             <View style={styles.formInput}>
               <RNPickerSelect
                 placeholder={{ label: 'Select a category' }}
@@ -79,7 +90,12 @@ export const PostJobScreen = () => {
               placeholder="Enter a brief description"
               style={styles.textInput}
               onChangeText={formikProps.handleChange('description')}
+              onBlur={formikProps.handleBlur('description')}
             />
+            <Text style={{ color: 'red' }}>
+              {formikProps.touched.description &&
+                formikProps.errors.description}
+            </Text>
             <View style={styles.gesture}>
               <View style={styles.tokenContainer}>
                 <Text>Token Gesture</Text>
