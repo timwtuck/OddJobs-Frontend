@@ -80,6 +80,7 @@ export default function App() {
                   name="SeeMoreJobsScreen"
                   component={SeeMoreJobsScreen}
                 />
+                <Stack.Screen name="JobScreen" component={JobScreen} />
               </Stack.Navigator>
             )}
           </Tab.Screen>
