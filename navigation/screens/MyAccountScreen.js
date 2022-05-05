@@ -17,7 +17,9 @@ export const MyAccountScreen = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.avatar}></View>
+        <Pressable onPressOut={() => alert('offer camera or upload photo')}>
+          <View style={styles.avatar}></View>
+        </Pressable>
         <Text style={styles.username}>Username</Text>
         <View style={styles.buttonRow}>
           <Pressable
