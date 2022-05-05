@@ -1,11 +1,61 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import {
+  Button,
+  Text,
+  TextInput,
+  View,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+} from 'react-native';
 
-export const MyAccountScreen = () => {
+import { EditMyAccountScreen } from './EditMyAccountScreen';
+import { JobLogScreen } from './JobLogScreen';
+import { ChatLogScreen } from './ChatLogScreen';
+
+export const MyAccountScreen = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        <Text>My Account Screen</Text>
+        <View style={styles.avatar}></View>
+        <Text style={styles.username}>Username</Text>
+        <View style={styles.buttonRow}>
+          <Pressable
+            style={styles.messages}
+            onPressOut={() => navigation.navigate(ChatLogScreen)}>
+            <Text>Messages</Text>
+          </Pressable>
+          <Pressable
+            style={styles.seeJobs}
+            onPressOut={() => navigation.navigate(JobLogScreen)}>
+            <Text>🎩</Text>
+          </Pressable>
+        </View>
+        <Text style={styles.about}>About you</Text>
+        <View style={styles.infoRows}>
+          <Pressable onPressOut={() => alert('go to edit name form')}>
+            <Text>Name</Text>
+          </Pressable>
+          <Pressable onPressOut={() => alert('go to edit name form')}>
+            <Text>User's name &gt;</Text>
+          </Pressable>
+        </View>
+        <View style={styles.infoRows}>
+          <Pressable onPressOut={() => alert('go to edit username form')}>
+            <Text>Username</Text>
+          </Pressable>
+          <Pressable onPressOut={() => alert('go to edit username form')}>
+            <Text>User's username &gt;</Text>
+          </Pressable>
+        </View>
+        <View style={styles.infoRows}>
+          <Pressable onPressOut={() => alert('go to edit postcode form')}>
+            <Text>Postcode</Text>
+          </Pressable>
+          <Pressable onPressOut={() => alert('go to edit postcode form')}>
+            <Text>User's postcode &gt;</Text>
+          </Pressable>
+        </View>
       </View>
     </>
   );
@@ -16,55 +66,53 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+  },
+
+  avatar: {
+    backgroundColor: '#C4C4C4',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginTop: 100,
+  },
+
+  username: {
+    marginTop: 25,
+  },
+
+  buttonRow: {
+    flexDirection: 'row',
     justifyContent: 'center',
   },
-  header: {
-    fontSize: 20,
+
+  messages: {
+    backgroundColor: '#C4C4C470',
+    marginVertical: 25,
+    marginHorizontal: 7,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
-  formInput: {
-    borderWidth: 2,
-    borderColor: '#000',
-    width: '80%',
-    marginVertical: 15,
-    padding: 10,
-    borderRadius: 15,
+  seeJobs: {
+    backgroundColor: '#C4C4C470',
+    marginVertical: 25,
+    marginHorizontal: 7,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
-  gesture: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '80%',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginBottom: 20,
-  },
-  tokenInfo: {
-    width: '60%',
+
+  about: {
     fontSize: 12,
     color: '#00000080',
-    justifyContent: 'flex-end',
+    alignSelf: 'flex-start',
+    marginHorizontal: 30,
+    marginTop: 10,
+    marginBottom: 15,
   },
-  tokenContainer: {
-    width: '40%',
-  },
-  tokenForm: {
-    borderWidth: 2,
-    borderColor: '#000',
-    width: '80%',
-    marginTop: 15,
-    padding: 10,
-    borderRadius: 15,
-  },
-  submit: {
-    padding: 10,
-  },
-  textInput: {
-    borderWidth: 2,
-    borderColor: '#000',
-    width: '80%',
-    height: '25%',
-    marginVertical: 15,
-    paddingTop: 10,
-    padding: 10,
-    borderRadius: 15,
+
+  infoRows: {
+    flexDirection: 'row',
+    width: Dimensions.get('window').width - 60,
+    justifyContent: 'space-between',
+    marginVertical: 8,
   },
 });
