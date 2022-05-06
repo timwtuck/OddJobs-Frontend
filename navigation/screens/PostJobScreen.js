@@ -1,8 +1,19 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import {
+  Button,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Text,
+  TextInput,
+  StyleSheet,
+  View,
+} from 'react-native';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import RNPickerSelect from 'react-native-picker-select';
+import * as ImagePicker from 'expo-image-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const postcodeRegex = /^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/;
 
@@ -31,7 +42,23 @@ const validation = yup.object().shape({
     .max(350, 'Max length 350 characters.'),
 });
 
-export const PostJobScreen = () => {
+export const PostJobScreen = ({ navigation }) => {
+  const [categories, setCategories] = React.useState([
+    { label: 'DIY', value: 'DIY' },
+    { label: 'Garden', value: 'Garden' },
+    { label: 'Pets', value: 'Pets' },
+  ]);
+
+  async function pickImage(handleChange) {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+    if (!result.cancelled) {
+      handleChange(result.uri);
+    }
+  }
+
   return (
     <Formik
       initialValues={{
@@ -39,10 +66,12 @@ export const PostJobScreen = () => {
         postcode: '',
         category: '',
         description: '',
+        image: '',
         price: 0,
       }}
       onSubmit={(values, actions) => {
         alert(JSON.stringify(values));
+        Keyboard.dismiss();
         setTimeout(() => {
           actions.setSubmitting(false);
         }, 1000);
@@ -50,7 +79,11 @@ export const PostJobScreen = () => {
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
-          <View style={styles.container}>
+          <KeyboardAwareScrollView
+            style={{ backgroundColor: '#FFFFFF' }}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            contentContainerStyle={styles.container}
+            scrollEnabled={false}>
             <TextInput
               placeholder="Job title"
               style={styles.formInput}
@@ -77,11 +110,7 @@ export const PostJobScreen = () => {
                 onValueChange={itemValue =>
                   formikProps.setFieldValue('category', itemValue)
                 }
-                items={[
-                  { label: 'DIY', value: 'DIY' },
-                  { label: 'Garden', value: 'Garden' },
-                  { label: 'Pets', value: 'Pets' },
-                ]}
+                items={categories}
               />
             </View>
             <TextInput
@@ -96,6 +125,24 @@ export const PostJobScreen = () => {
               {formikProps.touched.description &&
                 formikProps.errors.description}
             </Text>
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Upload photo"
+                mode="contained"
+                style={styles.button}
+                onPress={() => {
+                  pickImage(formikProps.handleChange('image'));
+                }}>
+                Pick an image from camera roll
+              </Button>
+              {formikProps.values.image &&
+              formikProps.values.image.length > 0 ? (
+                <Image
+                  source={{ uri: formikProps.values.image }}
+                  style={{ width: 100, height: 100 }}
+                />
+              ) : null}
+            </View>
             <View style={styles.gesture}>
               <View style={styles.tokenContainer}>
                 <Text>Token Gesture</Text>
@@ -117,7 +164,7 @@ export const PostJobScreen = () => {
               title="submit"
               onPress={formikProps.handleSubmit}
             />
-          </View>
+          </KeyboardAwareScrollView>
         </React.Fragment>
       )}
     </Formik>
@@ -179,5 +226,11 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     padding: 10,
     borderRadius: 15,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    width: '80%',
+    justifyContent: 'space-evenly',
+    marginBottom: 20,
   },
 });
