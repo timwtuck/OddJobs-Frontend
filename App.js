@@ -49,8 +49,8 @@ export default function App() {
       i.e. the entire view that is immediately below.
     */}
 
-      {/* <LoginScreen /> */}
-      <NavigationContainer>
+      <LoginScreen />
+      {/* <NavigationContainer>
         <Tab.Navigator
           initialRouteName={'Homer'}
           screenOptions={({ route }) => ({
@@ -113,7 +113,7 @@ export default function App() {
           </Tab.Screen>
           <Tab.Screen name="Donuts" component={PostJobScreen} />
         </Tab.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
     </SafeAreaProvider>
   );
 }

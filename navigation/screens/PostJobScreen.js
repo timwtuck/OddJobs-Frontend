@@ -74,9 +74,7 @@ export const PostJobScreen = () => {
               <RNPickerSelect
                 placeholder={{ label: 'Select a category' }}
                 selectedValue={formikProps.values.category}
-                onValueChange={itemValue =>
-                  formikProps.setFieldValue('category', itemValue)
-                }
+                onValueChange={value => setLogin(value)}
                 items={[
                   { label: 'DIY', value: 'DIY' },
                   { label: 'Garden', value: 'Garden' },
