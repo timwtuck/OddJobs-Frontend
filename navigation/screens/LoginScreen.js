@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 
 import RNPickerSelect from 'react-native-picker-select';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 import { getAllUsers } from '../../api';
 
 export const LoginScreen = () => {
@@ -37,14 +39,56 @@ export const LoginScreen = () => {
     });
   }, []);
 
+  const validation = yup.object().shape({
+    email: yup.string().required().label('Email').email(),
+    password: yup.string().required().label('password'),
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.formInput}>
-        <RNPickerSelect
-          placeholder={{ label: 'Select a user' }}
-          items={{ username }}
-          onValueChange={value => setLoggedIn(value)}
-        />
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          onSubmit={(values, actions) => {
+            alert(JSON.stringify(values));
+            setTimeout(() => {
+              actions.setSubmitting(false);
+            }, 1000);
+          }}
+          validationSchema={validation}>
+          {formikProps => (
+            <React.Fragment>
+              <View style={styles.container}>
+                <TextInput
+                  placeholder="email"
+                  style={styles.formInput}
+                  onChangeText={formikProps.handleChange('email')}
+                  autoFocus
+                  onBlur={formikProps.handleBlur('email')}
+                />
+                <Text style={{ color: 'red' }}>
+                  {formikProps.touched.title && formikProps.errors.email}
+                </Text>
+                <TextInput
+                  placeholder="Password"
+                  style={styles.formInput}
+                  onChangeText={formikProps.handleChange('password')}
+                  onBlur={formikProps.handleBlur('password')}
+                  secureTextEntry
+                />
+
+                <Button
+                  style={styles.submit}
+                  title="submit"
+                  onPress={formikProps.handleSubmit}
+                />
+              </View>
+            </React.Fragment>
+          )}
+        </Formik>
       </View>
     </View>
   );
