@@ -81,7 +81,7 @@ export const EndPointsScreen = ({ navigation }) => {
       </>
       <>
         <Pressable
-          style={styles.doingEndpoints}
+          style={styles.doneEndpoints}
           onPressOut={() => navigation.navigate(MyAccountScreen)}>
           <Text style={styles.cardHeader}>My Account Screen</Text>
           <Text style={styles.cardSubText}>Go to Page</Text>

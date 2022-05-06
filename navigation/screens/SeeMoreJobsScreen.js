@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useContext } from 'react';
+import { AuthContext } from '../../App';
 import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { getAllJobs } from '../../api';
 import { Map } from '../../components/Map';
@@ -12,6 +14,11 @@ export const SeeMoreJobsScreen = ({ navigation }) => {
       setJobs(jobsFromApi);
     });
   }, []);
+
+  // global user context
+  const user = useContext(AuthContext);
+  console.log(user);
+  // global user context
 
   return (
     <>
