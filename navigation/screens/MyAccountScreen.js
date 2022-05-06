@@ -8,15 +8,27 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
+import { useContext } from 'react';
+import { AuthContext } from '../../App';
 
 import { EditMyAccountScreen } from './EditMyAccountScreen';
 import { JobLogScreen } from './JobLogScreen';
 import { ChatLogScreen } from './ChatLogScreen';
 
 export const MyAccountScreen = ({ navigation }) => {
+  // global user context
+  const loginState = useContext(AuthContext);
+  console.log(loginState);
+  // global user context
+
   return (
     <>
       <View style={styles.container}>
+        <Pressable
+          style={styles.logout}
+          onPressOut={() => navigation.navigate(ChatLogScreen)}>
+          <Text>Logout</Text>
+        </Pressable>
         <Pressable onPressOut={() => alert('offer camera or upload photo')}>
           <View style={styles.avatar}></View>
         </Pressable>
@@ -68,6 +80,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+  },
+
+  logout: {
+    backgroundColor: '#C4C4C470',
+    marginVertical: 25,
+    marginHorizontal: 7,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: 'flex-end',
+    marginHorizontal: 30,
   },
 
   avatar: {
