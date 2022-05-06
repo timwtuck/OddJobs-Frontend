@@ -79,6 +79,30 @@ export const LoginScreen = ({ navigation }) => {
               <Text>Create Account</Text>
             </Pressable>
 
+
+            <TextInput
+              placeholder="First Name"
+              style={styles.formInput}
+              onChangeText={formikProps.handleChange('firstName')}
+              onBlur={formikProps.handleBlur('firstName')}
+            />
+            <Text style={{ color: 'red' }}>
+              {formikProps.touched.firstName && formikProps.errors.firstName}
+            </Text>
+            {/*
+             Last Name 
+             */}
+
+            <TextInput
+              placeholder="Last Name"
+              style={styles.formInput}
+              onChangeText={formikProps.handleChange('lastName')}
+              onBlur={formikProps.handleBlur('lastName')}
+            />
+            <Text style={{ color: 'red' }}>
+              {formikProps.touched.lastName && formikProps.errors.lastName}
+            </Text>
+
             {/*
              Email 
              */}
