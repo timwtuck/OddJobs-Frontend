@@ -14,7 +14,7 @@ import * as yup from 'yup';
 import { getAllUsers } from '../../api';
 import { SignupScreen } from './SignupScreen';
 
-export const LoginScreen = ({ navigation }) => {
+export const LoginScreen = ({ setLoggedIn }) => {
   const [users, setUsers] = React.useState([
     {
       _id: '',
@@ -79,8 +79,7 @@ export const LoginScreen = ({ navigation }) => {
               <Text>Create Account</Text>
             </Pressable>
 
-
-            <TextInput
+            {/* <TextInput
               placeholder="First Name"
               style={styles.formInput}
               onChangeText={formikProps.handleChange('firstName')}
@@ -88,12 +87,12 @@ export const LoginScreen = ({ navigation }) => {
             />
             <Text style={{ color: 'red' }}>
               {formikProps.touched.firstName && formikProps.errors.firstName}
-            </Text>
+            </Text> */}
             {/*
              Last Name 
              */}
 
-            <TextInput
+            {/* <TextInput
               placeholder="Last Name"
               style={styles.formInput}
               onChangeText={formikProps.handleChange('lastName')}
@@ -101,7 +100,7 @@ export const LoginScreen = ({ navigation }) => {
             />
             <Text style={{ color: 'red' }}>
               {formikProps.touched.lastName && formikProps.errors.lastName}
-            </Text>
+            </Text> */}
 
             {/*
              Email 
