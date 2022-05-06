@@ -45,7 +45,6 @@ export default function App() {
         <StatusBar style="auto" />
         {/* expo code ends */}
         <LoginScreen setLoggedIn={setLoggedIn} />
-        <NavigationContainer></NavigationContainer>
       </SafeAreaProvider>
     );
   } else if (loggedIn) {
@@ -134,6 +133,7 @@ export default function App() {
                     <Stack.Screen
                       name="EditMyAccountScreen"
                       component={EditMyAccountScreen}
+                      setLoggedIn={setLoggedIn}
                     />
                   </Stack.Navigator>
                 )}
