@@ -6,7 +6,7 @@ import { getAllJobs } from '../../api';
 import { Map } from '../../components/Map';
 import { JobScreen } from './JobScreen';
 
-export const SeeMoreJobsScreen = ({ navigation }) => {
+export const SeeMoreJobsScreen = ({ setLoggedIn }) => {
   const [jobs, setJobs] = React.useState([]);
 
   React.useEffect(() => {
