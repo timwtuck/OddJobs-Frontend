@@ -65,7 +65,6 @@ export const LoginScreen = () => {
               placeholder="First Name"
               style={styles.formInput}
               onChangeText={formikProps.handleChange('firstName')}
-              autoFocus
               onBlur={formikProps.handleBlur('firstName')}
             />
             <Text style={{ color: 'red' }}>
