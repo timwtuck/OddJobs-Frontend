@@ -8,12 +8,11 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import RNPickerSelect from 'react-native-picker-select';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { getAllUsers } from '../../api';
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ setLoggedIn }) => {
   const [users, setUsers] = React.useState([
     {
       _id: '',
@@ -24,7 +23,6 @@ export const LoginScreen = () => {
   ]);
 
   const [username, setUsername] = React.useState([]);
-  const [loggedIn, setLoggedIn] = React.useState([]);
 
   React.useEffect(() => {
     getAllUsers().then(usersFromApi => {
@@ -64,12 +62,6 @@ export const LoginScreen = () => {
               user.password === values.password
             ) {
               setLoggedIn(user);
-              console.log(loggedIn, '<<< logged in');
-            } else if (
-              user.email !== values.email ||
-              user.password !== values.password
-            ) {
-              alert('Check username and password');
             }
           });
           actions.setSubmitting(false);
