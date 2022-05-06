@@ -6,38 +6,46 @@ import {
   TextInput,
   Button,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
-import * as yup from 'yup';
+
 import { Formik } from 'formik';
+import * as yup from 'yup';
+import { getAllUsers } from '../../api';
+import { SignupScreen } from './SignupScreen';
 
-const validation = yup.object().shape({
-  firstName: yup
-    .string()
-    .required()
-    .label('First Name')
-    .min(2, 'Must contain at least two letters.')
-    .max(50, 'Max length 50 characters.'),
-  lastName: yup
-    .string()
-    .required()
-    .label('Last Name')
-    .min(2, 'Must contain at least two letters.')
-    .max(50, 'Max length 50 characters.'),
-  email: yup.string().required().label('Email').email(),
-  password: yup
-    .string()
-    .required()
-    .label('password')
-    .matches(
-      /^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$/,
-      'Must contain 1 letter and number and contain at least 6 chars',
-    ),
-  confirmPass: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Passwords must match'),
-});
+export const LoginScreen = ({ navigation }) => {
+  const [users, setUsers] = React.useState([
+    {
+      _id: '',
+      username: '',
+      fullName: '',
+      email: '',
+    },
+  ]);
 
-export const LoginScreen = () => {
+  const [username, setUsername] = React.useState([]);
+
+  React.useEffect(() => {
+    getAllUsers().then(usersFromApi => {
+      const list = usersFromApi.map(user => ({
+        _id: user._id,
+        username: user.username,
+        fullName: user.fullName,
+        email: user.email,
+        password: user.password,
+      }));
+
+      setUsers(list);
+      console.log(users);
+    });
+  }, []);
+
+  const validation = yup.object().shape({
+    email: yup.string().required().label('Email').email(),
+    password: yup.string().required().label('password'),
+  });
+
   return (
     <Formik
       initialValues={{
@@ -48,18 +56,29 @@ export const LoginScreen = () => {
         confirmPass: '',
       }}
       onSubmit={(values, actions) => {
-        alert(JSON.stringify(values));
         setTimeout(() => {
+          // filter over users array
+          users.filter(user => {
+            if (
+              user.email === values.email &&
+              user.password === values.password
+            ) {
+              setLoggedIn(user);
+            }
+          });
           actions.setSubmitting(false);
-        }, 3000);
+        }, 1500);
       }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
           <View style={styles.container}>
-            {/*
-             First Name
-             */}
+            <Pressable
+              style={styles.createAccount}
+              onPress={() => navigation.navigate(SignupScreen)}>
+              <Text>Create Account</Text>
+            </Pressable>
+
 
             <TextInput
               placeholder="First Name"
@@ -83,10 +102,11 @@ export const LoginScreen = () => {
             <Text style={{ color: 'red' }}>
               {formikProps.touched.lastName && formikProps.errors.lastName}
             </Text>
+
             {/*
              Email 
              */}
-
+            <Text>Login</Text>
             <TextInput
               placeholder="JohnDoe@Emample.com"
               style={styles.formInput}
@@ -110,17 +130,6 @@ export const LoginScreen = () => {
             <Text style={{ color: 'red' }}>
               {formikProps.touched.password && formikProps.errors.password}
             </Text>
-            <TextInput
-              placeholder="Confirm Password"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('confirmPass')}
-              onBlur={formikProps.handleBlur('confirmPass')}
-              secureTextEntry
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.confirmPass &&
-                formikProps.errors.confirmPass}
-            </Text>
             {/* 
             Props
             */}
@@ -143,9 +152,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  header: {
-    fontSize: 20,
-  },
 
   formInput: {
     borderWidth: 2,
@@ -154,5 +160,15 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     padding: 10,
     borderRadius: 15,
+  },
+
+  createAccount: {
+    backgroundColor: '#C4C4C470',
+    marginVertical: 25,
+    marginHorizontal: 7,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: 'flex-end',
+    marginHorizontal: 30,
   },
 });
