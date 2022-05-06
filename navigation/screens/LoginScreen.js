@@ -33,9 +33,11 @@ export const LoginScreen = () => {
         username: user.username,
         fullName: user.fullName,
         email: user.email,
+        password: user.password,
       }));
 
-      setUsername(list.map(user => user.username));
+      setUsers(list);
+      console.log(users);
     });
   }, []);
 
@@ -45,52 +47,76 @@ export const LoginScreen = () => {
   });
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formInput}>
-        <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          onSubmit={(values, actions) => {
-            alert(JSON.stringify(values));
-            setTimeout(() => {
-              actions.setSubmitting(false);
-            }, 1000);
-          }}
-          validationSchema={validation}>
-          {formikProps => (
-            <React.Fragment>
-              <View style={styles.container}>
-                <TextInput
-                  placeholder="email"
-                  style={styles.formInput}
-                  onChangeText={formikProps.handleChange('email')}
-                  autoFocus
-                  onBlur={formikProps.handleBlur('email')}
-                />
-                <Text style={{ color: 'red' }}>
-                  {formikProps.touched.title && formikProps.errors.email}
-                </Text>
-                <TextInput
-                  placeholder="Password"
-                  style={styles.formInput}
-                  onChangeText={formikProps.handleChange('password')}
-                  onBlur={formikProps.handleBlur('password')}
-                  secureTextEntry
-                />
+    <Formik
+      initialValues={{
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPass: '',
+      }}
+      onSubmit={(values, actions) => {
+        setTimeout(() => {
+          // filter over users array
+          users.filter(user => {
+            if (
+              user.email === values.email &&
+              user.password === values.password
+            ) {
+              setLoggedIn(user);
+              console.log(loggedIn, '<<< logged in');
+            } else if (
+              user.email !== values.email ||
+              user.password !== values.password
+            ) {
+              alert('Check username and password');
+            }
+          });
+          actions.setSubmitting(false);
+        }, 1500);
+      }}
+      validationSchema={validation}>
+      {formikProps => (
+        <React.Fragment>
+          <View style={styles.container}>
+            {/*
+             Email 
+             */}
+            <TextInput
+              placeholder="JohnDoe@Emample.com"
+              style={styles.formInput}
+              onChangeText={formikProps.handleChange('email')}
+              onBlur={formikProps.handleBlur('email')}
+            />
+            <Text style={{ color: 'red' }}>
+              {formikProps.touched.email && formikProps.errors.email}
+            </Text>
+            {/*
+             Password 
+             */}
 
-                <Button
-                  style={styles.submit}
-                  title="submit"
-                  onPress={formikProps.handleSubmit}
-                />
-              </View>
-            </React.Fragment>
-          )}
-        </Formik>
-      </View>
-    </View>
+            <TextInput
+              placeholder="Password"
+              style={styles.formInput}
+              onChangeText={formikProps.handleChange('password')}
+              onBlur={formikProps.handleBlur('password')}
+              secureTextEntry
+            />
+            <Text style={{ color: 'red' }}>
+              {formikProps.touched.password && formikProps.errors.password}
+            </Text>
+            {/* 
+            Props
+            */}
+            {formikProps.isSubmitting ? (
+              <ActivityIndicator />
+            ) : (
+              <Button title="submit" onPress={formikProps.handleSubmit} />
+            )}
+          </View>
+        </React.Fragment>
+      )}
+    </Formik>
   );
 };
 
