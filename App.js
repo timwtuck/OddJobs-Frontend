@@ -45,6 +45,7 @@ export default function App() {
         <StatusBar style="auto" />
         {/* expo code ends */}
         <LoginScreen setLoggedIn={setLoggedIn} />
+        <NavigationContainer></NavigationContainer>
       </SafeAreaProvider>
     );
   } else if (loggedIn) {

@@ -6,13 +6,15 @@ import {
   TextInput,
   Button,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { getAllUsers } from '../../api';
+import { SignupScreen } from './SignupScreen';
 
-export const LoginScreen = ({ setLoggedIn }) => {
+export const LoginScreen = ({ navigation }) => {
   const [users, setUsers] = React.useState([
     {
       _id: '',
@@ -71,9 +73,16 @@ export const LoginScreen = ({ setLoggedIn }) => {
       {formikProps => (
         <React.Fragment>
           <View style={styles.container}>
+            <Pressable
+              style={styles.createAccount}
+              onPress={() => navigation.navigate(SignupScreen)}>
+              <Text>Create Account</Text>
+            </Pressable>
+
             {/*
              Email 
              */}
+            <Text>Login</Text>
             <TextInput
               placeholder="JohnDoe@Emample.com"
               style={styles.formInput}
@@ -127,5 +136,15 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     padding: 10,
     borderRadius: 15,
+  },
+
+  createAccount: {
+    backgroundColor: '#C4C4C470',
+    marginVertical: 25,
+    marginHorizontal: 7,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: 'flex-end',
+    marginHorizontal: 30,
   },
 });
