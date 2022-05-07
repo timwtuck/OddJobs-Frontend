@@ -23,7 +23,8 @@ export const SeeMoreJobsScreen = ({ setLoggedIn }) => {
   return (
     <>
       <View style={styles.container}>
-        <Map />
+        {/* <Map /> */}
+        {/* <Text>Map Render</Text> */}
       </View>
       <View style={styles.list}>
         <FlatList
