@@ -102,6 +102,8 @@ export const deleteMessage = (user_id, message_id) => {
   return oddJobsApi.delete(`users/${user_id}/messages/${message_id}`);
 };
 
+// Google Geolocation API
+
 const postcodeGeolocation = axios.create({
   // response format is JSON
   baseURL: 'https://maps.googleapis.com/maps/api/geocode/JSON?',
@@ -116,6 +118,51 @@ export const convertFromPostcode = address => {
     return data;
   });
 };
+
+// Google Distance Matrix API
+
+const distanceAPI = axios.create({
+  // response format is JSON
+  baseURL: 'https://maps.googleapis.com/maps/api/distancematrix/json?',
+});
+
+// API Docs - https://developers.google.com/maps/documentation/distance-matrix/start
+
+export const jobsByDistance = (userPostcode, destinationsCheckFormatting) => {
+  // whitespaces should be replaced with '%20' delimited spaces
+  // example valid address 'address=LS1%208BA' OR 'address=24%20Sussex%20Drive%20Ottawa%20ON'
+  // it seems that destinations should be seperated with a pipe i.e. | as '%7C'
+  // example multiple destinations looks like 'destinations=LS1%208BA%7CLS1%207AD
+  // note the %20 as whitespace in postcode and %7C as pipe between postcode destinations
+  return distanceAPI
+    .get(
+      `origins=${userPostcode}&destinations=${destinationsCheckFormatting}=imperial&key=${YOUR_API_KEY}`,
+    )
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+// Example JSON Response //
+
+const distanceResponse = {
+  destination_addresses: ['various destination locations'],
+  origin_addresses: ["user's postcode location"],
+  rows: [
+    {
+      elements: [
+        {
+          distance: { text: '228 mi', value: 367439 }, // desired data is probably miles
+          duration: { text: '3 hours 53 mins', value: 14003 },
+          status: 'OK',
+        },
+      ],
+    },
+  ],
+  status: 'OK',
+};
+
+// JSON  distance response ends //
 
 const exampleJobs = {
   jobs: [
