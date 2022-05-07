@@ -9,12 +9,19 @@ import {
   Pressable,
 } from 'react-native';
 
+import { useContext } from 'react';
+import { setAuthContext } from '../../App';
+
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { getAllUsers } from '../../api';
 import { SignupScreen } from './SignupScreen';
 
-export const LoginScreen = ({ setLoggedIn }) => {
+export const LoginScreen = ({ navigation }) => {
+  // global user context
+  const setLoggedIn = useContext(setAuthContext);
+  // global user context
+
   const [users, setUsers] = React.useState([
     {
       _id: '',

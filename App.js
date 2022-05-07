@@ -31,6 +31,7 @@ import { EditMyAccountScreen } from './navigation/screens/EditMyAccountScreen';
 
 // global login context
 export const AuthContext = React.createContext(null);
+export const setAuthContext = React.createContext(null);
 
 export default function App() {
   // Login State
@@ -40,108 +41,138 @@ export default function App() {
 
   if (!loggedIn) {
     return (
-      <SafeAreaProvider>
-        {/* expo code starts */}
-        <StatusBar style="auto" />
-        {/* expo code ends */}
-        <LoginScreen setLoggedIn={setLoggedIn} />
-      </SafeAreaProvider>
-    );
-  } else if (loggedIn) {
-    return (
-      <AuthContext.Provider value={loggedIn}>
+      <setAuthContext.Provider value={setLoggedIn}>
         <SafeAreaProvider>
           {/* expo code starts */}
           <StatusBar style="auto" />
           {/* expo code ends */}
-
           <NavigationContainer>
-            <Tab.Navigator
-              initialRouteName={'Homer'}
-              screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
-                  let rn = route.name;
-
-                  if (rn === 'Homer') {
-                    iconName = focused ? 'home' : 'home-outline';
-                  } else if (rn === 'Secondary') {
-                    iconName = focused ? 'list' : 'list-outline';
-                  } else if (rn === 'Endpoint') {
-                    iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
-                  } else if (rn === 'Donuts') {
-                    iconName = focused ? 'bug' : 'bug-outline';
-                  }
-
-                  return <Ionicons name={iconName} size={size} color={color} />;
-                },
-              })}>
-              <Tab.Screen name="Homer" options={{ headerShown: false }}>
-                {() => (
-                  <Stack.Navigator>
-                    <Stack.Screen name="HomeScreen" component={HomeScreen} />
-                    <Stack.Screen
-                      name="PostJobScreen"
-                      component={PostJobScreen}
-                    />
-                    <Stack.Screen
-                      name="SeeMoreJobsScreen"
-                      component={SeeMoreJobsScreen}
-                    />
-                    <Stack.Screen name="JobScreen" component={JobScreen} />
-                  </Stack.Navigator>
-                )}
-              </Tab.Screen>
-              <Tab.Screen name="Secondary" component={SignupScreen} />
-              <Tab.Screen name="Endpoint" options={{ headerShown: false }}>
-                {() => (
-                  <Stack.Navigator>
-                    <Stack.Screen
-                      name="Endpoints"
-                      component={EndPointsScreen}
-                    />
-                    <Stack.Screen
-                      name="FindAJobScreen"
-                      component={FindAJobScreen}
-                    />
-                    <Stack.Screen
-                      name="SignupScreen"
-                      component={SignupScreen}
-                    />
-                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                    <Stack.Screen
-                      name="PostJobScreen"
-                      component={PostJobScreen}
-                    />
-                    <Stack.Screen name="JobScreen" component={JobScreen} />
-                    <Stack.Screen
-                      name="JobLogScreen"
-                      component={JobLogScreen}
-                    />
-                    <Stack.Screen
-                      name="ChatLogScreen"
-                      component={ChatLogScreen}
-                    />
-                    <Stack.Screen
-                      name="JobChatScreen"
-                      component={JobChatScreen}
-                    />
-                    <Stack.Screen
-                      name="MyAccountScreen"
-                      component={MyAccountScreen}
-                    />
-                    <Stack.Screen
-                      name="EditMyAccountScreen"
-                      component={EditMyAccountScreen}
-                      setLoggedIn={setLoggedIn}
-                    />
-                  </Stack.Navigator>
-                )}
-              </Tab.Screen>
-              <Tab.Screen name="Donuts" component={PostJobScreen} />
-            </Tab.Navigator>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="loginScreen"
+                component={LoginScreen}
+                options={{ title: 'Log In' }}
+              />
+              <Stack.Screen
+                name="SignupScreen"
+                component={SignupScreen}
+                options={{ title: 'Sign Up' }}
+              />
+            </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaProvider>
+      </setAuthContext.Provider>
+    );
+  } else if (loggedIn) {
+    return (
+      <AuthContext.Provider value={loggedIn}>
+        <setAuthContext.Provider value={setLoggedIn}>
+          <SafeAreaProvider>
+            {/* expo code starts */}
+            <StatusBar style="auto" />
+            {/* expo code ends */}
+
+            <NavigationContainer>
+              <Tab.Navigator
+                initialRouteName={'Homer'}
+                screenOptions={({ route }) => ({
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    let rn = route.name;
+
+                    if (rn === 'Homer') {
+                      iconName = focused ? 'home' : 'home-outline';
+                    } else if (rn === 'Secondary') {
+                      iconName = focused ? 'list' : 'list-outline';
+                    } else if (rn === 'Endpoint') {
+                      iconName = focused
+                        ? 'chatbubbles'
+                        : 'chatbubbles-outline';
+                    } else if (rn === 'Donuts') {
+                      iconName = focused ? 'bug' : 'bug-outline';
+                    }
+
+                    return (
+                      <Ionicons name={iconName} size={size} color={color} />
+                    );
+                  },
+                })}>
+                <Tab.Screen name="Homer" options={{ headerShown: false }}>
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="HomeScreen"
+                        component={HomeScreen}
+                        options={{ title: 'Home' }}
+                      />
+                      <Stack.Screen
+                        name="PostJobScreen"
+                        component={PostJobScreen}
+                        options={{ title: 'Post a Job' }}
+                      />
+                      <Stack.Screen
+                        name="SeeMoreJobsScreen"
+                        component={SeeMoreJobsScreen}
+                        options={{ title: 'See Jobs' }}
+                      />
+                      <Stack.Screen name="JobScreen" component={JobScreen} />
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen name="Secondary" component={SignupScreen} />
+                <Tab.Screen name="Endpoint" options={{ headerShown: false }}>
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="Endpoints"
+                        component={EndPointsScreen}
+                      />
+                      <Stack.Screen
+                        name="FindAJobScreen"
+                        component={FindAJobScreen}
+                      />
+                      <Stack.Screen
+                        name="SignupScreen"
+                        component={SignupScreen}
+                      />
+                      <Stack.Screen
+                        name="LoginScreen"
+                        component={LoginScreen}
+                      />
+                      <Stack.Screen
+                        name="PostJobScreen"
+                        component={PostJobScreen}
+                      />
+                      <Stack.Screen name="JobScreen" component={JobScreen} />
+                      <Stack.Screen
+                        name="JobLogScreen"
+                        component={JobLogScreen}
+                      />
+                      <Stack.Screen
+                        name="ChatLogScreen"
+                        component={ChatLogScreen}
+                      />
+                      <Stack.Screen
+                        name="JobChatScreen"
+                        component={JobChatScreen}
+                      />
+                      <Stack.Screen
+                        name="MyAccountScreen"
+                        component={MyAccountScreen}
+                      />
+                      <Stack.Screen
+                        name="EditMyAccountScreen"
+                        component={EditMyAccountScreen}
+                        setLoggedIn={setLoggedIn}
+                      />
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen name="Donuts" component={PostJobScreen} />
+              </Tab.Navigator>
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </setAuthContext.Provider>
       </AuthContext.Provider>
     );
   }
