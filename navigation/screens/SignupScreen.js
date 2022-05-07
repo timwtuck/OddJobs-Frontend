@@ -10,19 +10,28 @@ import {
 import * as yup from 'yup';
 import { Formik } from 'formik';
 
+import { postUser } from '../../api';
+import { useContext } from 'react';
+import { setAuthContext } from '../../App';
+import { HomeScreen } from './HomeScreen';
+
 const validation = yup.object().shape({
-  firstName: yup
+  fullName: yup
     .string()
     .required()
-    .label('First Name')
+    .label('Full Name')
     .min(2, 'Must contain at least two letters.')
     .max(50, 'Max length 50 characters.'),
-  lastName: yup
+  username: yup
     .string()
     .required()
-    .label('Last Name')
-    .min(2, 'Must contain at least two letters.')
-    .max(50, 'Max length 50 characters.'),
+    .label('username')
+    .min(3, 'Must contain at least three letters.')
+    .max(30, 'Max length 30 characters.')
+    .matches(
+      /^[a-zA-Z0-9][a-zA-Z0-9_]{2,29}$/,
+      'Usernames can only contain letters, numbers and underscore(_)',
+    ),
   email: yup.string().required().label('Email').email(),
   password: yup
     .string()
@@ -37,12 +46,16 @@ const validation = yup.object().shape({
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
-export const SignupScreen = () => {
+export const SignupScreen = ({ navigation }) => {
+  // global user context
+  const setLoggedIn = useContext(setAuthContext);
+  // global user context
+
   return (
     <Formik
       initialValues={{
-        firstName: '',
-        lastName: '',
+        fullName: '',
+        username: '',
         email: '',
         password: '',
         confirmPass: '',
@@ -50,38 +63,51 @@ export const SignupScreen = () => {
       onSubmit={(values, actions) => {
         alert(JSON.stringify(values));
         setTimeout(() => {
+          // post credentials to database
+          postUser(JSON.stringify(values)).then(newUser => {
+            console.log(newUser);
+            setLoggedIn({
+              _id: newUser._id,
+              username: newUser.username,
+              fullName: newUser.fullName,
+              email: newUser.email,
+              password: newUser.password,
+            });
+          });
+          // if response okay, setLoggedIn with data from response
           actions.setSubmitting(false);
-        }, 3000);
+        }, 2000);
+        () => navigation.navigate(HomeScreen);
       }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
           <View style={styles.container}>
             {/*
-             First Name
+             full Name
              */}
 
             <TextInput
-              placeholder="First Name"
+              placeholder="Full Name"
               style={styles.formInput}
-              onChangeText={formikProps.handleChange('firstName')}
-              onBlur={formikProps.handleBlur('firstName')}
+              onChangeText={formikProps.handleChange('fullName')}
+              onBlur={formikProps.handleBlur('fullName')}
             />
             <Text style={{ color: 'red' }}>
-              {formikProps.touched.firstName && formikProps.errors.firstName}
+              {formikProps.touched.fullName && formikProps.errors.fullName}
             </Text>
             {/*
-             Last Name 
+             username 
              */}
 
             <TextInput
-              placeholder="Last Name"
+              placeholder="username"
               style={styles.formInput}
-              onChangeText={formikProps.handleChange('lastName')}
-              onBlur={formikProps.handleBlur('lastName')}
+              onChangeText={formikProps.handleChange('username')}
+              onBlur={formikProps.handleBlur('username')}
             />
             <Text style={{ color: 'red' }}>
-              {formikProps.touched.lastName && formikProps.errors.lastName}
+              {formikProps.touched.username && formikProps.errors.username}
             </Text>
             {/*
              Email 

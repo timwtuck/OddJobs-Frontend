@@ -44,7 +44,6 @@ export const LoginScreen = ({ navigation }) => {
       }));
 
       setUsers(list);
-      console.log(users);
     });
   }, []);
 
@@ -56,8 +55,8 @@ export const LoginScreen = ({ navigation }) => {
   return (
     <Formik
       initialValues={{
-        firstName: '',
-        lastName: '',
+        fullName: '',
+        username: '',
         email: '',
         password: '',
         confirmPass: '',
@@ -85,33 +84,6 @@ export const LoginScreen = ({ navigation }) => {
               onPress={() => navigation.navigate(SignupScreen)}>
               <Text>Create Account</Text>
             </Pressable>
-
-            {/* <TextInput
-              placeholder="First Name"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('firstName')}
-              onBlur={formikProps.handleBlur('firstName')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.firstName && formikProps.errors.firstName}
-            </Text> */}
-            {/*
-             Last Name 
-             */}
-
-            {/* <TextInput
-              placeholder="Last Name"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('lastName')}
-              onBlur={formikProps.handleBlur('lastName')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.lastName && formikProps.errors.lastName}
-            </Text> */}
-
-            {/*
-             Email 
-             */}
             <Text>Login</Text>
             <TextInput
               placeholder="JohnDoe@Emample.com"
