@@ -88,7 +88,6 @@ export const PostJobScreen = ({ navigation }) => {
               placeholder="Job title"
               style={styles.formInput}
               onChangeText={formikProps.handleChange('title')}
-              autoFocus
               onBlur={formikProps.handleBlur('title')}
             />
             <Text style={{ color: 'red' }}>
