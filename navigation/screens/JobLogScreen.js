@@ -1,11 +1,37 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../App';
 
-export const JobLogScreen = () => {
+import { getAllJobs } from '../../api';
+
+export const JobLogScreen = ({ navigation }) => {
+  // global user context
+  const user = useContext(AuthContext);
+  // global user context
+
+  const [userJobs, setUserJobs] = useState([]);
+
+  React.useEffect(() => {
+    getAllJobs().then(data => {
+      setUserJobs(
+        data.filter(job => {
+          if (job.user_id === user._id) {
+            return job;
+          }
+        }),
+      );
+    });
+  }, []);
+
+  console.log(userJobs);
   return (
     <>
       <View style={styles.container}>
-        <Text>Job Log Screen</Text>
+        <View style={styles.header}></View>
+        <View style={styles.jobCard}>
+          <Text>Job Log Screen</Text>
+        </View>
       </View>
     </>
   );
@@ -15,16 +41,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    // backgroundColor: '#CDDCEE',
     alignItems: 'center',
     justifyContent: 'center',
   },
   header: {
     fontSize: 20,
   },
-  formInput: {
-    borderWidth: 2,
-    borderColor: '#000',
-    width: '80%',
+  jobCard: {
+    backgroundColor: '#FFEDDF',
+    width: Dimensions.get('window').width - 60,
+    height: 150,
     marginVertical: 15,
     padding: 10,
     borderRadius: 15,
