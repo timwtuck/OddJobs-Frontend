@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Switch,
+} from 'react-native';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../App';
 
@@ -38,8 +45,8 @@ export const JobLogScreen = ({ navigation }) => {
   // global user context
 
   const [userJobs, setUserJobs] = useState([]);
-
-  const array = [1, 2, 3, 4, 5];
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   React.useEffect(() => {
     getAllJobs().then(data => {
@@ -60,8 +67,24 @@ export const JobLogScreen = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.sectionTitle}>
+        <View style={styles.sectionTitleRow}>
           <Text style={styles.sectionHeading}>My Jobs</Text>
+          <View
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}>
+            <Text style={{ paddingRight: 5 }}>
+              {isEnabled ? 'hide' : 'show'} completed
+            </Text>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
         </View>
 
         <View style={styles.summaryList}>
@@ -70,7 +93,7 @@ export const JobLogScreen = ({ navigation }) => {
             <View style={styles.BulletDetails}>
               <Text style={styles.BulletText}>Open Jobs</Text>
               <View style={styles.BulletValues}>
-                <Text style={styles.BulletNumber}>1</Text>
+                <Text style={styles.BulletNumber}>{userJobs.length}</Text>
                 <Text style={styles.BulletText}>job(s)</Text>
               </View>
             </View>
@@ -92,22 +115,25 @@ export const JobLogScreen = ({ navigation }) => {
             <View style={styles.BulletDetails}>
               <Text style={styles.BulletText}>Completed</Text>
               <View style={styles.BulletValues}>
-                <Text style={styles.BulletNumber}>1</Text>
+                <Text style={styles.BulletNumber}>16</Text>
                 <Text style={styles.BulletText}>job(s)</Text>
               </View>
             </View>
           </View>
         </View>
         <View style={styles.jobCardRow}>
-          {array.map(array => {
-            return (
-              <ScrollView horizontal={true} overflow={true}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            {userJobs.map(job => {
+              return (
                 <View style={styles.jobCard}>
-                  <Text style={styles.cardHeading}>Job Log Screen</Text>
+                  <View style={styles.jobCardImg}></View>
+                  <Text style={styles.cardHeading}>{job.title}</Text>
+                  <Text style={styles.cardSubHeading}>Token</Text>
+                  <Text style={styles.cardBody}>£{job.price}.00</Text>
                 </View>
-              </ScrollView>
-            );
-          })}
+              );
+            })}
+          </ScrollView>
         </View>
       </View>
     </>
@@ -124,12 +150,13 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
 
-  sectionTitle: {
-    // backgroundColor: 'grey',
+  sectionTitleRow: {
+    // backgroundColor: 'pink',
+    flexDirection: 'row',
     width: Dimensions.get('window').width - 60,
     height: 35,
-    justifyContent: 'center',
-    // paddingHorizontal: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   sectionHeading: {
@@ -155,6 +182,37 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
 
+  jobCardImg: {
+    width: '50%',
+    height: '50%',
+    backgroundColor: 'white',
+    marginTop: 5,
+    marginLeft: 5,
+    borderRadius: 10,
+  },
+
+  cardHeading: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 18,
+    marginLeft: 7,
+    marginTop: 10,
+  },
+
+  cardSubHeading: {
+    fontFamily: 'Inter_500Medium',
+    color: '#00000080',
+    fontSize: 18,
+    marginLeft: 7,
+    marginTop: 3,
+    marginBottom: 5,
+  },
+
+  cardBody: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 18,
+    marginLeft: 7,
+  },
+
   BulletText: {
     fontFamily: 'Inter_700Bold',
     paddingLeft: 10,
@@ -174,9 +232,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-  },
-  cardHeading: {
-    fontFamily: 'Inter_700Bold',
   },
 
   summaryList: {
