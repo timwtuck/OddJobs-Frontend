@@ -47,7 +47,10 @@ export default function App() {
           <StatusBar style="auto" />
           {/* expo code ends */}
           <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}>
               <Stack.Screen
                 name="loginScreen"
                 component={LoginScreen}
