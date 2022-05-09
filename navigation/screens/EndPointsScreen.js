@@ -34,7 +34,7 @@ export const EndPointsScreen = ({ navigation }) => {
         </>
         <>
           <Pressable
-            style={styles.endpoints}
+            style={styles.doneEndpoints}
             onPressOut={() => navigation.navigate(LoginScreen)}>
             <Text style={styles.cardHeader}>Login Screen</Text>
             <Text style={styles.cardSubText}>Go to Page</Text>
@@ -66,7 +66,7 @@ export const EndPointsScreen = ({ navigation }) => {
         </>
         <>
           <Pressable
-            style={styles.endpoints}
+            style={styles.doingEndpoints}
             onPressOut={() => navigation.navigate(JobLogScreen)}>
             <Text style={styles.cardHeader}>Job Log Screen</Text>
             <Text style={styles.cardSubText}>Go to Page</Text>
@@ -93,6 +93,14 @@ export const EndPointsScreen = ({ navigation }) => {
             style={styles.doneEndpoints}
             onPressOut={() => navigation.navigate(MyAccountScreen)}>
             <Text style={styles.cardHeader}>My Account Screen</Text>
+            <Text style={styles.cardSubText}>Go to Page</Text>
+          </Pressable>
+        </>
+        <>
+          <Pressable
+            style={styles.endpoints}
+            onPressOut={() => navigation.navigate(EditMyAccountScreen)}>
+            <Text style={styles.cardHeader}>Edit My Account Screen</Text>
             <Text style={styles.cardSubText}>Go to Page</Text>
           </Pressable>
         </>
