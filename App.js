@@ -46,6 +46,8 @@ import { EditNameScreen } from './navigation/screens/EditNameScreen';
 import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
 import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
+import {setUpSocket} from './utils.js';
+
 // global login context
 export const AuthContext = React.createContext(null);
 export const setAuthContext = React.createContext(null);
@@ -63,8 +65,35 @@ export default function App() {
     Inter_900Black,
   });
 
-  // Login State
+  // Login, Socket and Notification State
   const [loggedIn, setLoggedIn] = React.useState(null);
+  const [socket, setSocket] = React.useState(null);
+  const [notifications, setNotifications] = React.useState(0);
+
+  const onNewNotification = (fromUser) => {
+
+    console.log(`notification from ${fromUser}`);
+    setNotifications((n) => n + 1);
+  }
+
+//   const sendNotification = (toUser) => {
+// // console.log(socket)
+//     if (!userId || !socket || !socket.connected)
+//       return;
+
+//     socket.emit('send', {from: userId, to: toUser});
+//   }
+
+  React.useEffect( () => {
+
+    if(!loggedIn){ // need userId to set up the socket
+      // if socket already exists, disconnect it
+      return;
+    } 
+
+   setUpSocket(setSocket, loggedIn._id, onNewNotification);
+  }, [loggedIn]);
+
 
   if (!fontsLoaded) {
     return <AppLoading />;
