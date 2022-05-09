@@ -57,7 +57,7 @@ export const EndPointsScreen = ({ navigation }) => {
       </>
       <>
         <Pressable
-          style={styles.endpoints}
+          style={styles.doingEndpoints}
           onPressOut={() => navigation.navigate(JobLogScreen)}>
           <Text style={styles.cardHeader}>Job Log Screen</Text>
           <Text style={styles.cardSubText}>Go to Page</Text>
