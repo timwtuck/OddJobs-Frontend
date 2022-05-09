@@ -106,22 +106,22 @@ export default function App() {
 
             <NavigationContainer>
               <Tab.Navigator
-                initialRouteName={'Homer'}
+                initialRouteName={'Home'}
                 screenOptions={({ route }) => ({
                   tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
                     let rn = route.name;
 
-                    if (rn === 'Homer') {
+                    if (rn === 'Home') {
                       iconName = focused ? 'home' : 'home-outline';
-                    } else if (rn === 'Secondary') {
-                      iconName = focused ? 'list' : 'list-outline';
                     } else if (rn === 'Endpoint') {
+                      iconName = focused ? 'list' : 'list-outline';
+                    } else if (rn === 'Chat') {
                       iconName = focused
                         ? 'chatbubbles'
                         : 'chatbubbles-outline';
-                    } else if (rn === 'Donuts') {
-                      iconName = focused ? 'bug' : 'bug-outline';
+                    } else if (rn === 'Account') {
+                      iconName = focused ? 'person' : 'person-outline';
                     }
 
                     return (
@@ -129,7 +129,7 @@ export default function App() {
                     );
                   },
                 })}>
-                <Tab.Screen name="Homer" options={{ headerShown: false }}>
+                <Tab.Screen name="Home" options={{ headerShown: false }}>
                   {() => (
                     <Stack.Navigator>
                       <Stack.Screen
@@ -151,7 +151,6 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name="Secondary" component={SignupScreen} />
                 <Tab.Screen name="Endpoint" options={{ headerShown: false }}>
                   {() => (
                     <Stack.Navigator>
@@ -200,7 +199,8 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name="Donuts" component={PostJobScreen} />
+                <Tab.Screen name="Chat" component={ChatLogScreen} />
+                <Tab.Screen name="Account" component={MyAccountScreen} />
               </Tab.Navigator>
             </NavigationContainer>
           </SafeAreaProvider>
