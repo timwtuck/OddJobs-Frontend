@@ -22,36 +22,37 @@ export const Map = () => {
   }));
 
   return (
-    <MapView
-      style={styles.map}
-      region={{
-        latitude: userLocation.latitude,
-        longitude: userLocation.longitude,
-        latitudeDelta: 0.015,
-        longitudeDelta: 0.0121,
-      }}>
-      <Marker
-        key={'user_id'}
-        coordinate={{
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude,
-        }}
-        title={'My location'}
-      />
-      {locations.map(location => {
-        return (
-          <Marker
-            key={location._id}
-            coordinate={{
-              latitude: location.location.latitude,
-              longitude: location.location.longitude,
-            }}
-            title={location.title}>
-            <Text>🎩</Text>
-          </Marker>
-        );
-      })}
-    </MapView>
+    // <MapView
+    //   style={styles.map}
+    //   region={{
+    //     latitude: userLocation.latitude,
+    //     longitude: userLocation.longitude,
+    //     latitudeDelta: 0.015,
+    //     longitudeDelta: 0.0121,
+    //   }}>
+    //   <Marker
+    //     key={'user_id'}
+    //     coordinate={{
+    //       latitude: userLocation.latitude,
+    //       longitude: userLocation.longitude,
+    //     }}
+    //     title={'My location'}
+    //   />
+    //   {locations.map(location => {
+    //     return (
+    //       <Marker
+    //         key={location._id}
+    //         coordinate={{
+    //           latitude: location.location.latitude,
+    //           longitude: location.location.longitude,
+    //         }}
+    //         title={location.title}>
+    //         <Text>🎩</Text>
+    //       </Marker>
+    //     );
+    //   })}
+    // </MapView>
+    <></>
   );
 };
 
