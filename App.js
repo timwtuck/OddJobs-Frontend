@@ -85,14 +85,14 @@ export default function App() {
 
                     if (rn === 'Home') {
                       iconName = focused ? 'home' : 'home-outline';
-                    } else if (rn === 'Secondary') {
-                      iconName = focused ? 'list' : 'list-outline';
                     } else if (rn === 'Endpoint') {
+                      iconName = focused ? 'list' : 'list-outline';
+                    } else if (rn === 'Chat') {
                       iconName = focused
                         ? 'chatbubbles'
                         : 'chatbubbles-outline';
                     } else if (rn === 'Account') {
-                      iconName = focused ? 'bug' : 'bug-outline';
+                      iconName = focused ? 'person' : 'person-outline';
                     }
 
                     return (
@@ -122,7 +122,6 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name="Secondary" component={SignupScreen} />
                 <Tab.Screen name="Endpoint" options={{ headerShown: false }}>
                   {() => (
                     <Stack.Navigator>
@@ -171,6 +170,7 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
+                <Tab.Screen name="Chat" component={ChatLogScreen} />
                 <Tab.Screen name="Account" component={MyAccountScreen} />
               </Tab.Navigator>
             </NavigationContainer>
