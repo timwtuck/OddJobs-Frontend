@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import io from 'socket.io-client';
+import { useEffect } from 'react/cjs/react.development';
 
 // React Navigation
 import { NavigationContainer } from '@react-navigation/native';
@@ -36,6 +38,21 @@ export default function App() {
   a useEffect reload and the user should either see 
   the login if their action was to log out, or the rest of
   the app if their action was to sign up or log in. */
+
+    useEffect( () => {
+
+     const ROOT_URL = 'https://oddjobs-test.herokuapp.com';
+//  //   const socket = io.connect(ROOT_URL);
+
+
+    const socket = io(ROOT_URL, {      
+      transports: ['websocket']});   
+    socket.connect(); 
+    socket.on('connect', () => { 
+    console.log('connected to socket server'); 
+  }); 
+
+  }, []);
 
   return (
     <SafeAreaProvider>
