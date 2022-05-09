@@ -17,7 +17,6 @@ export const SeeMoreJobsScreen = ({ setLoggedIn }) => {
 
   // global user context
   const user = useContext(AuthContext);
-  console.log(user);
   // global user context
 
   return (

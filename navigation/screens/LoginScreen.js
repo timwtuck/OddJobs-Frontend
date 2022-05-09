@@ -37,7 +37,6 @@ export const LoginScreen = ({ setLoggedIn }) => {
       }));
 
       setUsers(list);
-      console.log(users);
     });
   }, []);
 

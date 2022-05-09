@@ -2,7 +2,7 @@ import MapView from 'react-native-maps';
 import { StyleSheet, View, Text } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
-import { convertFromPostcode, getAllJobs, getSingleUser } from '../api';
+import { getAllJobs, getSingleUser } from '../api';
 import { useContext } from 'react';
 import { AuthContext } from '../App';
 import axios from 'axios';
@@ -10,52 +10,53 @@ import { REACT_APP_API_KEY } from '@env';
 
 export const Map = () => {
   const [jobs, setJobs] = useState([]);
-  const [postcode, setPostcode] = useState('');
+  const [jobInfo, setJobInfo] = useState([]);
   const [userLocation, setUserLocation] = useState('');
   const [updatedLocation, setUpdatedLocation] = useState([]);
+  // const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const [isLoadingJobs, setIsLoadingJobs] = useState(true);
 
   // global user context
   const user = useContext(AuthContext);
-  // console.log(user);
   // global user context
 
   //get user postcode and convert to valid address with '%20' delimited spaces
   useEffect(() => {
-    getSingleUser(user._id).then(userFromApi => {
-      setPostcode(userFromApi.postCode);
-    });
-  }, [user._id]);
-
-  useEffect(() => {
-    getAllJobs().then(jobsFromApi => {
-      setJobs(jobsFromApi);
-    });
-  }, []);
-
-  console.log(REACT_APP_API_KEY);
-  //request to geocodeAPI to convert postcode to lat/long
-  useEffect(() => {
-    axios
-      .get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-        params: {
-          address: postcode,
-          key: REACT_APP_API_KEY,
-        },
+    getSingleUser(user._id)
+      .then(userFromApi => {
+        const userPostcode = userFromApi.postCode.split(' ').join('%20');
+        return userPostcode;
       })
-      .then(response => {
-        setUserLocation(response.data.results[0].geometry.location, 'axios');
+      .then(userPostcode => {
+        axios
+          .get(
+            `https://maps.googleapis.com/maps/api/geocode/json?address=${userPostcode}&key=${REACT_APP_API_KEY}`,
+          )
+          .then(response => {
+            setUserLocation(response.data.results[0].geometry.location);
+          });
       });
   }, []);
 
-  console.log(jobs, 'jobs');
+  //get jobs from database and extract minimal info required to render markers
+  useEffect(() => {
+    getAllJobs()
+      .then(jobsFromApi => {
+        setJobs(jobsFromApi);
+      })
+      .then(
+        setJobInfo(
+          jobs.map(({ title, postcode, _id }) => ({
+            title,
+            postcode,
+            _id,
+          })),
+        ),
+        setIsLoadingJobs(false),
+      );
+  }, []);
 
-  const locations = jobs.map(({ title, postcode, _id }) => ({
-    title,
-    postcode,
-    _id,
-  }));
-
-  console.log(locations, 'locations');
+  if (isLoadingJobs) return <Text>...loading</Text>;
 
   return (
     <MapView
@@ -74,19 +75,17 @@ export const Map = () => {
         }}
         title={'My location'}
       />
-      {locations.map(location => {
-        return (
-          <Marker
-            key={location._id}
-            coordinate={{
-              latitude: location.postcode.lat,
-              longitude: location.postcode.lng,
-            }}
-            title={location.title}>
-            <Text>🎩</Text>
-          </Marker>
-        );
-      })}
+      {jobInfo.map(job => (
+        <Marker
+          key={job._id}
+          coordinate={{
+            latitude: job.postcode.lat,
+            longitude: job.postcode.lng,
+          }}
+          title={job.title}>
+          <Text>🎩</Text>
+        </Marker>
+      ))}
     </MapView>
   );
 };
