@@ -3,17 +3,22 @@ import {
   Button,
   Image,
   Keyboard,
-  KeyboardAvoidingView,
   Text,
   TextInput,
   StyleSheet,
   View,
 } from 'react-native';
+import { useContext } from 'react';
+import { AuthContext } from '../../App';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import RNPickerSelect from 'react-native-picker-select';
-import * as ImagePicker from 'expo-image-picker';
+// import * as ImagePicker from 'expo-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
+import { postJob } from '../../api';
+import { REACT_APP_API_KEY } from '@env';
+import { JobScreen } from './JobScreen';
 
 const postcodeRegex = /^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/;
 
@@ -44,20 +49,30 @@ const validation = yup.object().shape({
 
 export const PostJobScreen = ({ navigation }) => {
   const [categories, setCategories] = React.useState([
+    { label: 'Delivery', value: 'Delivery' },
     { label: 'DIY', value: 'DIY' },
     { label: 'Garden', value: 'Garden' },
     { label: 'Pets', value: 'Pets' },
+    { label: 'Shopping', value: 'Shopping' },
+    { label: 'Transport', value: 'Transport' },
+    { label: 'Other', value: 'Other' },
   ]);
 
-  async function pickImage(handleChange) {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-    if (!result.cancelled) {
-      handleChange(result.uri);
-    }
-  }
+  // global user context
+  const user = useContext(AuthContext);
+  // global user context
+
+  //image function currently not working on backend
+
+  // async function pickImage(handleChange) {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //   });
+  //   if (!result.cancelled) {
+  //     handleChange(result.uri);
+  //   }
+  // }
 
   return (
     <Formik
@@ -70,10 +85,27 @@ export const PostJobScreen = ({ navigation }) => {
         price: 0,
       }}
       onSubmit={(values, actions) => {
-        alert(JSON.stringify(values));
+        axios
+          .get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+            params: {
+              address: values.postcode,
+              key: REACT_APP_API_KEY,
+            },
+          })
+          .then(response => {
+            const newValues = { ...values };
+            newValues.postcode = response.data.results[0].geometry.location;
+            newValues.price = Number.parseInt(newValues.price).toFixed(2);
+            return newValues;
+          })
+          .then(newValues => {
+            const postRequestObject = { ...newValues, user_id: user._id };
+            postJob(postRequestObject);
+          });
         Keyboard.dismiss();
         setTimeout(() => {
           actions.setSubmitting(false);
+          navigation.navigate(JobScreen);
         }, 1000);
       }}
       validationSchema={validation}>
@@ -125,7 +157,7 @@ export const PostJobScreen = ({ navigation }) => {
               {formikProps.touched.description &&
                 formikProps.errors.description}
             </Text>
-            <View style={styles.buttonContainer}>
+            {/* <View style={styles.buttonContainer}>
               <Button
                 title="Upload photo"
                 mode="contained"
@@ -142,7 +174,7 @@ export const PostJobScreen = ({ navigation }) => {
                   style={{ width: 100, height: 100 }}
                 />
               ) : null}
-            </View>
+            </View> */}
             <View style={styles.gesture}>
               <View style={styles.tokenContainer}>
                 <Text>Token Gesture</Text>

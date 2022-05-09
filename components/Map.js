@@ -6,11 +6,13 @@ import { convertFromPostcode, getAllJobs, getSingleUser } from '../api';
 import { useContext } from 'react';
 import { AuthContext } from '../App';
 import axios from 'axios';
+import { REACT_APP_API_KEY } from '@env';
 
 export const Map = () => {
   const [jobs, setJobs] = useState([]);
   const [postcode, setPostcode] = useState('');
   const [userLocation, setUserLocation] = useState('');
+  const [updatedLocation, setUpdatedLocation] = useState([]);
 
   // global user context
   const user = useContext(AuthContext);
@@ -30,13 +32,14 @@ export const Map = () => {
     });
   }, []);
 
+  console.log(REACT_APP_API_KEY);
   //request to geocodeAPI to convert postcode to lat/long
   useEffect(() => {
     axios
       .get(`https://maps.googleapis.com/maps/api/geocode/json`, {
         params: {
           address: postcode,
-          key: `AIzaSyB4DQQ-RhN7z-Btr9Rtz7ghkPno-Cblq1w`,
+          key: REACT_APP_API_KEY,
         },
       })
       .then(response => {
@@ -44,13 +47,15 @@ export const Map = () => {
       });
   }, []);
 
+  console.log(jobs, 'jobs');
+
   const locations = jobs.map(({ title, postcode, _id }) => ({
     title,
     postcode,
     _id,
   }));
 
-  console.log(locations);
+  console.log(locations, 'locations');
 
   return (
     <MapView
@@ -69,19 +74,19 @@ export const Map = () => {
         }}
         title={'My location'}
       />
-      {/* {locations.map(location => {
+      {locations.map(location => {
         return (
           <Marker
             key={location._id}
             coordinate={{
-              latitude: location.location.latitude,
-              longitude: location.location.longitude,
+              latitude: location.postcode.lat,
+              longitude: location.postcode.lng,
             }}
             title={location.title}>
             <Text>🎩</Text>
           </Marker>
         );
-      })} */}
+      })}
     </MapView>
   );
 };
