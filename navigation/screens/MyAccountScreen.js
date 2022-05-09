@@ -11,7 +11,9 @@ import {
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
 
-import { EditMyAccountScreen } from './EditMyAccountScreen';
+import { EditNameScreen } from './EditNameScreen';
+import { EditUsernameScreen } from './EditUsernameScreen';
+import { EditPostcodeScreen } from './EditPostcodeScreen';
 import { JobLogScreen } from './JobLogScreen';
 import { ChatLogScreen } from './ChatLogScreen';
 
@@ -46,27 +48,27 @@ export const MyAccountScreen = ({ navigation }) => {
         </View>
         <Text style={styles.about}>About you</Text>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => alert('go to edit name form')}>
+          <Pressable onPressOut={() => navigation.navigate(EditNameScreen)}>
             <Text>Name</Text>
           </Pressable>
-          <Pressable onPressOut={() => alert('go to edit name form')}>
-            <Text>User's name &gt;</Text>
+          <Pressable onPressOut={() => navigation.navigate(EditNameScreen)}>
+            <Text>Edit Name</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => alert('go to edit username form')}>
+          <Pressable onPressOut={() => navigation.navigate(EditUsernameScreen)}>
             <Text>Username</Text>
           </Pressable>
-          <Pressable onPressOut={() => alert('go to edit username form')}>
-            <Text>User's username &gt;</Text>
+          <Pressable onPressOut={() => navigation.navigate(EditUsernameScreen)}>
+            <Text>Edit Username</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => alert('go to edit postcode form')}>
+          <Pressable onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
             <Text>Postcode</Text>
           </Pressable>
-          <Pressable onPressOut={() => alert('go to edit postcode form')}>
-            <Text>User's postcode &gt;</Text>
+          <Pressable onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
+            <Text>Edit Postcode</Text>
           </Pressable>
         </View>
       </View>
