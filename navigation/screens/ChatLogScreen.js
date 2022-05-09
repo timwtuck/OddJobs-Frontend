@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import { Button, Pressable, Text, TextInput, View, StyleSheet } from 'react-native';
 import { getUserMessages } from '../../api';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
+import { JobChatScreen } from './JobChatScreen';
 
 
-export const ChatLogScreen = () => {
+export const ChatLogScreen = ({ navigation }) => {
 
 
   const loginState = useContext(AuthContext);
@@ -22,6 +23,13 @@ export const ChatLogScreen = () => {
       users: [
         { userId: "6272a5463c6c76416c3ac4e1", fullName: 'Timmy', isRead: true },
         { userId: "6272a5963c6c76416c3ac4e5", fullName: 'Shaun Clarke', isRead: true },
+      ],
+    },
+     {
+      _id: "627968816380e2689926b9ab",
+      users: [
+        { userId: "6272a5463c6c76416c3ac4e1", fullName: 'Timmy', isRead: true },
+        { userId: "6272a5963c6c76416c3ac4e5", fullName: 'Akin', isRead: true },
       ],
     }
     ];
@@ -42,26 +50,40 @@ export const ChatLogScreen = () => {
   }, [messages]);
 
 
-  return (
+return (
+    <>
       <View style={styles.container}>
-      
-        {!messages && <Text>Loading Messages ...</Text>}
-        {messages && 
-        messages.map(message => {
-          return <View key={message._id} className='messageBox'>
-            <Text>{message.user.fullName}</Text>
-          </View>
-        })}
-    </View>
+
+        {/* TIM: TO DO 
+            CAN ADD USER AVATAR, TIME OF LAST MESSAGE AND UNREAD MESSAGES WHEN READY IN API
+          */}
+
+          {messages && messages.map(message => {
+            return <Pressable key={message.user.fullName} style={styles.conversation_container}
+                onPressOut={() => {
+                  navigation.navigate(JobChatScreen);
+                }}>
+                <View >
+                  <Text >{message.user.fullName}</Text>
+                </View>
+              </Pressable>
+            })
+          }
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+
+  buttons_login: {
+    marginBottom:5
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   header: {
     fontSize: 20,
@@ -112,10 +134,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
   },
-  messageBox: {
-    height: 50,
-    width: `90%`,
+  conversation_container: {
+    borderWidth: 2,
     borderColor: '#000',
-    borderWidth: 5,
+    width: '98%',
+    marginVertical: 2,
+    paddingLeft: 10,
+    minHeight: 70,
   }
 });
+

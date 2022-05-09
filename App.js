@@ -211,7 +211,21 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name="Chat" component={ChatLogScreen} />
+                <Tab.Screen name="Chat" options={{ headerShown: false }}>
+                 {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="ChatLogScreen"
+                        component={ChatLogScreen}
+                      />
+                      <Stack.Screen
+                        name="JobChatScreen"
+                        component={JobChatScreen}
+                      />
+                      <Stack.Screen name="JobScreen" component={JobScreen} />
+                    </Stack.Navigator>
+                  )}
+                  </Tab.Screen>
                 <Tab.Screen name="Account" component={MyAccountScreen} />
               </Tab.Navigator>
             </NavigationContainer>
