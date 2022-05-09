@@ -61,11 +61,11 @@ export const SignupScreen = ({ navigation }) => {
         confirmPass: '',
       }}
       onSubmit={(values, actions) => {
-        alert(JSON.stringify(values));
+        const { email, password, username, fullName } = values;
+        alert(JSON.stringify({ email, password, username, fullName }));
         setTimeout(() => {
-          // post credentials to database
-          postUser(JSON.stringify(values)).then(newUser => {
-            console.log(newUser);
+          postUser(fullName, username, email, password).then(newUser => {
+            console.log(newUser, '<<< newuser app side');
             setLoggedIn({
               _id: newUser._id,
               username: newUser.username,
@@ -76,7 +76,7 @@ export const SignupScreen = ({ navigation }) => {
           });
           // if response okay, setLoggedIn with data from response
           actions.setSubmitting(false);
-        }, 2000);
+        }, 1000);
         () => navigation.navigate(HomeScreen);
       }}
       validationSchema={validation}>
