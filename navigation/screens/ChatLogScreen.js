@@ -61,7 +61,10 @@ return (
           {messages && messages.map(message => {
             return <Pressable key={message.user.fullName} style={styles.conversation_container}
                 onPressOut={() => {
-                  navigation.navigate(JobChatScreen);
+                  navigation.navigate('Chat', {
+                    screen: 'JobChatScreen', 
+                    params: {messageId: message._id }
+                  })
                 }}>
                 <View >
                   <Text >{message.user.fullName}</Text>
