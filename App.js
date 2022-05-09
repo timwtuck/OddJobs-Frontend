@@ -77,13 +77,13 @@ export default function App() {
 
             <NavigationContainer>
               <Tab.Navigator
-                initialRouteName={'Homer'}
+                initialRouteName={'Home'}
                 screenOptions={({ route }) => ({
                   tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
                     let rn = route.name;
 
-                    if (rn === 'Homer') {
+                    if (rn === 'Home') {
                       iconName = focused ? 'home' : 'home-outline';
                     } else if (rn === 'Secondary') {
                       iconName = focused ? 'list' : 'list-outline';
@@ -100,7 +100,7 @@ export default function App() {
                     );
                   },
                 })}>
-                <Tab.Screen name="Homer" options={{ headerShown: false }}>
+                <Tab.Screen name="Home" options={{ headerShown: false }}>
                   {() => (
                     <Stack.Navigator>
                       <Stack.Screen
