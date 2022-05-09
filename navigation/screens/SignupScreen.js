@@ -58,7 +58,7 @@ const validation = yup.object().shape({
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
-import { CircleLogo } from '../../components/logo';
+import { Logo } from '../../components/logo';
 
 export const SignupScreen = ({ navigation }) => {
   const [fontsLoaded] = useFonts({

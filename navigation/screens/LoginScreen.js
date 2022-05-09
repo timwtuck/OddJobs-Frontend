@@ -21,7 +21,7 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
-import { CircleLogo } from '../../components/logo';
+import { Logo } from '../../components/logo';
 
 import { useContext } from 'react';
 import { setAuthContext } from '../../App';
