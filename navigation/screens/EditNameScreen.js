@@ -55,9 +55,9 @@ export const EditNameScreen = () => {
       initialValues={{
         fullName: '',
       }}
-      // onSubmit={(values, actions) => {
-      //   patchUser(loginState._id, { fullName: values.fullName });
-      // }}
+      onSubmit={(values, actions) => {
+        patchUser(loginState._id, { fullName: values.fullName });
+      }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
