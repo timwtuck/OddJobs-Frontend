@@ -109,15 +109,15 @@ export const SignupScreen = ({ navigation }) => {
         <React.Fragment>
           <KeyboardAwareScrollView contentContainerStyle={styles.container}>
             <View>
-              <text
+              <Text
                 style={{
                   fontFamily: 'Inter_600SemiBold',
                   textAlign: 'center',
                   fontSize: 38,
                 }}>
                 Odd Jobs
-              </text>
-              <CircleLogo />
+              </Text>
+              <Logo />
               {/*
              full Name
              */}

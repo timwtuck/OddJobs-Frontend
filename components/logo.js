@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 
-export const CircleLogo = () => {
+export const Logo = () => {
   return (
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.image} />
