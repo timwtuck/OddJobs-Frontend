@@ -42,7 +42,9 @@ import { JobLogScreen } from './navigation/screens/JobLogScreen';
 import { ChatLogScreen } from './navigation/screens/ChatLogScreen';
 import { JobChatScreen } from './navigation/screens/JobChatScreen';
 import { MyAccountScreen } from './navigation/screens/MyAccountScreen';
-import { EditMyAccountScreen } from './navigation/screens/EditMyAccountScreen';
+import { EditNameScreen } from './navigation/screens/EditNameScreen';
+import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
+import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
 // global login context
 export const AuthContext = React.createContext(null);
@@ -192,8 +194,18 @@ export default function App() {
                         component={MyAccountScreen}
                       />
                       <Stack.Screen
-                        name="EditMyAccountScreen"
-                        component={EditMyAccountScreen}
+                        name="EditNameScreen"
+                        component={EditNameScreen}
+                        setLoggedIn={setLoggedIn}
+                      />
+                      <Stack.Screen
+                        name="EditUsernameScreen"
+                        component={EditUsernameScreen}
+                        setLoggedIn={setLoggedIn}
+                      />
+                      <Stack.Screen
+                        name="EditPostcodeScreen"
+                        component={EditPostcodeScreen}
                         setLoggedIn={setLoggedIn}
                       />
                     </Stack.Navigator>
