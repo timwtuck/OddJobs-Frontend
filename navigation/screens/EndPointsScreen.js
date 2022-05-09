@@ -19,6 +19,7 @@ import { PostJobScreen } from './PostJobScreen';
 import { LoginScreen } from './LoginScreen';
 import { SignupScreen } from './SignupScreen';
 import { EditUsernameScreen } from './EditUsernameScreen';
+import { EditPostcodeScreen } from './EditPostcodeScreen';
 
 export const EndPointsScreen = ({ navigation }) => {
   return (
@@ -96,14 +97,7 @@ export const EndPointsScreen = ({ navigation }) => {
             <Text style={styles.cardSubText}>Go to Page</Text>
           </Pressable>
         </>
-        <>
-          <Pressable
-            style={styles.endpoints}
-            onPressOut={() => navigation.navigate(EditMyAccountScreen)}>
-            <Text style={styles.cardHeader}>Edit My Account Screen</Text>
-            <Text style={styles.cardSubText}>Go to Page</Text>
-          </Pressable>
-        </>
+
         <>
           <Pressable
             style={styles.endpoints}
