@@ -9,6 +9,19 @@ import {
   Pressable,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
+import { CircleLogo } from '../../components/logo';
 
 import { useContext } from 'react';
 import { setAuthContext } from '../../App';
@@ -19,6 +32,17 @@ import { getAllUsers } from '../../api';
 import { SignupScreen } from './SignupScreen';
 
 export const LoginScreen = ({ navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
   // global user context
   const setLoggedIn = useContext(setAuthContext);
   // global user context
@@ -81,12 +105,23 @@ export const LoginScreen = ({ navigation }) => {
         <React.Fragment>
           <KeyboardAwareScrollView contentContainerStyle={styles.container}>
             <View>
-              {/* <Pressable
-                style={styles.createAccount}
-                onPress={() => navigation.navigate(SignupScreen)}>
-                <Text>Create Account</Text>
-              </Pressable> */}
-              <Text style={{ textAlign: 'center', fontSize: 38 }}>Login</Text>
+              <text
+                style={{
+                  fontFamily: 'Inter_600SemiBold',
+                  textAlign: 'center',
+                  fontSize: 38,
+                }}>
+                Odd Jobs
+              </text>
+              <CircleLogo />
+              <Text
+                style={{
+                  fontFamily: 'Inter_300Light',
+                  textAlign: 'center',
+                  fontSize: 32,
+                }}>
+                Login
+              </Text>
               <TextInput
                 placeholder="JohnDoe@Emample.com"
                 style={styles.formInput}

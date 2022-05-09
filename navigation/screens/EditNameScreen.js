@@ -9,6 +9,21 @@ import {
   Button,
   ActivityIndicator,
 } from 'react-native';
+import { useContext } from 'react';
+import { AuthContext } from '../../App';
+import { patchUser } from '../../api';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
 
 const validation = yup.object().shape({
   fullName: yup
@@ -20,17 +35,41 @@ const validation = yup.object().shape({
 });
 
 export const EditNameScreen = () => {
+  const [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
+  // global user context
+  const loginState = useContext(AuthContext);
+  // global user context
+  console.log(loginState);
   return (
     <Formik
       initialValues={{
         fullName: '',
       }}
-      // onSubmit={}
+      // onSubmit={(values, actions) => {
+      //   patchUser(loginState._id, { fullName: values.fullName });
+      // }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
           <View style={styles.container}>
-            <Text style={{ textAlign: 'center', fontSize: 38 }}>Edit Name</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 38,
+                fontFamily: 'Inter_300Light',
+              }}>
+              Edit Name
+            </Text>
             {/*
              full Name
              */}
