@@ -65,8 +65,6 @@ export const JobLogScreen = ({ navigation }) => {
     return <AppLoading />;
   }
 
-  console.log(userJobs);
-
   return (
     <>
       <View style={styles.container}>
@@ -127,11 +125,15 @@ export const JobLogScreen = ({ navigation }) => {
         <View style={styles.jobCardRow}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {userJobs.map(job => {
+              console.log(job);
               return (
-                <View style={styles.jobCard}>
-                  <View style={styles.jobCardImg}>
-                    <Image style={styles.stretch} source={job.productImage} />
-                  </View>
+                <View style={styles.jobCard} key={job._id}>
+                  <Image
+                    style={styles.cardImg}
+                    source={{
+                      uri: `https://odd-jobs-backend.herokuapp.com/${job.productImage}`,
+                    }}
+                  />
                   <Text style={styles.cardHeading}>{job.title}</Text>
                   <Text style={styles.cardSubHeading}>Token</Text>
                   <Text style={styles.cardBody}>£{job.price}.00</Text>
@@ -196,10 +198,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 
-  stretch: {
-    width: 50,
-    height: 200,
+  cardImg: {
+    // width: 50,
+    // height: 200,
     resizeMode: 'stretch',
+    width: '50%',
+    height: '50%',
+    backgroundColor: 'white',
+    marginTop: 5,
+    marginLeft: 5,
+    borderRadius: 10,
   },
 
   cardHeading: {
