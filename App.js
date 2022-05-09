@@ -5,6 +5,21 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 // React Navigation
 import { NavigationContainer } from '@react-navigation/native';
 
+// Custom Fonts
+import AppLoading from 'expo-app-loading';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
+
 // Bottom Navigation Component
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -34,10 +49,24 @@ export const AuthContext = React.createContext(null);
 export const setAuthContext = React.createContext(null);
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
+
   // Login State
   const [loggedIn, setLoggedIn] = React.useState(null);
 
-  // React.useEffect(() => {}, [loggedIn]);
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   if (!loggedIn) {
     return (
