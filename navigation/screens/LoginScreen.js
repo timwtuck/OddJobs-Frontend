@@ -9,12 +9,19 @@ import {
   Pressable,
 } from 'react-native';
 
+import { useContext } from 'react';
+import { setAuthContext } from '../../App';
+
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { getAllUsers } from '../../api';
 import { SignupScreen } from './SignupScreen';
 
-export const LoginScreen = ({ setLoggedIn }) => {
+export const LoginScreen = ({ navigation }) => {
+  // global user context
+  const setLoggedIn = useContext(setAuthContext);
+  // global user context
+
   const [users, setUsers] = React.useState([
     {
       _id: '',
@@ -37,7 +44,6 @@ export const LoginScreen = ({ setLoggedIn }) => {
       }));
 
       setUsers(list);
-      console.log(users);
     });
   }, []);
 
@@ -49,8 +55,8 @@ export const LoginScreen = ({ setLoggedIn }) => {
   return (
     <Formik
       initialValues={{
-        firstName: '',
-        lastName: '',
+        fullName: '',
+        username: '',
         email: '',
         password: '',
         confirmPass: '',
@@ -78,33 +84,6 @@ export const LoginScreen = ({ setLoggedIn }) => {
               onPress={() => navigation.navigate(SignupScreen)}>
               <Text>Create Account</Text>
             </Pressable>
-
-            {/* <TextInput
-              placeholder="First Name"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('firstName')}
-              onBlur={formikProps.handleBlur('firstName')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.firstName && formikProps.errors.firstName}
-            </Text> */}
-            {/*
-             Last Name 
-             */}
-
-            {/* <TextInput
-              placeholder="Last Name"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('lastName')}
-              onBlur={formikProps.handleBlur('lastName')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.lastName && formikProps.errors.lastName}
-            </Text> */}
-
-            {/*
-             Email 
-             */}
             <Text>Login</Text>
             <TextInput
               placeholder="JohnDoe@Emample.com"
