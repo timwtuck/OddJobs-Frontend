@@ -10,6 +10,18 @@ import {
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
 
 import { postUser } from '../../api';
 import { useContext } from 'react';
@@ -46,8 +58,20 @@ const validation = yup.object().shape({
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
+import { Logo } from '../../components/logo';
 
 export const SignupScreen = ({ navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
   // global user context
   const setLoggedIn = useContext(setAuthContext);
   // global user context
@@ -85,10 +109,26 @@ export const SignupScreen = ({ navigation }) => {
         <React.Fragment>
           <KeyboardAwareScrollView contentContainerStyle={styles.container}>
             <View>
+              <Text
+                style={{
+                  fontFamily: 'Inter_600SemiBold',
+                  textAlign: 'center',
+                  fontSize: 38,
+                }}>
+                Odd Jobs
+              </Text>
+              <Logo />
               {/*
              full Name
              */}
-              <Text style={{ textAlign: 'center', fontSize: 38 }}>Sign Up</Text>
+              <Text
+                style={{
+                  fontFamily: 'Inter_300Light',
+                  textAlign: 'center',
+                  fontSize: 32,
+                }}>
+                Sign Up
+              </Text>
               <TextInput
                 placeholder="Full Name"
                 style={styles.formInput}
