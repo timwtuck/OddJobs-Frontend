@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   Switch,
+  Image,
 } from 'react-native';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../App';
@@ -63,6 +64,8 @@ export const JobLogScreen = ({ navigation }) => {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
+
+  console.log(userJobs);
 
   return (
     <>
@@ -126,7 +129,9 @@ export const JobLogScreen = ({ navigation }) => {
             {userJobs.map(job => {
               return (
                 <View style={styles.jobCard}>
-                  <View style={styles.jobCardImg}></View>
+                  <View style={styles.jobCardImg}>
+                    <Image style={styles.stretch} source={job.productImage} />
+                  </View>
                   <Text style={styles.cardHeading}>{job.title}</Text>
                   <Text style={styles.cardSubHeading}>Token</Text>
                   <Text style={styles.cardBody}>£{job.price}.00</Text>
@@ -189,6 +194,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 5,
     borderRadius: 10,
+  },
+
+  stretch: {
+    width: 50,
+    height: 200,
+    resizeMode: 'stretch',
   },
 
   cardHeading: {
