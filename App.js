@@ -91,7 +91,7 @@ export default function App() {
                       iconName = focused
                         ? 'chatbubbles'
                         : 'chatbubbles-outline';
-                    } else if (rn === 'Donuts') {
+                    } else if (rn === 'Account') {
                       iconName = focused ? 'bug' : 'bug-outline';
                     }
 
@@ -171,7 +171,7 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name="Donuts" component={PostJobScreen} />
+                <Tab.Screen name="Account" component={MyAccountScreen} />
               </Tab.Navigator>
             </NavigationContainer>
           </SafeAreaProvider>
