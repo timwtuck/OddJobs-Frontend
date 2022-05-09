@@ -8,15 +8,28 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
+import { useContext } from 'react';
+import { AuthContext } from '../../App';
 
-import { EditMyAccountScreen } from './EditMyAccountScreen';
+import { EditNameScreen } from './EditNameScreen';
+import { EditUsernameScreen } from './EditUsernameScreen';
+import { EditPostcodeScreen } from './EditPostcodeScreen';
 import { JobLogScreen } from './JobLogScreen';
 import { ChatLogScreen } from './ChatLogScreen';
 
 export const MyAccountScreen = ({ navigation }) => {
+  // global user context
+  const loginState = useContext(AuthContext);
+  // global user context
+
   return (
     <>
       <View style={styles.container}>
+        <Pressable
+          style={styles.logout}
+          onPressOut={() => navigation.navigate(ChatLogScreen)}>
+          <Text>Logout</Text>
+        </Pressable>
         <Pressable onPressOut={() => alert('offer camera or upload photo')}>
           <View style={styles.avatar}></View>
         </Pressable>
@@ -35,27 +48,27 @@ export const MyAccountScreen = ({ navigation }) => {
         </View>
         <Text style={styles.about}>About you</Text>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => alert('go to edit name form')}>
+          <Pressable onPressOut={() => navigation.navigate(EditNameScreen)}>
             <Text>Name</Text>
           </Pressable>
-          <Pressable onPressOut={() => alert('go to edit name form')}>
-            <Text>User's name &gt;</Text>
+          <Pressable onPressOut={() => navigation.navigate(EditNameScreen)}>
+            <Text>Edit Name</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => alert('go to edit username form')}>
+          <Pressable onPressOut={() => navigation.navigate(EditUsernameScreen)}>
             <Text>Username</Text>
           </Pressable>
-          <Pressable onPressOut={() => alert('go to edit username form')}>
-            <Text>User's username &gt;</Text>
+          <Pressable onPressOut={() => navigation.navigate(EditUsernameScreen)}>
+            <Text>Edit Username</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => alert('go to edit postcode form')}>
+          <Pressable onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
             <Text>Postcode</Text>
           </Pressable>
-          <Pressable onPressOut={() => alert('go to edit postcode form')}>
-            <Text>User's postcode &gt;</Text>
+          <Pressable onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
+            <Text>Edit Postcode</Text>
           </Pressable>
         </View>
       </View>
@@ -68,6 +81,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+  },
+
+  logout: {
+    backgroundColor: '#C4C4C470',
+    marginVertical: 25,
+    marginHorizontal: 7,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: 'flex-end',
+    marginHorizontal: 30,
   },
 
   avatar: {

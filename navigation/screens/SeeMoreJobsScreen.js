@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { useContext } from 'react';
+import { AuthContext } from '../../App';
 import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { getAllJobs } from '../../api';
 import { Map } from '../../components/Map';
 import { JobScreen } from './JobScreen';
 
-export const SeeMoreJobsScreen = ({ navigation }) => {
+export const SeeMoreJobsScreen = ({ setLoggedIn }) => {
   const [jobs, setJobs] = React.useState([]);
 
   React.useEffect(() => {
@@ -13,10 +15,15 @@ export const SeeMoreJobsScreen = ({ navigation }) => {
     });
   }, []);
 
+  // global user context
+  const user = useContext(AuthContext);
+  // global user context
+
   return (
     <>
       <View style={styles.container}>
-        <Map />
+        {/* <Map /> */}
+        {/* <Text>Map Render</Text> */}
       </View>
       <View style={styles.list}>
         <FlatList

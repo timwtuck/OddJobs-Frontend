@@ -9,20 +9,42 @@ import {
 } from 'react-native';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
+
+import { postUser } from '../../api';
+import { useContext } from 'react';
+import { setAuthContext } from '../../App';
+import { HomeScreen } from './HomeScreen';
 
 const validation = yup.object().shape({
-  firstName: yup
+  fullName: yup
     .string()
     .required()
-    .label('First Name')
+    .label('Full Name')
     .min(2, 'Must contain at least two letters.')
     .max(50, 'Max length 50 characters.'),
-  lastName: yup
+  username: yup
     .string()
     .required()
-    .label('Last Name')
-    .min(2, 'Must contain at least two letters.')
-    .max(50, 'Max length 50 characters.'),
+    .label('username')
+    .min(3, 'Must contain at least three letters.')
+    .max(30, 'Max length 30 characters.')
+    .matches(
+      /^[a-zA-Z0-9][a-zA-Z0-9_]{2,29}$/,
+      'Usernames can only contain letters, numbers and underscore(_)',
+    ),
   email: yup.string().required().label('Email').email(),
   password: yup
     .string()
@@ -36,100 +58,157 @@ const validation = yup.object().shape({
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
+import { Logo } from '../../components/logo';
 
-export const SignupScreen = () => {
+export const SignupScreen = ({ navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
+  // global user context
+  const setLoggedIn = useContext(setAuthContext);
+  // global user context
+
   return (
     <Formik
       initialValues={{
-        firstName: '',
-        lastName: '',
+        fullName: '',
+        username: '',
         email: '',
         password: '',
         confirmPass: '',
       }}
       onSubmit={(values, actions) => {
-        alert(JSON.stringify(values));
+        const { email, password, username, fullName } = values;
+        alert(JSON.stringify({ email, password, username, fullName }));
         setTimeout(() => {
+          postUser(fullName, username, email, password).then(newUser => {
+            console.log(newUser, '<<< newuser app side');
+            setLoggedIn({
+              _id: newUser._id,
+              username: newUser.username,
+              fullName: newUser.fullName,
+              email: newUser.email,
+              password: newUser.password,
+            });
+          });
+          // if response okay, setLoggedIn with data from response
           actions.setSubmitting(false);
-        }, 3000);
+        }, 1000);
+        () => navigation.navigate(HomeScreen);
       }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
-          <View style={styles.container}>
-            {/*
-             First Name
+          <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+            <View>
+              <Text
+                style={{
+                  fontFamily: 'Inter_600SemiBold',
+                  textAlign: 'center',
+                  fontSize: 38,
+                }}>
+                Odd Jobs
+              </Text>
+              <Logo />
+              {/*
+             full Name
+             */}
+              <Text
+                style={{
+                  fontFamily: 'Inter_300Light',
+                  textAlign: 'center',
+                  fontSize: 32,
+                }}>
+                Sign Up
+              </Text>
+              <TextInput
+                placeholder="Full Name"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('fullName')}
+                onBlur={formikProps.handleBlur('fullName')}
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.fullName && formikProps.errors.fullName}
+              </Text>
+              {/*
+             username 
              */}
 
-            <TextInput
-              placeholder="First Name"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('firstName')}
-              onBlur={formikProps.handleBlur('firstName')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.firstName && formikProps.errors.firstName}
-            </Text>
-            {/*
-             Last Name 
-             */}
-
-            <TextInput
-              placeholder="Last Name"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('lastName')}
-              onBlur={formikProps.handleBlur('lastName')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.lastName && formikProps.errors.lastName}
-            </Text>
-            {/*
+              <TextInput
+                placeholder="username"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('username')}
+                onBlur={formikProps.handleBlur('username')}
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.username && formikProps.errors.username}
+              </Text>
+              {/*
              Email 
              */}
 
-            <TextInput
-              placeholder="JohnDoe@Emample.com"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('email')}
-              onBlur={formikProps.handleBlur('email')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.email && formikProps.errors.email}
-            </Text>
-            {/*
+              <TextInput
+                placeholder="JohnDoe@Emample.com"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('email')}
+                onBlur={formikProps.handleBlur('email')}
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.email && formikProps.errors.email}
+              </Text>
+              {/*
              Password 
              */}
 
-            <TextInput
-              placeholder="Password"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('password')}
-              onBlur={formikProps.handleBlur('password')}
-              secureTextEntry
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.password && formikProps.errors.password}
-            </Text>
-            <TextInput
-              placeholder="Confirm Password"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('confirmPass')}
-              onBlur={formikProps.handleBlur('confirmPass')}
-              secureTextEntry
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.confirmPass &&
-                formikProps.errors.confirmPass}
-            </Text>
-            {/* 
+              <TextInput
+                placeholder="Password"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('password')}
+                onBlur={formikProps.handleBlur('password')}
+                secureTextEntry
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.password && formikProps.errors.password}
+              </Text>
+              <TextInput
+                placeholder="Confirm Password"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('confirmPass')}
+                onBlur={formikProps.handleBlur('confirmPass')}
+                secureTextEntry
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.confirmPass &&
+                  formikProps.errors.confirmPass}
+              </Text>
+              {/* 
             Props
             */}
-            {formikProps.isSubmitting ? (
-              <ActivityIndicator />
-            ) : (
-              <Button title="submit" onPress={formikProps.handleSubmit} />
-            )}
-          </View>
+              {formikProps.isSubmitting ? (
+                <ActivityIndicator />
+              ) : (
+                <Button title="submit" onPress={formikProps.handleSubmit} />
+              )}
+            </View>
+            {/* Test */}
+            <Text style={styles.signIn}>
+              Already Registered?
+              <Text
+                style={styles.signInClickable}
+                onPress={() => navigation.navigate('loginScreen')}>
+                {' '}
+                Sign In
+              </Text>
+            </Text>
+          </KeyboardAwareScrollView>
         </React.Fragment>
       )}
     </Formik>
@@ -138,10 +217,14 @@ export const SignupScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    // flex: 1,
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 34,
+    backgroundColor: '#fff',
   },
   header: {
     fontSize: 20,
@@ -150,9 +233,16 @@ const styles = StyleSheet.create({
   formInput: {
     borderWidth: 2,
     borderColor: '#000',
-    width: '80%',
     marginVertical: 15,
     padding: 10,
     borderRadius: 15,
+  },
+  signIn: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 40,
+  },
+  signInClickable: {
+    color: '#1b7ced',
   },
 });

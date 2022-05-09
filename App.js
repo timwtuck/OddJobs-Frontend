@@ -9,6 +9,21 @@ import {Button} from 'react-native';
 // React Navigation
 import { NavigationContainer } from '@react-navigation/native';
 
+// Custom Fonts
+import AppLoading from 'expo-app-loading';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
+
 // Bottom Navigation Component
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -31,18 +46,31 @@ import { JobLogScreen } from './navigation/screens/JobLogScreen';
 import { ChatLogScreen } from './navigation/screens/ChatLogScreen';
 import { JobChatScreen } from './navigation/screens/JobChatScreen';
 import { MyAccountScreen } from './navigation/screens/MyAccountScreen';
-import { EditMyAccountScreen } from './navigation/screens/EditMyAccountScreen';
+import { EditNameScreen } from './navigation/screens/EditNameScreen';
+import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
+import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
+
+// global login context
+export const AuthContext = React.createContext(null);
+export const setAuthContext = React.createContext(null);
 
 import io from 'socket.io-client';
 
 export default function App() {
-  /* eventually need to track login state here
-  or in global context. In a use effect, when 
-  the log in state changes, the app should trigger
-  a useEffect reload and the user should either see 
-  the login if their action was to log out, or the rest of
-  the app if their action was to sign up or log in. */
+  let [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
 
+  // Login State
+  const [loggedIn, setLoggedIn] = React.useState(null);
   const [socket, setSocket] = useState(null);
   const [userId, setUserId] = useState(null);
   const [notifications, setNotifications] = useState(0);
@@ -78,88 +106,155 @@ export default function App() {
     setUpSocket(setSocket, userId, onNewNotification);
   }, [userId]);
 
-  return (
-    <SafeAreaProvider>
-      {/* expo code starts */}
-      <StatusBar style="auto" />
-      {/* expo code ends */}
-      {/* 
-      Here, I think we need to write some logic
-      to show the login page(s) when user not
-      logged in, or to show the rest of the App,
-      i.e. the entire view that is immediately below.
-    */}
-            {/* {conversations.map(convo => <Button key={convo.id} title={`Log in as ${convo.name}`}
-        onPressOut={setUserId(convo.name)} style={styles.buttons_login}></Button>)} */}
+  
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
-      {/* <LoginScreen /> */}
-      <NavigationContainer>
-        <Tab.Navigator
-          initialRouteName={'Homer'}
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              let rn = route.name;
+  if (!loggedIn) {
+    return (
+      <setAuthContext.Provider value={setLoggedIn}>
+        <SafeAreaProvider>
+          {/* expo code starts */}
+          <StatusBar style="auto" />
+          {/* expo code ends */}
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}>
+              <Stack.Screen
+                name="loginScreen"
+                component={LoginScreen}
+                options={{ title: 'Log In' }}
+              />
+              <Stack.Screen
+                name="SignupScreen"
+                component={SignupScreen}
+                options={{ title: 'Sign Up' }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </setAuthContext.Provider>
+    );
+  } else if (loggedIn) {
+    return (
+      <AuthContext.Provider value={loggedIn}>
+        <setAuthContext.Provider value={setLoggedIn}>
+          <SafeAreaProvider>
+            {/* expo code starts */}
+            <StatusBar style="auto" />
+            {/* expo code ends */}
 
-              if (rn === 'Homer') {
-                iconName = focused ? 'home' : 'home-outline';
-              } else if (rn === 'Secondary') {
-                iconName = focused ? 'list' : 'list-outline';
-              } else if (rn === 'Endpoint') {
-                iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
-              } else if (rn === 'Donuts') {
-                iconName = focused ? 'bug' : 'bug-outline';
-              }
+            <NavigationContainer>
+              <Tab.Navigator
+                initialRouteName={'Home'}
+                screenOptions={({ route }) => ({
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    let rn = route.name;
 
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-          })}>
-          <Tab.Screen name="Homer" options={{ headerShown: false }}>
-            {() => (
-              <Stack.Navigator>
-                <Stack.Screen name="HomeScreen" component={HomeScreen} />
-                <Stack.Screen name="PostJobScreen" component={PostJobScreen} />
-                <Stack.Screen
-                  name="SeeMoreJobsScreen"
-                  component={SeeMoreJobsScreen}
-                />
-                <Stack.Screen name="JobScreen" component={JobScreen} />
-              </Stack.Navigator>
-            )}
-          </Tab.Screen>
-          <Tab.Screen name="Secondary" component={SignupScreen} />
-          <Tab.Screen name="Endpoint" options={{
-            headerShown: false,
-             tabBarLabel: "Messages",
-             tabBarBadge: notifications ? notifications : '' }}>
-            {() => (
-              <Stack.Navigator>
-                <Stack.Screen name="Endpoints" component={EndPointsScreen} />
-                <Stack.Screen
-                  name="FindAJobScreen"
-                  component={FindAJobScreen}
-                />
-                <Stack.Screen name="SignupScreen" component={SignupScreen} />
-                <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                <Stack.Screen name="PostJobScreen" component={PostJobScreen} />
-                <Stack.Screen name="JobScreen" component={JobScreen} />
-                <Stack.Screen name="JobLogScreen" component={JobLogScreen} />
-                <Stack.Screen name="ChatLogScreen" component={ChatLogScreen} initialParams= {{socket, sendNotification, setUser:setUserId}}/>
-                <Stack.Screen name="JobChatScreen" component={JobChatScreen} />
-                <Stack.Screen
-                  name="MyAccountScreen"
-                  component={MyAccountScreen}
-                />
-                <Stack.Screen
-                  name="EditMyAccountScreen"
-                  component={EditMyAccountScreen}
-                />
-              </Stack.Navigator>
-            )}
-          </Tab.Screen>
-          <Tab.Screen name="Donuts" component={PostJobScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
-  );
+                    if (rn === 'Home') {
+                      iconName = focused ? 'home' : 'home-outline';
+                    } else if (rn === 'Endpoint') {
+                      iconName = focused ? 'list' : 'list-outline';
+                    } else if (rn === 'Chat') {
+                      iconName = focused
+                        ? 'chatbubbles'
+                        : 'chatbubbles-outline';
+                    } else if (rn === 'Account') {
+                      iconName = focused ? 'person' : 'person-outline';
+                    }
+                    return (
+                      <Ionicons name={iconName} size={size} color={color} />
+                    );
+                  },
+                })}>
+                <Tab.Screen name="Home" options={{ headerShown: false }}>
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="HomeScreen"
+                        component={HomeScreen}
+                        options={{ title: 'Home' }}
+                      />
+                      <Stack.Screen
+                        name="PostJobScreen"
+                        component={PostJobScreen}
+                        options={{ title: 'Post a Job' }}
+                      />
+                      <Stack.Screen
+                        name="SeeMoreJobsScreen"
+                        component={SeeMoreJobsScreen}
+                        options={{ title: 'See Jobs' }}
+                      />
+                      <Stack.Screen name="JobScreen" component={JobScreen} />
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen name="Endpoint" options={{ headerShown: false }}>
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="Endpoints"
+                        component={EndPointsScreen}
+                      />
+                      <Stack.Screen
+                        name="FindAJobScreen"
+                        component={FindAJobScreen}
+                      />
+                      <Stack.Screen
+                        name="SignupScreen"
+                        component={SignupScreen}
+                      />
+                      <Stack.Screen
+                        name="LoginScreen"
+                        component={LoginScreen}
+                      />
+                      <Stack.Screen
+                        name="PostJobScreen"
+                        component={PostJobScreen}
+                      />
+                      <Stack.Screen name="JobScreen" component={JobScreen} />
+                      <Stack.Screen
+                        name="JobLogScreen"
+                        component={JobLogScreen}
+                      />
+                     <Stack.Screen name="ChatLogScreen" component={ChatLogScreen} initialParams= {{socket, sendNotification, setUser:setUserId}}/>
+                      <Stack.Screen
+                        name="JobChatScreen"
+                        component={JobChatScreen}
+                      />
+                      <Stack.Screen
+                        name="MyAccountScreen"
+                        component={MyAccountScreen}
+                      />
+                      <Stack.Screen
+                        name="EditNameScreen"
+                        component={EditNameScreen}
+                        setLoggedIn={setLoggedIn}
+                      />
+                      <Stack.Screen
+                        name="EditUsernameScreen"
+                        component={EditUsernameScreen}
+                        setLoggedIn={setLoggedIn}
+                      />
+                      <Stack.Screen
+                        name="EditPostcodeScreen"
+                        component={EditPostcodeScreen}
+                        setLoggedIn={setLoggedIn}
+                      />
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen name="Chat" component={ChatLogScreen} />
+                <Tab.Screen name="Account" component={MyAccountScreen} />
+              </Tab.Navigator>
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </setAuthContext.Provider>
+      </AuthContext.Provider>
+    );
+  }
 }
