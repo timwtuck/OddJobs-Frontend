@@ -20,7 +20,7 @@ import { postJob } from '../../api';
 import { REACT_APP_API_KEY } from '@env';
 import { JobScreen } from './JobScreen';
 
-const postcodeRegex = /^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/;
+const postcodeRegex = /^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/i;
 
 const validation = yup.object().shape({
   title: yup

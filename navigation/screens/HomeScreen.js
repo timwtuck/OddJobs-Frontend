@@ -12,7 +12,7 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.mapBackground}>
-        <Map />
+        {/* <Map /> */}
         {/* <Text>Map Render</Text> */}
       </View>
       <Pressable

@@ -18,7 +18,6 @@ import { ChatLogScreen } from './ChatLogScreen';
 export const MyAccountScreen = ({ navigation }) => {
   // global user context
   const loginState = useContext(AuthContext);
-  console.log(loginState);
   // global user context
 
   return (
