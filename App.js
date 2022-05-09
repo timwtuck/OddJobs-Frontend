@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import io from 'socket.io-client';
-import { useEffect } from 'react/cjs/react.development';
+import { useState, useEffect } from 'react/cjs/react.development';
+import {setUpSocket} from './utils.js';
+import { useRoute } from '@react-navigation/native';
+import {Button} from 'react-native';
 
 // React Navigation
 import { NavigationContainer } from '@react-navigation/native';
@@ -31,6 +33,8 @@ import { JobChatScreen } from './navigation/screens/JobChatScreen';
 import { MyAccountScreen } from './navigation/screens/MyAccountScreen';
 import { EditMyAccountScreen } from './navigation/screens/EditMyAccountScreen';
 
+import io from 'socket.io-client';
+
 export default function App() {
   /* eventually need to track login state here
   or in global context. In a use effect, when 
@@ -39,20 +43,40 @@ export default function App() {
   the login if their action was to log out, or the rest of
   the app if their action was to sign up or log in. */
 
-    useEffect( () => {
+  const [socket, setSocket] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [notifications, setNotifications] = useState(0);
 
-     const ROOT_URL = 'https://oddjobs-test.herokuapp.com';
-//  //   const socket = io.connect(ROOT_URL);
 
+  const onNewNotification = (fromUser) => {
 
-    const socket = io(ROOT_URL, {      
-      transports: ['websocket']});   
-    socket.connect(); 
-    socket.on('connect', () => { 
-    console.log('connected to socket server'); 
-  }); 
+    console.log(`notification from ${fromUser}`);
+    setNotifications((n) => n + 1);
+  }
 
-  }, []);
+  const sendNotification = (toUser) => {
+// console.log(socket)
+    if (!userId || !socket || !socket.connected)
+      return;
+
+    socket.emit('send', {from: userId, to: toUser});
+  }
+
+  useEffect(() => {
+    console.log('socket changed')
+ //   console.log(socket)
+  }, [socket]);
+
+  useEffect( () => {
+
+    if(!userId){ // need userId to set up the socket
+      // if socket already exists, disconnet it
+      return;
+    } 
+    console.log(`Logged in as ${userId}`);
+
+    setUpSocket(setSocket, userId, onNewNotification);
+  }, [userId]);
 
   return (
     <SafeAreaProvider>
@@ -65,6 +89,8 @@ export default function App() {
       logged in, or to show the rest of the App,
       i.e. the entire view that is immediately below.
     */}
+            {/* {conversations.map(convo => <Button key={convo.id} title={`Log in as ${convo.name}`}
+        onPressOut={setUserId(convo.name)} style={styles.buttons_login}></Button>)} */}
 
       {/* <LoginScreen /> */}
       <NavigationContainer>
@@ -102,7 +128,10 @@ export default function App() {
             )}
           </Tab.Screen>
           <Tab.Screen name="Secondary" component={SignupScreen} />
-          <Tab.Screen name="Endpoint" options={{ headerShown: false }}>
+          <Tab.Screen name="Endpoint" options={{
+            headerShown: false,
+             tabBarLabel: "Messages",
+             tabBarBadge: notifications ? notifications : '' }}>
             {() => (
               <Stack.Navigator>
                 <Stack.Screen name="Endpoints" component={EndPointsScreen} />
@@ -115,7 +144,7 @@ export default function App() {
                 <Stack.Screen name="PostJobScreen" component={PostJobScreen} />
                 <Stack.Screen name="JobScreen" component={JobScreen} />
                 <Stack.Screen name="JobLogScreen" component={JobLogScreen} />
-                <Stack.Screen name="ChatLogScreen" component={ChatLogScreen} />
+                <Stack.Screen name="ChatLogScreen" component={ChatLogScreen} initialParams= {{socket, sendNotification, setUser:setUserId}}/>
                 <Stack.Screen name="JobChatScreen" component={JobChatScreen} />
                 <Stack.Screen
                   name="MyAccountScreen"

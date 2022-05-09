@@ -1,17 +1,63 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import { Button, Text, TextInput, View, StyleSheet, Pressable} from 'react-native';
+import { useState } from 'react/cjs/react.development';
 
-export const ChatLogScreen = () => {
+export const ChatLogScreen = ({route}) => {
+
+  const [username, setUsername] = useState();
+
+  /* DUMMY API CALL */
+  /* This will be replaced with api call eventually*/
+  const conversations = [];
+  conversations.push({name: 'Tim', id:1});
+  conversations.push({name: 'John', id: 2});
+  conversations.push({name: 'Akin', id: 3});
+  conversations.push({name: 'Vicky', id: 4});
+  conversations.push({name: 'Shuan', _id: 5});
+  //////////////////////////////////////////////////
+
+  const onLogIn = () => {
+    route.params.setUser(username);
+    setUsername('')
+  }
+
+
+
+{/* <Pressable onPressOut={() => alert('offer camera or upload photo')}>
+          <View style={styles.avatar}></View>
+        </Pressable> */}
   return (
     <>
       <View style={styles.container}>
+      <TextInput style={styles.textInput} value={username} 
+        onChangeText={(text) => setUsername(text)}/>
+    
+            <Button onPress={onLogIn} title="Log In"/>
+
         <Text>Chat Log Screen</Text>
+          {conversations.map(convo => {
+            return <Pressable key={convo.name} style={styles.conversation_container}
+                onPressOut={() => {
+                  alert(`sending to  ${convo.name}`);
+                //  console.log('socket >>>', route.params.socket)
+                  route.params.sendNotification( convo.name);
+                }}>
+                <View >
+                  <Text >{convo.name}</Text>
+                </View>
+              </Pressable>
+            })
+          }
       </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+
+  buttons_login: {
+    marginBottom:5
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -67,4 +113,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
   },
+  conversation_container: {
+    borderWidth: 1,
+    borderColor: '#000',
+    width: '90%',
+    marginVertical: 5,
+    paddingLeft: 10,
+    minHeight: 50
+  }
 });
