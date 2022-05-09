@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { postUser } from '../../api';
 import { useContext } from 'react';
@@ -82,80 +83,92 @@ export const SignupScreen = ({ navigation }) => {
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
-          <View style={styles.container}>
-            {/*
+          <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+            <View>
+              {/*
              full Name
              */}
-
-            <TextInput
-              placeholder="Full Name"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('fullName')}
-              onBlur={formikProps.handleBlur('fullName')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.fullName && formikProps.errors.fullName}
-            </Text>
-            {/*
+              <Text style={{ textAlign: 'center', fontSize: 38 }}>Sign Up</Text>
+              <TextInput
+                placeholder="Full Name"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('fullName')}
+                onBlur={formikProps.handleBlur('fullName')}
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.fullName && formikProps.errors.fullName}
+              </Text>
+              {/*
              username 
              */}
 
-            <TextInput
-              placeholder="username"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('username')}
-              onBlur={formikProps.handleBlur('username')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.username && formikProps.errors.username}
-            </Text>
-            {/*
+              <TextInput
+                placeholder="username"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('username')}
+                onBlur={formikProps.handleBlur('username')}
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.username && formikProps.errors.username}
+              </Text>
+              {/*
              Email 
              */}
 
-            <TextInput
-              placeholder="JohnDoe@Emample.com"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('email')}
-              onBlur={formikProps.handleBlur('email')}
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.email && formikProps.errors.email}
-            </Text>
-            {/*
+              <TextInput
+                placeholder="JohnDoe@Emample.com"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('email')}
+                onBlur={formikProps.handleBlur('email')}
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.email && formikProps.errors.email}
+              </Text>
+              {/*
              Password 
              */}
 
-            <TextInput
-              placeholder="Password"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('password')}
-              onBlur={formikProps.handleBlur('password')}
-              secureTextEntry
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.password && formikProps.errors.password}
-            </Text>
-            <TextInput
-              placeholder="Confirm Password"
-              style={styles.formInput}
-              onChangeText={formikProps.handleChange('confirmPass')}
-              onBlur={formikProps.handleBlur('confirmPass')}
-              secureTextEntry
-            />
-            <Text style={{ color: 'red' }}>
-              {formikProps.touched.confirmPass &&
-                formikProps.errors.confirmPass}
-            </Text>
-            {/* 
+              <TextInput
+                placeholder="Password"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('password')}
+                onBlur={formikProps.handleBlur('password')}
+                secureTextEntry
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.password && formikProps.errors.password}
+              </Text>
+              <TextInput
+                placeholder="Confirm Password"
+                style={styles.formInput}
+                onChangeText={formikProps.handleChange('confirmPass')}
+                onBlur={formikProps.handleBlur('confirmPass')}
+                secureTextEntry
+              />
+              <Text style={{ color: 'red' }}>
+                {formikProps.touched.confirmPass &&
+                  formikProps.errors.confirmPass}
+              </Text>
+              {/* 
             Props
             */}
-            {formikProps.isSubmitting ? (
-              <ActivityIndicator />
-            ) : (
-              <Button title="submit" onPress={formikProps.handleSubmit} />
-            )}
-          </View>
+              {formikProps.isSubmitting ? (
+                <ActivityIndicator />
+              ) : (
+                <Button title="submit" onPress={formikProps.handleSubmit} />
+              )}
+            </View>
+            {/* Test */}
+            <Text style={styles.signIn}>
+              Already Registered?
+              <Text
+                style={styles.signInClickable}
+                onPress={() => navigation.navigate('loginScreen')}>
+                {' '}
+                Sign In
+              </Text>
+            </Text>
+          </KeyboardAwareScrollView>
         </React.Fragment>
       )}
     </Formik>
@@ -164,10 +177,14 @@ export const SignupScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    // flex: 1,
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 34,
+    backgroundColor: '#fff',
   },
   header: {
     fontSize: 20,
@@ -176,9 +193,16 @@ const styles = StyleSheet.create({
   formInput: {
     borderWidth: 2,
     borderColor: '#000',
-    width: '80%',
     marginVertical: 15,
     padding: 10,
     borderRadius: 15,
+  },
+  signIn: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 40,
+  },
+  signInClickable: {
+    color: '#1b7ced',
   },
 });
