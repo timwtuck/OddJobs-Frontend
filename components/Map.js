@@ -1,5 +1,5 @@
-import MapView from 'react-native-maps';
-import { StyleSheet, View, Text } from 'react-native';
+import MapView, { Callout } from 'react-native-maps';
+import { StyleSheet, View, Text, Dimensions, Button } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import { getAllJobs, getSingleUser } from '../api';
@@ -7,15 +7,13 @@ import { useContext } from 'react';
 import { AuthContext } from '../App';
 import axios from 'axios';
 import { REACT_APP_API_KEY } from '@env';
+import { useNavigation } from '@react-navigation/native';
 
 export const Map = () => {
-  const [jobs, setJobs] = useState([]);
   const [jobInfo, setJobInfo] = useState([]);
   const [userLocation, setUserLocation] = useState('');
-  const [updatedLocation, setUpdatedLocation] = useState([]);
-  // const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
-
+  const navigation = useNavigation();
   // global user context
   const user = useContext(AuthContext);
   // global user context
@@ -25,10 +23,11 @@ export const Map = () => {
     Promise.all([getSingleUser(user._id), getAllJobs()]).then(async values => {
       // [userValues, [array of all jobs]]
       setJobInfo(
-        values[1].map(({ title, postcode, _id }) => ({
+        values[1].map(({ title, postcode, _id, category }) => ({
           title,
           postcode,
           _id,
+          category,
         })),
       );
       const userPin = await axios.get(
@@ -39,41 +38,6 @@ export const Map = () => {
       setUserLocation(userPin.data.results[0].geometry.location);
     });
   }, []);
-
-  // useEffect(() => {
-  //   getSingleUser(user._id) // done
-  //     .then(userFromApi => {
-  //       const userPostcode = userFromApi.postCode.split(' ').join('%20');
-  //       return userPostcode;
-  //     })
-  //     .then(userPostcode => {
-  //       axios
-  //         .get(
-  //           `https://maps.googleapis.com/maps/api/geocode/json?address=${userPostcode}&key=${REACT_APP_API_KEY}`,
-  //         )
-  //         .then(response => {
-  //           setUserLocation(response.data.results[0].geometry.location);
-  //         });
-  //     });
-  // }, [jobInfo]);
-
-  //get jobs from database and extract minimal info required to render markers
-  // useEffect(() => {
-  //   getAllJobs() // done
-  //     .then(jobsFromApi => {
-  //       setJobs(jobsFromApi);
-  //     })
-  //     .then(
-  //       setJobInfo(
-  //         jobs.map(({ title, postcode, _id }) => ({
-  //           title,
-  //           postcode,
-  //           _id,
-  //         })),
-  //       ),
-  //       // setIsLoadingJobs(false),
-  //     );
-  // }, [jobInfo]);
 
   if (jobInfo.length === 0) {
     return <Text>...loading</Text>;
@@ -104,6 +68,23 @@ export const Map = () => {
             }}
             title={job.title}>
             <Text>🎩</Text>
+            <Callout tooltip>
+              <View style={styles.bubble}>
+                <Text style={styles.name}>🎩</Text>
+                <Text style={styles.title}>{job.title}</Text>
+                <Text style={styles.category}>{job.category}</Text>
+                <Button
+                  title="more info"
+                  onPress={() =>
+                    navigation.navigate('JobScreen', {
+                      job_id: job._id,
+                    })
+                  }
+                />
+              </View>
+              <View style={styles.arrowBorder} />
+              <View style={styles.arrow} />
+            </Callout>
           </Marker>
         ))}
       </MapView>
@@ -113,6 +94,45 @@ export const Map = () => {
 
 const styles = StyleSheet.create({
   map: {
-    ...StyleSheet.absoluteFillObject,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.4,
+  },
+  bubble: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    borderColor: '#ccc',
+    borderWidth: 0.5,
+    padding: 15,
+    width: 150,
+  },
+  name: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  title: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  price: {
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  arrowBorder: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#fff',
+    borderWidth: 16,
+    alignSelf: 'center',
+    marginTop: -0.5,
+  },
+  arrow: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#fff',
+    borderWidth: 16,
+    alignSelf: 'center',
+    marginTop: -32,
   },
 });
