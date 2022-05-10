@@ -60,9 +60,15 @@ export const postJob = job => {
 };
 
 //need to check what is being sent from the input and maybe edit the argument??
-export const postUser = user => {
-  return oddJobsApi.post('/users', { user }).then(({ data }) => {
-    return data.newUser;
+export const postUser = (username, fullName, email, password) => {
+  const newUser = {
+    username: username,
+    fullName: fullName,
+    email: email,
+    password: password,
+  };
+  return oddJobsApi.post('/users/register', newUser).then(({ data }) => {
+    return data.user;
   });
 };
 
@@ -83,9 +89,9 @@ export const patchJob = (job_id, patch) => {
 };
 
 //need to check what is being sent from the input and maybe edit the argument??
-export const patchUser = (user_id, patch) => {
-  return oddJobsApi.patch(`users/${user_id}`, { patch }).then(({ data }) => {
-    return data.updatedUser;
+export const patchUser = (user_id, value) => {
+  return oddJobsApi.put(`users/${user_id}`, value).then(({ data }) => {
+    return data.user;
   });
 };
 
