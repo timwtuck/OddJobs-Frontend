@@ -2,12 +2,15 @@ import * as React from 'react';
 import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
+import { SocketContext } from '../../App';
 import { getSingleMessage, postMessage } from '../../api';
 
 export const JobChatScreen = ({route, navigation}) => {
 
   const loginState = useContext(AuthContext);
+  const socket = useContext(SocketContext);
   const [conversation, setConversation] = React.useState(null);
+  const [otherUser, setOtherUser] = React.useState(null);
   const [text, setText] = React.useState('');
 
   console.log(route)
@@ -19,6 +22,7 @@ export const JobChatScreen = ({route, navigation}) => {
     const otherUser = res.users[0].userId._id === loginState._id ?
       res.users[1] : res.users[0];
 
+    setOtherUser(otherUser);
     navigation.setOptions({title: otherUser.userId.fullName});
 
     const formattedMessages = res.messages.map(message => {
@@ -57,8 +61,10 @@ export const JobChatScreen = ({route, navigation}) => {
           style: styles.textBox_thisUser,
           content: text,
         };
+
         setConversation((current) => [...current, newMessage]);
         setText('');
+        socket.socket.emit('send', {to: otherUser.userId._id, from: loginState._id} );
       })
       .catch((err) => {
         console.log(err);

@@ -51,6 +51,7 @@ import {setUpSocket} from './utils.js';
 // global login context
 export const AuthContext = React.createContext(null);
 export const setAuthContext = React.createContext(null);
+export const SocketContext = React.createContext(null);
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -242,17 +243,19 @@ export default function App() {
                 </Tab.Screen>
                 <Tab.Screen name="Chat" options={{ headerShown: false }}>
                  {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="ChatLogScreen"
-                        component={ChatLogScreen}
-                      />
-                      <Stack.Screen
-                        name="JobChatScreen"
-                        component={JobChatScreen}
-                      />
-                      <Stack.Screen name="JobScreen" component={JobScreen} />
-                    </Stack.Navigator>
+                   <SocketContext.Provider value={{socket, setNotifications}}>
+                      <Stack.Navigator>
+                        <Stack.Screen
+                          name="ChatLogScreen"
+                          component={ChatLogScreen}
+                        />
+                        <Stack.Screen
+                          name="JobChatScreen"
+                          component={JobChatScreen}
+                        />
+                        <Stack.Screen name="JobScreen" component={JobScreen} />
+                      </Stack.Navigator>
+                    </SocketContext.Provider>
                   )}
                   </Tab.Screen>
                 <Tab.Screen name="Account" component={MyAccountScreen} />
