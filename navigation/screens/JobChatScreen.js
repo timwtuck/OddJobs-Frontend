@@ -2,12 +2,13 @@ import * as React from 'react';
 import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
-import { getSingleMessage } from '../../api';
+import { getSingleMessage, postMessage } from '../../api';
 
 export const JobChatScreen = ({route, navigation}) => {
 
   const loginState = useContext(AuthContext);
   const [conversation, setConversation] = React.useState(null);
+  const [text, setText] = React.useState('');
 
   console.log(route)
 
@@ -41,6 +42,29 @@ export const JobChatScreen = ({route, navigation}) => {
     setConversation(formattedMessages);
   }, []);
 
+  const sendMessage = () => {
+
+    if(!text)
+      return;
+
+      console.log(text)
+
+    postMessage(loginState._id, route.params.messageId, text)
+      .then(() => {
+        // successful post to db!
+        const newMessage = {
+          _id: new Date().toString(),
+          style: styles.textBox_thisUser,
+          content: text,
+        };
+        setConversation((current) => [...current, newMessage]);
+        setText('');
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
 
   return (
     <>
@@ -52,8 +76,9 @@ export const JobChatScreen = ({route, navigation}) => {
           </View>)
         }
         <View style={styles.textInputContainer}>
-          <TextInput style={styles.textInput}></TextInput>
-          <Button title="Send"></Button>
+          <TextInput style={styles.textInput} value={text} 
+            onChangeText={(newText) => setText(newText)}></TextInput>
+          <Button title="Send" onPress={() => sendMessage()}></Button>
         </View>
       </View>
     </>

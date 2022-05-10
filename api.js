@@ -63,9 +63,16 @@ export const postUser = (username, fullName, email, password) => {
 };
 
 //need to check what is being sent from the input and maybe edit the argument??
-export const postMessage = (username, user_id, message) => {
+export const postMessage = (userId, messageId, message) => {
+
+  const newMessage = {
+    userId: userId,
+    content_type: 'text',
+    content: message
+  }
+
   return oddJobsApi
-    .post(`/users/${user_id}/messages`, { username: username, body: message })
+    .post(`/messages/${messageId}`,newMessage)
     .then(({ data }) => {
       return data.newMessage;
     });
