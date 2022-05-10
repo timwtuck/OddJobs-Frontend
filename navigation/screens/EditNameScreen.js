@@ -75,7 +75,7 @@ export const EditNameScreen = () => {
              */}
 
             <TextInput
-              placeholder="Full Name"
+              placeholder={loginState.fullName}
               style={styles.formInput}
               onChangeText={formikProps.handleChange('fullName')}
               onBlur={formikProps.handleBlur('fullName')}
