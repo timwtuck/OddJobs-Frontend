@@ -73,7 +73,7 @@ export const JobLogScreen = ({ navigation }) => {
     <>
       <View style={styles.container}>
         <View style={styles.sectionTitleRow}>
-          <Text style={styles.sectionHeading}>My Jobs</Text>
+          <Text style={styles.sectionHeading}>Your Jobs</Text>
           <View
             style={{
               alignItems: 'center',

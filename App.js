@@ -110,6 +110,9 @@ export default function App() {
               <Tab.Navigator
                 initialRouteName={'Home'}
                 screenOptions={({ route }) => ({
+                  tabBarStyle: {
+                    backgroundColor: '#000',
+                  },
                   tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
                     let rn = route.name;
@@ -127,7 +130,7 @@ export default function App() {
                     }
 
                     return (
-                      <Ionicons name={iconName} size={size} color={color} />
+                      <Ionicons name={iconName} size={size} color="#fff" />
                     );
                   },
                 })}>
