@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
+import { setAuthContext } from '../../App';
 
 import { EditNameScreen } from './EditNameScreen';
 import { EditUsernameScreen } from './EditUsernameScreen';
@@ -20,14 +21,13 @@ import { ChatLogScreen } from './ChatLogScreen';
 export const MyAccountScreen = ({ navigation }) => {
   // global user context
   const loginState = useContext(AuthContext);
+  const setLoginState = useContext(setAuthContext);
   // global user context
 
   return (
     <>
       <View style={styles.container}>
-        <Pressable
-          style={styles.logout}
-          onPressOut={() => navigation.navigate(ChatLogScreen)}>
+        <Pressable style={styles.logout} onPressOut={() => setLoginState(null)}>
           <Text>Logout</Text>
         </Pressable>
         <Pressable onPressOut={() => alert('offer camera or upload photo')}>
