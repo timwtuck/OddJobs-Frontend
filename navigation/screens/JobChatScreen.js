@@ -64,7 +64,10 @@ export const JobChatScreen = ({route, navigation}) => {
 
         setConversation((current) => [...current, newMessage]);
         setText('');
-        socket.socket.emit('send', {to: otherUser.userId._id, from: loginState._id} );
+
+        if (socket) { // should have connection established, but just in case...
+          socket.socket.emit('send', {to: otherUser.userId._id, from: loginState._id} );
+        }
       })
       .catch((err) => {
         console.log(err);

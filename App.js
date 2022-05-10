@@ -69,21 +69,30 @@ export default function App() {
   // Login, Socket and Notification State
   const [loggedIn, setLoggedIn] = React.useState(null);
   const [socket, setSocket] = React.useState(null);
-  const [notifications, setNotifications] = React.useState(0);
+
+  const [notifications, setNotifications] = React.useState({
+    notifications: 0,
+    displayOptions: 
+      { 
+        headerShown: false,
+        tabBarLabel: "Messages",
+      }
+  });
 
   const onNewNotification = (fromUser) => {
 
     console.log(`notification from ${fromUser}`);
-    setNotifications((n) => n + 1);
+
+    // if no current notifications, add the tabBarBadge
+      setNotifications((current) => {
+        const newNotification = {...current};
+        newNotification.notifications++;
+        newNotification.displayOptions.tabBarBadge = 
+          newNotification.notifications;
+        
+        return newNotification;
+      });
   }
-
-//   const sendNotification = (toUser) => {
-// // console.log(socket)
-//     if (!userId || !socket || !socket.connected)
-//       return;
-
-//     socket.emit('send', {from: userId, to: toUser});
-//   }
 
   React.useEffect( () => {
 
@@ -241,7 +250,7 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name="Chat" options={{ headerShown: false }}>
+                <Tab.Screen name="Chat" options={notifications.displayOptions}>
                  {() => (
                    <SocketContext.Provider value={{socket, setNotifications}}>
                       <Stack.Navigator>

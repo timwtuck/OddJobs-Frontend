@@ -14,10 +14,7 @@ exports.setUpSocket = (setSocket, userId, onNewNotification) => {
     });
     socket.on('recieve', (info) => {
         console.log(`incoming message from ${info}`)
-  //    if(info === userId){
-        // send notification
         onNewNotification(info);
-   //   }
     });
 
     setSocket(socket);
