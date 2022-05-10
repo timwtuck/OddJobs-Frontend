@@ -52,6 +52,7 @@ import {setUpSocket} from './utils.js';
 export const AuthContext = React.createContext(null);
 export const setAuthContext = React.createContext(null);
 export const SocketContext = React.createContext(null);
+export const SetNotificationContext = React.createContext(null);
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -261,7 +262,8 @@ export default function App() {
                 </Tab.Screen>
                 <Tab.Screen name="Chat" options={notifications.displayOptions}>
                  {() => (
-                   <SocketContext.Provider value={{socket, setInPrivateChat}}>
+                   <SocketContext.Provider value={{socket}}>
+                     <SetNotificationContext.Provider value={setNotifications}>
                       <Stack.Navigator>
                         <Stack.Screen
                           name="ChatLogScreen"
@@ -273,7 +275,8 @@ export default function App() {
                         />
                         <Stack.Screen name="JobScreen" component={JobScreen} />
                       </Stack.Navigator>
-                    </SocketContext.Provider>
+                    </SetNotificationContext.Provider>
+                  </SocketContext.Provider>
                   )}
                   </Tab.Screen>
                 <Tab.Screen name="Account" component={MyAccountScreen} />

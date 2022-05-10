@@ -55,6 +55,10 @@ export const JobChatScreen = ({route, navigation}) => {
   useFocusEffect(
 
     React.useCallback(() => {
+
+      // if(!socket)
+      //   return; // if it starts crashing, uncomment this
+
       // Do something when the screen is focused
         console.log('joining....')
         socket.socket.emit('join-private-chat', {user: loginState._id}); 

@@ -29,8 +29,8 @@ export const getSingleUser = user_id => {
 };
 
 export const getUserMessages = user_id => {
-  return oddJobsApi.get(`/users/${user_id}/messages`).then(({ data }) => {
-    return data.messages;
+  return oddJobsApi.get(`/messages/chats/${user_id}`).then(({ data }) => {
+    return data.message;
   });
 };
 
