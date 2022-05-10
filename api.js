@@ -1,4 +1,14 @@
 import axios from 'axios';
+import { REACT_APP_API_KEY } from '@env';
+
+/*
+ *
+ *
+ *
+ * database API
+ *
+ *
+ */
 
 const oddJobsApi = axios.create({
   baseURL: 'https://odd-jobs-backend.herokuapp.com/api',
