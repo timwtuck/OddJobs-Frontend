@@ -100,7 +100,7 @@ export const EndPointsScreen = ({ navigation }) => {
 
         <>
           <Pressable
-            style={styles.endpoints}
+            style={styles.doingEndpoints}
             onPressOut={() => navigation.navigate(EditNameScreen)}>
             <Text style={styles.cardHeader}>Edit My Name Screen</Text>
             <Text style={styles.cardSubText}>Go to Page</Text>
@@ -108,7 +108,7 @@ export const EndPointsScreen = ({ navigation }) => {
         </>
         <>
           <Pressable
-            style={styles.endpoints}
+            style={styles.doingEndpoints}
             onPressOut={() => navigation.navigate(EditUsernameScreen)}>
             <Text style={styles.cardHeader}>Edit Username Screen</Text>
             <Text style={styles.cardSubText}>Go to Page</Text>
@@ -116,7 +116,7 @@ export const EndPointsScreen = ({ navigation }) => {
         </>
         <>
           <Pressable
-            style={styles.endpoints}
+            style={styles.doingEndpoints}
             onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
             <Text style={styles.cardHeader}>Edit Postcode Screen</Text>
             <Text style={styles.cardSubText}>Go to Page</Text>
