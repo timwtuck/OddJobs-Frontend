@@ -9,6 +9,10 @@ import {
   Button,
   ActivityIndicator,
 } from 'react-native';
+import { useContext } from 'react';
+import { AuthContext, setAuthContext } from '../../App';
+import { patchUser } from '../../api';
+import { getSingleUser } from '../../api';
 
 const postcodeRegex = /^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/i;
 
@@ -20,13 +24,25 @@ const validation = yup.object().shape({
     .matches(postcodeRegex, 'Must be a valid UK postcode'),
 });
 
-export const EditPostcodeScreen = () => {
+export const EditPostcodeScreen = ({ navigation }) => {
+  // global user context
+  const loginState = useContext(AuthContext);
+  const setLoginState = useContext(setAuthContext);
+
   return (
     <Formik
       initialValues={{
         postcode: '',
       }}
-      // onSubmit={}
+      onSubmit={(values, actions) => {
+        patchUser(loginState._id, { postcode: values.postcode });
+        setLoginState({ ...loginState, postcode: values.postcode });
+        console.log(loginState, '<<--- loginState');
+        getSingleUser(loginState._id).then(data => {
+          console.log(data, '<<--- user data');
+        }),
+          navigation.navigate('MyAccountScreen');
+      }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>

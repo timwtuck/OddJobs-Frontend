@@ -53,6 +53,7 @@ export const LoginScreen = ({ navigation }) => {
       username: '',
       fullName: '',
       email: '',
+      postcode: '',
     },
   ]);
 
@@ -66,6 +67,7 @@ export const LoginScreen = ({ navigation }) => {
         fullName: user.fullName,
         email: user.email,
         password: user.password,
+        postcode: user.postcode,
       }));
 
       setUsers(list);
@@ -80,11 +82,8 @@ export const LoginScreen = ({ navigation }) => {
   return (
     <Formik
       initialValues={{
-        fullName: '',
-        username: '',
         email: '',
         password: '',
-        confirmPass: '',
       }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
