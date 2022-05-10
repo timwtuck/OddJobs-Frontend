@@ -1,70 +1,81 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../App';
+import { Button, Image, Text, View, StyleSheet } from 'react-native';
+import { getSingleJob } from '../../api';
 
-export const JobScreen = () => {
+// // Custom Fonts
+// import AppLoading from 'expo-app-loading';
+// import {
+//   useFonts,
+//   Inter_100Thin,
+//   Inter_200ExtraLight,
+//   Inter_300Light,
+//   Inter_400Regular,
+//   Inter_500Medium,
+//   Inter_600SemiBold,
+//   Inter_700Bold,
+//   Inter_800ExtraBold,
+//   Inter_900Black,
+// } from '@expo-google-fonts/inter';
+
+export const JobScreen = ({ route, navigation }) => {
+  // global user context
+  const user = useContext(AuthContext);
+  // global user context
+
+  const [currentJob, setCurrentJob] = useState({});
+
+  const { job_id } = route.params;
+
+  useEffect(() => {
+    getSingleJob(job_id).then(jobFromApi => {
+      setCurrentJob(jobFromApi);
+    });
+  }, [job_id]);
+
   return (
-    <>
-      <View style={styles.container}>
-        <Text>Job Screen</Text>
-      </View>
-    </>
+    <View style={styles.jobContainer}>
+      {currentJob.category === 'DIY' && <Image />}
+      <Text style={styles.jobHeading}>{currentJob.title}</Text>
+      <Text style={styles.jobCategory}>{currentJob.category}</Text>
+      <Text style={styles.jobDescription}>{currentJob.description}</Text>
+      <Text style={styles.jobPrice}>{currentJob.price}</Text>
+      {currentJob.user_id === user._id && <Button title="🗑" />}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  jobContainer: {
+    backgroundColor: 'pink',
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   header: {
     fontSize: 20,
   },
-  formInput: {
-    borderWidth: 2,
-    borderColor: '#000',
+  jobHeading: {
+    backgroundColor: 'blue',
+    fontSize: 20,
     width: '80%',
-    marginVertical: 15,
-    padding: 10,
-    borderRadius: 15,
   },
-  gesture: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  jobCategory: {
+    backgroundColor: 'yellow',
+    fontSize: 15,
     width: '80%',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginBottom: 20,
   },
-  tokenInfo: {
-    width: '60%',
+  jobDescription: {
+    backgroundColor: 'green',
+    fontSize: 15,
+    width: '80%',
+  },
+  jobPrice: {
+    backgroundColor: 'red',
     fontSize: 12,
-    color: '#00000080',
-    justifyContent: 'flex-end',
-  },
-  tokenContainer: {
-    width: '40%',
-  },
-  tokenForm: {
-    borderWidth: 2,
-    borderColor: '#000',
     width: '80%',
-    marginTop: 15,
-    padding: 10,
-    borderRadius: 15,
-  },
-  submit: {
-    padding: 10,
-  },
-  textInput: {
-    borderWidth: 2,
-    borderColor: '#000',
-    width: '80%',
-    height: '25%',
-    marginVertical: 15,
-    paddingTop: 10,
-    padding: 10,
-    borderRadius: 15,
   },
 });
