@@ -37,37 +37,41 @@ export const MyAccountScreen = ({ navigation }) => {
         <View style={styles.buttonRow}>
           <Pressable
             style={styles.messages}
-            onPressOut={() => navigation.navigate(ChatLogScreen)}>
+            onPressOut={() => navigation.navigate('ChatLogScreen')}>
             <Text>Messages</Text>
           </Pressable>
           <Pressable
             style={styles.seeJobs}
-            onPressOut={() => navigation.navigate(JobLogScreen)}>
+            onPressOut={() => navigation.navigate('JobLogScreen')}>
             <Text>🎩</Text>
           </Pressable>
         </View>
         <Text style={styles.about}>About you</Text>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => navigation.navigate(EditNameScreen)}>
+          <Pressable onPressOut={() => navigation.navigate('EditNameScreen')}>
             <Text>Name</Text>
           </Pressable>
-          <Pressable onPressOut={() => navigation.navigate(EditNameScreen)}>
-            <Text>Edit Name</Text>
+          <Pressable onPressOut={() => navigation.navigate('EditNameScreen')}>
+            <Text>{loginState.fullName} &gt;</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => navigation.navigate(EditUsernameScreen)}>
+          <Pressable
+            onPressOut={() => navigation.navigate('EditUsernameScreen')}>
             <Text>Username</Text>
           </Pressable>
-          <Pressable onPressOut={() => navigation.navigate(EditUsernameScreen)}>
+          <Pressable
+            onPressOut={() => navigation.navigate('EditUsernameScreen')}>
             <Text>Edit Username</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
+          <Pressable
+            onPressOut={() => navigation.navigate('EditPostcodeScreen')}>
             <Text>Postcode</Text>
           </Pressable>
-          <Pressable onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
+          <Pressable
+            onPressOut={() => navigation.navigate('EditPostcodeScreen')}>
             <Text>Edit Postcode</Text>
           </Pressable>
         </View>

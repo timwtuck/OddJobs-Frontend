@@ -196,23 +196,41 @@ export default function App() {
                       <Stack.Screen
                         name="EditNameScreen"
                         component={EditNameScreen}
-                        setLoggedIn={setLoggedIn}
                       />
                       <Stack.Screen
                         name="EditUsernameScreen"
                         component={EditUsernameScreen}
-                        setLoggedIn={setLoggedIn}
                       />
                       <Stack.Screen
                         name="EditPostcodeScreen"
                         component={EditPostcodeScreen}
-                        setLoggedIn={setLoggedIn}
                       />
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
                 <Tab.Screen name="Chat" component={ChatLogScreen} />
-                <Tab.Screen name="Account" component={MyAccountScreen} />
+                <Tab.Screen name="Account" options={{ headerShown: false }}>
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="MyAccountScreen"
+                        component={MyAccountScreen}
+                      />
+                      <Stack.Screen
+                        name="EditNameScreen"
+                        component={EditNameScreen}
+                      />
+                      <Stack.Screen
+                        name="EditUsernameScreen"
+                        component={EditUsernameScreen}
+                      />
+                      <Stack.Screen
+                        name="EditPostcodeScreen"
+                        component={EditPostcodeScreen}
+                      />
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
               </Tab.Navigator>
             </NavigationContainer>
           </SafeAreaProvider>
