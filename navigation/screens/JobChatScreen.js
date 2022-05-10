@@ -13,7 +13,9 @@ export const JobChatScreen = ({route, navigation}) => {
   const [otherUser, setOtherUser] = React.useState(null);
   const [text, setText] = React.useState('');
 
-  console.log(route)
+      socket.socket.on('recieve', (info) => {
+        console.log(`YAAAAS GAGA`)
+    });
 
   React.useEffect(async () => {
 
@@ -50,8 +52,6 @@ export const JobChatScreen = ({route, navigation}) => {
 
     if(!text)
       return;
-
-      console.log(text)
 
     postMessage(loginState._id, route.params.messageId, text)
       .then(() => {

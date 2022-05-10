@@ -86,6 +86,7 @@ export default function App() {
     // if no current notifications, add the tabBarBadge
       setNotifications((current) => {
         const newNotification = {...current};
+        
         newNotification.notifications++;
         newNotification.displayOptions.tabBarBadge = 
           newNotification.notifications;

@@ -45,10 +45,6 @@ export const ChatLogScreen = ({ navigation }) => {
     setMessages(toSet);
   }, []);
 
-  React.useEffect(() => {
-    console.log(messages);
-  }, [messages]);
-
 
 return (
     <>
