@@ -1,5 +1,5 @@
-import MapView, { Callout } from 'react-native-maps';
-import { Button, StyleSheet, View, Text } from 'react-native';
+import MapView from 'react-native-maps';
+import { StyleSheet, View, Text, Dimensions, Button } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import { getAllJobs, getSingleUser } from '../api';
@@ -94,7 +94,8 @@ export const Map = () => {
 
 const styles = StyleSheet.create({
   map: {
-    ...StyleSheet.absoluteFillObject,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.4,
   },
   bubble: {
     flexDirection: 'column',
