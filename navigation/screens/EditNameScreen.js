@@ -59,7 +59,6 @@ export const EditNameScreen = ({ navigation }) => {
       onSubmit={(values, actions) => {
         patchUser(loginState._id, { fullName: values.fullName });
         setLoginState({ ...loginState, fullName: values.fullName });
-        console.log(loginState, '<<-- new call');
         navigation.navigate('MyAccountScreen');
       }}
       validationSchema={validation}>

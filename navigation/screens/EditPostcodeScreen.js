@@ -37,10 +37,7 @@ export const EditPostcodeScreen = ({ navigation }) => {
       onSubmit={(values, actions) => {
         patchUser(loginState._id, { postcode: values.postcode });
         setLoginState({ ...loginState, postcode: values.postcode });
-        console.log(loginState, '<<--- loginState');
-        getSingleUser(loginState._id).then(data => {
-          console.log(data, '<<--- user data');
-        }),
+        getSingleUser(loginState._id).then(data => {}),
           navigation.navigate('MyAccountScreen');
       }}
       validationSchema={validation}>
