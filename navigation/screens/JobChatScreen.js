@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../App';
 import { SocketContext } from '../../App';
 import { getSingleMessage, postMessage } from '../../api';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 export const JobChatScreen = ({route, navigation}) => {
 
@@ -12,10 +13,8 @@ export const JobChatScreen = ({route, navigation}) => {
   const [conversation, setConversation] = React.useState(null);
   const [otherUser, setOtherUser] = React.useState(null);
   const [text, setText] = React.useState('');
+  const isFocused = useIsFocused();
 
-      socket.socket.on('recieve', (info) => {
-        console.log(`YAAAAS GAGA`)
-    });
 
   React.useEffect(async () => {
 
@@ -45,8 +44,29 @@ export const JobChatScreen = ({route, navigation}) => {
       return messageObj;
     });
 
+    socket.socket.on('update-private-message', (info) => {
+      console.log('got a private message!')
+    });
+
     setConversation(formattedMessages);
   }, []);
+
+
+  useFocusEffect(
+
+    React.useCallback(() => {
+      // Do something when the screen is focused
+        console.log('joining....')
+        socket.socket.emit('join-private-chat', {user: loginState._id}); 
+
+      return () => {
+        
+        // Do something when the screen is unfocused
+        console.log('leaving....')
+        socket.socket.emit('leave-private-chat',  {user: loginState._id});
+      };
+    }, []));
+
 
   const sendMessage = () => {
 
@@ -71,7 +91,7 @@ export const JobChatScreen = ({route, navigation}) => {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
 

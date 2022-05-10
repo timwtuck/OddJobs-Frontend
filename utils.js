@@ -12,7 +12,7 @@ exports.setUpSocket = (setSocket, userId, onNewNotification) => {
       console.log('connected to socket server');
       socket.emit('user-info', {user: userId});
     });
-    socket.on('recieve', (info) => {
+    socket.on('notification', (info) => {
         console.log(`incoming message from ${info}`)
         onNewNotification(info);
     });

@@ -4,6 +4,7 @@ import { getUserMessages } from '../../api';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
 import { JobChatScreen } from './JobChatScreen';
+import { SocketContext } from '../../App';
 
 
 export const ChatLogScreen = ({ navigation }) => {
@@ -11,6 +12,7 @@ export const ChatLogScreen = ({ navigation }) => {
 
   const loginState = useContext(AuthContext);
   const [messages, setMessages] = React.useState(null);
+    const socket = useContext(SocketContext);
 
   React.useEffect(() => {
 
@@ -19,7 +21,7 @@ export const ChatLogScreen = ({ navigation }) => {
 
     const mockDBCall = [
     {
-      _id: "627a2d45374d2ddd3c255a0f",
+      _id: "627abf4aaf706062da08349f",
       users: [
         { userId: "6272a5463c6c76416c3ac4e1", fullName: 'Timmy', isRead: true },
         { userId: "6272a5963c6c76416c3ac4e5", fullName: 'Shaun Clarke', isRead: true },
@@ -43,8 +45,25 @@ export const ChatLogScreen = ({ navigation }) => {
     });
 
     setMessages(toSet);
-  }, []);
 
+    socket.socket.on('update-chatlog', (info) => {
+
+      const test =  {
+        _id: "627968816380e2689926b9ab",
+        user: 
+          { userId: "6272a5963c6c76416c3ac4e5", fullName: 'New User', isRead: true },
+      }
+      
+    setMessages((current) => {
+    console.log(current, test);
+    return [...current, test];
+    });
+
+      console.log('I am ', loginState.fullName, 'and I am focused: ', navigation.isFocused())
+    });
+
+  }, []);
+ 
 
 return (
     <>

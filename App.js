@@ -69,6 +69,7 @@ export default function App() {
   // Login, Socket and Notification State
   const [loggedIn, setLoggedIn] = React.useState(null);
   const [socket, setSocket] = React.useState(null);
+  const [inPrivateChat, setInPrivateChat] = React.useState(false);
 
   const [notifications, setNotifications] = React.useState({
     notifications: 0,
@@ -81,12 +82,19 @@ export default function App() {
 
   const onNewNotification = (fromUser) => {
 
+    console.log('In chat>>> ', inPrivateChat)
+
+    if (inPrivateChat){
+      console.log('In Private chat, will ignore');
+      return;
+    }
+
     console.log(`notification from ${fromUser}`);
 
     // if no current notifications, add the tabBarBadge
       setNotifications((current) => {
         const newNotification = {...current};
-        
+
         newNotification.notifications++;
         newNotification.displayOptions.tabBarBadge = 
           newNotification.notifications;
@@ -253,7 +261,7 @@ export default function App() {
                 </Tab.Screen>
                 <Tab.Screen name="Chat" options={notifications.displayOptions}>
                  {() => (
-                   <SocketContext.Provider value={{socket, setNotifications}}>
+                   <SocketContext.Provider value={{socket, setInPrivateChat}}>
                       <Stack.Navigator>
                         <Stack.Screen
                           name="ChatLogScreen"
