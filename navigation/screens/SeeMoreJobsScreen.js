@@ -2,18 +2,22 @@ import * as React from 'react';
 import { useContext } from 'react';
 import { AuthContext, setAuthContext } from '../../App';
 import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { getAllJobs } from '../../api';
 import { Map } from '../../components/Map';
 import { JobScreen } from './JobScreen';
 
 export const SeeMoreJobsScreen = ({ navigation }) => {
   const [jobs, setJobs] = React.useState([]);
+  // const [job_id, setJob_id] = React.useState(null);
+
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     getAllJobs().then(jobsFromApi => {
       setJobs(jobsFromApi);
     });
-  }, []);
+  }, [isFocused]);
 
   // global user context
   const user = useContext(AuthContext);
@@ -24,7 +28,6 @@ export const SeeMoreJobsScreen = ({ navigation }) => {
     <>
       <View style={styles.container}>
         <Map />
-        {/* <Text>Map Render</Text> */}
       </View>
       <View style={styles.list}>
         <FlatList
@@ -33,9 +36,9 @@ export const SeeMoreJobsScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <Pressable
               style={styles.item}
-              onPressOut={() =>
-                navigation.navigate('JobScreen', { job_id: item._id })
-              }>
+              onPressOut={() => {
+                navigation.navigate('JobScreen', { job_id: item._id });
+              }}>
               <Text style={styles.title}>{item.title}</Text>
               <Text>{item.category}</Text>
               <Text>£{item.price.toFixed(2)}</Text>

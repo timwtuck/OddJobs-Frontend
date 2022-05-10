@@ -7,6 +7,8 @@ PODS:
     - ExpoModulesCore
   - EXConstants (13.0.2):
     - ExpoModulesCore
+  - EXErrorRecovery (3.0.5):
+    - ExpoModulesCore
   - EXFileSystem (13.1.4):
     - ExpoModulesCore
   - EXFont (10.0.5):
@@ -339,6 +341,7 @@ DEPENDENCIES:
   - EXApplication (from `../node_modules/expo-application/ios`)
   - EXCamera (from `../node_modules/expo-camera/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
   - EXImagePicker (from `../node_modules/expo-image-picker/ios`)
@@ -397,6 +400,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-camera/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
+  EXErrorRecovery:
+    :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
@@ -488,6 +493,7 @@ SPEC CHECKSUMS:
   EXApplication: 54fe5bd6268d697771645e8f1aef8b806a65247a
   EXCamera: 2cbc8206cb520562c1527fe565aa9f00df8e5e8f
   EXConstants: 88bf79622fbd9b476c96d8ec57fe97ca44fe8e3c
+  EXErrorRecovery: b0d7582714a2cc896e94a2308a356f94dbf14ef7
   EXFileSystem: 08a3033ac372b6346becf07839e1ccef26fb1058
   EXFont: 2597c10ac85a69d348d44d7873eccf5a7576ef5e
   EXImagePicker: bf4d62532cc2bf217edbe4abbb0014e73e079eac
@@ -496,7 +502,7 @@ SPEC CHECKSUMS:
   ExpoModulesCore: 32c0ccb47f477d330ee93db72505380adf0de09a
   EXSplashScreen: 21669e598804ee810547dbb6692c8deb5dd8dbf3
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: 59482f471318f7fc16c0ff8e819e166e8321c536
+  FBReactNativeSpec: 4bb9036cdf113524f5b32a4b61c0efec5e45122c
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c

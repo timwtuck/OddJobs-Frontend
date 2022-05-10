@@ -8,8 +8,10 @@ import {
   Text,
   View,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { getSingleJob } from '../../api';
+import { deleteJob } from '../../api';
 import {
   Cleaning,
   Delivery,
@@ -34,7 +36,7 @@ import {
 //   Inter_900Black,
 // } from '@expo-google-fonts/inter';
 
-export const JobScreen = ({ route, navigation }) => {
+export const JobScreen = ({ route, navigation: { goBack } }) => {
   // global user context
   const user = useContext(AuthContext);
   // global user context
@@ -48,6 +50,27 @@ export const JobScreen = ({ route, navigation }) => {
       setCurrentJob(jobFromApi);
     });
   }, [job_id]);
+
+  const showConfirmDialog = () => {
+    return Alert.alert(
+      'Are your sure?',
+      'Are you sure you want to delete this job?',
+      [
+        // The "Yes" button
+        {
+          text: 'Yes',
+          onPress: () => {
+            deleteJob(job_id).then(() => goBack()); // not working as expected
+          },
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: 'No',
+        },
+      ],
+    );
+  };
 
   return (
     <View style={styles.jobContainer}>
@@ -72,7 +95,12 @@ export const JobScreen = ({ route, navigation }) => {
         <Text style={styles.jobDescription}>{currentJob.description}</Text>
         <Text style={styles.jobPrice}>{currentJob.price}</Text>
       </View>
-      {currentJob.user_id === user._id && <Button title="🗑" />}
+      {/* {currentJob.user_id === user._id && (
+        <Button title="🗒" onPress={onPressLearnMore} />
+      )} */}
+      {currentJob.user_id === user._id && (
+        <Button title="🗑" onPress={() => showConfirmDialog()} />
+      )}
     </View>
   );
 };
