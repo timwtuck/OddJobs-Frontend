@@ -49,30 +49,30 @@ export const MyAccountScreen = ({ navigation }) => {
         <Text style={styles.about}>About you</Text>
         <View style={styles.infoRows}>
           <Pressable onPressOut={() => navigation.navigate('EditNameScreen')}>
-            <Text>Name</Text>
+            <Text>{loginState.fullName}</Text>
           </Pressable>
           <Pressable onPressOut={() => navigation.navigate('EditNameScreen')}>
-            <Text>{loginState.fullName} &gt;</Text>
+            <Text>Edit Name -&gt;</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
           <Pressable
             onPressOut={() => navigation.navigate('EditUsernameScreen')}>
-            <Text>Username</Text>
+            <Text>{loginState.username}</Text>
           </Pressable>
           <Pressable
             onPressOut={() => navigation.navigate('EditUsernameScreen')}>
-            <Text>Edit Username</Text>
+            <Text>Edit Username -&gt;</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
           <Pressable
             onPressOut={() => navigation.navigate('EditPostcodeScreen')}>
-            <Text>Postcode</Text>
+            <Text>{loginState.postcode}</Text>
           </Pressable>
           <Pressable
             onPressOut={() => navigation.navigate('EditPostcodeScreen')}>
-            <Text>Edit Postcode</Text>
+            <Text>Edit Postcode -&gt;</Text>
           </Pressable>
         </View>
       </View>
