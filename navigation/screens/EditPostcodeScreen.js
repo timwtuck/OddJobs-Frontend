@@ -9,10 +9,23 @@ import {
   Button,
   ActivityIndicator,
 } from 'react-native';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
 import { useContext } from 'react';
 import { AuthContext, setAuthContext } from '../../App';
 import { patchUser } from '../../api';
 import { getSingleUser } from '../../api';
+import { processFontFamily } from 'expo-font';
 
 const postcodeRegex = /^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/i;
 
@@ -25,6 +38,17 @@ const validation = yup.object().shape({
 });
 
 export const EditPostcodeScreen = ({ navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
   // global user context
   const loginState = useContext(AuthContext);
   const setLoginState = useContext(setAuthContext);
@@ -47,7 +71,12 @@ export const EditPostcodeScreen = ({ navigation }) => {
       {formikProps => (
         <React.Fragment>
           <View style={styles.container}>
-            <Text style={{ textAlign: 'center', fontSize: 38 }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 38,
+                fontFamily: 'Inter_300Light',
+              }}>
               Edit Postcode
             </Text>
             {/*

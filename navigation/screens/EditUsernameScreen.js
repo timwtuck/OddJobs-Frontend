@@ -12,6 +12,18 @@ import {
 import { useContext } from 'react';
 import { AuthContext, setAuthContext } from '../../App';
 import { patchUser } from '../../api';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
 
 const validation = yup.object().shape({
   username: yup
@@ -27,6 +39,17 @@ const validation = yup.object().shape({
 });
 
 export const EditUsernameScreen = ({ navigation }) => {
+  const [fontsLoaded] = useFonts({
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
   // global user context
   const loginState = useContext(AuthContext);
   const setLoginState = useContext(setAuthContext);
@@ -46,7 +69,12 @@ export const EditUsernameScreen = ({ navigation }) => {
       {formikProps => (
         <React.Fragment>
           <View style={styles.container}>
-            <Text style={{ textAlign: 'center', fontSize: 38 }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 38,
+                fontFamily: 'Inter_300Light',
+              }}>
               Edit Username
             </Text>
             {/*
