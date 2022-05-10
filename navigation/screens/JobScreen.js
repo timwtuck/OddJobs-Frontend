@@ -36,7 +36,51 @@ export const JobScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.jobContainer}>
-      {currentJob.category === 'DIY' && <Image />}
+      <View style={styles.imageContainer}>
+        {currentJob.category === 'Cleaning' && (
+          <Image
+            style={styles.categoryImage}
+            source={require('../../assets/Cleaning.png')}
+          />
+        )}
+        {currentJob.category === 'Delivery' && (
+          <Image
+            style={styles.categoryImage}
+            source={require('../../assets/Delivery.png')}
+          />
+        )}
+        {currentJob.category === 'DIY' && (
+          <Image
+            style={styles.categoryImage}
+            source={require('../../assets/DIY.png')}
+          />
+        )}
+        {currentJob.category === 'Garden' && (
+          <Image
+            style={styles.categoryImage}
+            source={require('../../assets/Garden.png')}
+          />
+        )}
+        {/* {currentJob.category === 'Pets' && (
+          <Image
+            style={styles.categoryImage}
+            source={require('../../assets/Pets.png')}
+          />
+        )} */}
+        {currentJob.category === 'Shopping' && (
+          <Image
+            style={styles.categoryImage}
+            source={require('../../assets/Shopping.png')}
+          />
+        )}
+        {currentJob.category === 'Other' && (
+          <Image
+            style={styles.categoryImage}
+            source={require('../../assets/logo.png')}
+          />
+        )}
+      </View>
+
       <Text style={styles.jobHeading}>{currentJob.title}</Text>
       <Text style={styles.jobCategory}>{currentJob.category}</Text>
       <Text style={styles.jobDescription}>{currentJob.description}</Text>
@@ -48,34 +92,40 @@ export const JobScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   jobContainer: {
-    backgroundColor: 'pink',
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  imageContainer: {
+    justifyContent: 'flex-start',
+    height: '20%',
   },
   header: {
     fontSize: 20,
   },
+  categoryImage: {
+    alignItems: 'center',
+  },
   jobHeading: {
-    backgroundColor: 'blue',
-    fontSize: 20,
+    fontSize: 30,
     width: '80%',
+    padding: 10,
   },
   jobCategory: {
-    backgroundColor: 'yellow',
     fontSize: 15,
     width: '80%',
+    padding: 10,
   },
   jobDescription: {
-    backgroundColor: 'green',
     fontSize: 15,
     width: '80%',
+    padding: 10,
   },
   jobPrice: {
-    backgroundColor: 'red',
     fontSize: 12,
     width: '80%',
+    padding: 10,
   },
 });

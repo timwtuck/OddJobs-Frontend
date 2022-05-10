@@ -55,7 +55,6 @@ export const PostJobScreen = ({ navigation }) => {
     { label: 'Garden', value: 'Garden' },
     { label: 'Pets', value: 'Pets' },
     { label: 'Shopping', value: 'Shopping' },
-    { label: 'Transport', value: 'Transport' },
     { label: 'Other', value: 'Other' },
   ]);
   const [currentJob, setCurrentJob] = React.useState([]);
@@ -63,7 +62,7 @@ export const PostJobScreen = ({ navigation }) => {
   const user = useContext(AuthContext);
   // global user context
 
-  //image function currently not working on backend
+  //image function currently not working on backend - DO NOT DELETE THIS SECTION
 
   // async function pickImage(handleChange) {
   //   let result = await ImagePicker.launchImageLibraryAsync({
@@ -107,43 +106,7 @@ export const PostJobScreen = ({ navigation }) => {
         navigation.navigate('JobScreen', { job_id: postedJob._id });
 
         Keyboard.dismiss();
-
-        // setTimeout(() => {
-        //   // actions.setSubmitting(false);
-        //   // navigation.navigate('JobScreen', { job_id: currentJob._id });
-        // }, 1000);
       }}
-      // onSubmit={(values, actions) => {
-      //   axios
-      //     .get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-      //       params: {
-      //         address: values.postcode,
-      //         key: REACT_APP_API_KEY,
-      //       },
-      //     })
-      //     .then(response => {
-      //       const newValues = { ...values };
-      //       newValues.postcode = response.data.results[0].geometry.location;
-      //       newValues.price = Number.parseInt(newValues.price).toFixed(2);
-      //       return newValues;
-      //     })
-      //     .then(newValues => {
-      //       const postRequestObject = { ...newValues, user_id: user._id };
-      //       postJob(postRequestObject).then(postedJob => {
-      //         setCurrentJob(postedJob);
-      //       });
-      //     })
-      //     .then(() => {
-      //       navigation.navigate('JobScreen', { job_id: currentJob._id });
-      //     });
-
-      //   Keyboard.dismiss();
-
-      //   setTimeout(() => {
-      //     // actions.setSubmitting(false);
-      //     // navigation.navigate('JobScreen', { job_id: currentJob._id });
-      //   }, 1000);
-      // }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
@@ -194,7 +157,9 @@ export const PostJobScreen = ({ navigation }) => {
                 formikProps.errors.description}
             </Text>
 
-            {/* <View style={styles.buttonContainer}>
+            {/* 
+            //image function currently not working on backend - DO NOT DELETE THIS SECTION
+            <View style={styles.buttonContainer}>
               <Button
                 title="Upload photo"
                 mode="contained"
