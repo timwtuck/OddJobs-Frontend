@@ -1,4 +1,4 @@
-import MapView from 'react-native-maps';
+import MapView, { Callout } from 'react-native-maps';
 import { StyleSheet, View, Text, Dimensions, Button } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
