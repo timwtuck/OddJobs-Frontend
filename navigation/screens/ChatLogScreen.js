@@ -19,7 +19,7 @@ export const ChatLogScreen = ({ navigation }) => {
 
     const mockDBCall = [
     {
-      _id: "627968816380e2689926b9ab",
+      _id: "627a2d45374d2ddd3c255a0f",
       users: [
         { userId: "6272a5463c6c76416c3ac4e1", fullName: 'Timmy', isRead: true },
         { userId: "6272a5963c6c76416c3ac4e5", fullName: 'Shaun Clarke', isRead: true },

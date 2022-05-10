@@ -8,22 +8,37 @@ export const JobChatScreen = ({route, navigation}) => {
 
   const loginState = useContext(AuthContext);
   const [conversation, setConversation] = React.useState(null);
-  const [otherUser, setOtherUser] = React.useState(null);
 
   console.log(route)
 
   React.useEffect(async () => {
 
     const res = await getSingleMessage(route.params.messageId);
-    console.log('>>>', res);
-    setConversation(res.messages);
 
-    const user = res.users[0]._id === loginState._id ?
-      res.users[1]._id : res.users[0]._id;
+    const otherUser = res.users[0].userId._id === loginState._id ?
+      res.users[1] : res.users[0];
 
-    setOtherUser(user);
-    console.log("user: ",user)
-    navigation.setOptions({title: user});
+    navigation.setOptions({title: otherUser.userId.fullName});
+
+    const formattedMessages = res.messages.map(message => {
+      
+      const messageObj = {...message};
+
+      if (message.userId === loginState._id){
+        // messages are sent from the logged in user
+        messageObj.name = loginState.fullName;
+        messageObj.style = styles.textBox_thisUser;
+      }
+      else if (message.userId === otherUser.userId._id) {
+        //messages are sent from the other user
+        messageObj.name = otherUser.userId.fullName;
+        messageObj.style = styles.textBox_otherUser;
+      } 
+
+      return messageObj;
+    });
+
+    setConversation(formattedMessages);
   }, []);
 
 
@@ -32,7 +47,7 @@ export const JobChatScreen = ({route, navigation}) => {
       <View style={styles.container}>
         {conversation &&
         conversation.map(convo => 
-          <View style={styles.textBox} >
+          <View key={convo._id} style={[styles.textBox, convo.style]} >
             <Text>{convo.content}</Text>
           </View>)
         }
@@ -98,13 +113,21 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   textBox: {
+    flexDirection: 'row-reverse',
     borderWidth: 1,
     borderColor: `#000`,
     borderRadius: 10,
     width: `95%`,
     minHeight:50,
-    textAlign: 'left',
-    paddingLeft: 10
+    padding: 10,
+    margin:3,
+    textAlign: 'center'
+  },
+  textBox_thisUser: {
+    justifyContent: 'flex-end'
+  },
+  textBox_otherUser: {
+    justifyContent: 'flex-start',
   },
   textInputContainer: {
     flexDirection: 'row',
