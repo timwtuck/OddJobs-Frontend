@@ -43,7 +43,7 @@ export const EndPointsScreen = ({ navigation }) => {
         </>
         <>
           <Pressable
-            style={styles.doingEndpoints}
+            style={styles.doneEndpoints}
             onPressOut={() => navigation.navigate(PostJobScreen)}>
             <Text style={styles.cardHeader}>Post a Job Screen</Text>
             <Text style={styles.cardSubText}>Go to Page</Text>
@@ -59,7 +59,7 @@ export const EndPointsScreen = ({ navigation }) => {
         </>
         <>
           <Pressable
-            style={styles.endpoints}
+            style={styles.doingEndpoints}
             onPressOut={() => navigation.navigate(JobScreen)}>
             <Text style={styles.cardHeader}>Job Screen</Text>
             <Text style={styles.cardSubText}>Go to Page</Text>

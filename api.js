@@ -55,7 +55,7 @@ export const getSingleUserMessage = (user_id, message_id) => {
 //need to check what is being sent from the input and maybe edit the argument??
 export const postJob = job => {
   return oddJobsApi.post('/jobs', job).then(({ data }) => {
-    return data.newJob;
+    return data.job;
   });
 };
 
