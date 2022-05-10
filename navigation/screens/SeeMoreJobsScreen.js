@@ -34,7 +34,7 @@ export const SeeMoreJobsScreen = ({ navigation }) => {
             <Pressable
               style={styles.item}
               onPressOut={() =>
-                navigation.navigate(JobScreen, { job_id: item._id })
+                navigation.navigate('JobScreen', { job_id: item._id })
               }>
               <Text style={styles.title}>{item.title}</Text>
               <Text>{item.category}</Text>
