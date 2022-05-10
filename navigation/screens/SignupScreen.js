@@ -90,7 +90,6 @@ export const SignupScreen = ({ navigation }) => {
         alert(JSON.stringify({ email, password, username, fullName }));
         setTimeout(() => {
           postUser(fullName, username, email, password).then(newUser => {
-            console.log(newUser, '<<< newuser app side');
             setLoggedIn({
               _id: newUser._id,
               username: newUser.username,

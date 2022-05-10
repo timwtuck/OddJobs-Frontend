@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
 
 export const JobChatScreen = navigation => {
-  console.log(navigation);
   return (
     <>
       <View style={styles.container}>

@@ -125,7 +125,6 @@ export const JobLogScreen = ({ navigation }) => {
         <View style={styles.jobCardRow}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {userJobs.map(job => {
-              console.log(job);
               return (
                 <View style={styles.jobCard} key={job._id}>
                   <Image
