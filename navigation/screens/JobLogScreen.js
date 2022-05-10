@@ -7,7 +7,9 @@ import {
   ScrollView,
   Switch,
   Image,
+  Pressable,
 } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../App';
 
@@ -49,6 +51,8 @@ export const JobLogScreen = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+  const isFocused = useIsFocused();
+
   React.useEffect(() => {
     getAllJobs().then(data => {
       setUserJobs(
@@ -59,7 +63,7 @@ export const JobLogScreen = ({ navigation }) => {
         }),
       );
     });
-  }, []);
+  }, [isFocused]);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -126,17 +130,23 @@ export const JobLogScreen = ({ navigation }) => {
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {userJobs.map(job => {
               return (
-                <View style={styles.jobCard} key={job._id}>
-                  <Image
-                    style={styles.cardImg}
-                    source={{
-                      uri: `https://odd-jobs-backend.herokuapp.com/${job.productImage}`,
-                    }}
-                  />
-                  <Text style={styles.cardHeading}>{job.title}</Text>
-                  <Text style={styles.cardSubHeading}>Token</Text>
-                  <Text style={styles.cardBody}>£{job.price}.00</Text>
-                </View>
+                <Pressable
+                  key={job._id}
+                  onPressOut={() => {
+                    navigation.navigate('JobScreen', { job_id: job._id });
+                  }}>
+                  <View style={styles.jobCard} key={job._id}>
+                    <Image
+                      style={styles.cardImg}
+                      source={{
+                        uri: `https://odd-jobs-backend.herokuapp.com/${job.productImage}`,
+                      }}
+                    />
+                    <Text style={styles.cardHeading}>{job.title}</Text>
+                    <Text style={styles.cardSubHeading}>Token</Text>
+                    <Text style={styles.cardBody}>£{job.price}.00</Text>
+                  </View>
+                </Pressable>
               );
             })}
           </ScrollView>

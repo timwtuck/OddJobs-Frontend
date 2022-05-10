@@ -9,7 +9,6 @@ import { JobScreen } from './JobScreen';
 
 export const SeeMoreJobsScreen = ({ navigation }) => {
   const [jobs, setJobs] = React.useState([]);
-  // const [job_id, setJob_id] = React.useState(null);
 
   const isFocused = useIsFocused();
 
