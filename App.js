@@ -42,7 +42,9 @@ import { JobLogScreen } from './navigation/screens/JobLogScreen';
 import { ChatLogScreen } from './navigation/screens/ChatLogScreen';
 import { JobChatScreen } from './navigation/screens/JobChatScreen';
 import { MyAccountScreen } from './navigation/screens/MyAccountScreen';
-import { EditMyAccountScreen } from './navigation/screens/EditMyAccountScreen';
+import { EditNameScreen } from './navigation/screens/EditNameScreen';
+import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
+import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
 // global login context
 export const AuthContext = React.createContext(null);
@@ -192,15 +194,43 @@ export default function App() {
                         component={MyAccountScreen}
                       />
                       <Stack.Screen
-                        name="EditMyAccountScreen"
-                        component={EditMyAccountScreen}
-                        setLoggedIn={setLoggedIn}
+                        name="EditNameScreen"
+                        component={EditNameScreen}
+                      />
+                      <Stack.Screen
+                        name="EditUsernameScreen"
+                        component={EditUsernameScreen}
+                      />
+                      <Stack.Screen
+                        name="EditPostcodeScreen"
+                        component={EditPostcodeScreen}
                       />
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
                 <Tab.Screen name="Chat" component={ChatLogScreen} />
-                <Tab.Screen name="Account" component={MyAccountScreen} />
+                <Tab.Screen name="Account" options={{ headerShown: false }}>
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="MyAccountScreen"
+                        component={MyAccountScreen}
+                      />
+                      <Stack.Screen
+                        name="EditNameScreen"
+                        component={EditNameScreen}
+                      />
+                      <Stack.Screen
+                        name="EditUsernameScreen"
+                        component={EditUsernameScreen}
+                      />
+                      <Stack.Screen
+                        name="EditPostcodeScreen"
+                        component={EditPostcodeScreen}
+                      />
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
               </Tab.Navigator>
             </NavigationContainer>
           </SafeAreaProvider>

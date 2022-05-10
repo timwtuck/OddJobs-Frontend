@@ -79,9 +79,9 @@ export const patchJob = (job_id, patch) => {
 };
 
 //need to check what is being sent from the input and maybe edit the argument??
-export const patchUser = (user_id, patch) => {
-  return oddJobsApi.patch(`users/${user_id}`, { patch }).then(({ data }) => {
-    return data.updatedUser;
+export const patchUser = (user_id, value) => {
+  return oddJobsApi.put(`users/${user_id}`, value).then(({ data }) => {
+    return data.user;
   });
 };
 
