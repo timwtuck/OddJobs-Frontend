@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // React Navigation
 import { NavigationContainer } from '@react-navigation/native';
+import { navigationRef } from './RootNavigation';
 
 // Custom Fonts
 import AppLoading from 'expo-app-loading';
@@ -77,7 +78,7 @@ export default function App() {
           {/* expo code starts */}
           <StatusBar style="auto" />
           {/* expo code ends */}
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
