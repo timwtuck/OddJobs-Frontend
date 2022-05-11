@@ -37,6 +37,7 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -47,6 +48,7 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
 
   const [currentJob, setCurrentJob] = useState({});
   const [currentCategory, setCurrentCategory] = useState('');
+  const [jobStatus, setJobStatus] = useState(false);
   const { job_id } = route.params;
   const categories = {
     Cleaning: {
@@ -54,7 +56,7 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
         <MaterialIcons
           style={styles.icon}
           name={'cleaning-services'}
-          size={18}
+          size={40}
         />
       ),
     },
@@ -63,27 +65,27 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
         <MaterialCommunityIcons
           style={styles.icon}
           name={'truck-delivery-outline'}
-          size={18}
+          size={40}
         />
       ),
     },
     DIY: {
       icon: (
-        <MaterialCommunityIcons style={styles.icon} name={'tools'} size={18} />
+        <MaterialCommunityIcons style={styles.icon} name={'tools'} size={40} />
       ),
     },
     Garden: {
-      icon: <MaterialIcons style={styles.icon} name={'grass'} size={18} />,
+      icon: <MaterialIcons style={styles.icon} name={'grass'} size={40} />,
     },
     Pets: {
-      icon: <MaterialIcons style={styles.icon} name={'pets'} size={18} />,
+      icon: <MaterialIcons style={styles.icon} name={'pets'} size={40} />,
     },
     Shopping: {
       icon: (
         <MaterialCommunityIcons
           style={styles.icon}
           name={'shopping-outline'}
-          size={18}
+          size={40}
         />
       ),
     },
@@ -92,7 +94,7 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
         <MaterialCommunityIcons
           style={styles.icon}
           name={'dots-horizontal'}
-          size={18}
+          size={40}
         />
       ),
     },
@@ -103,6 +105,7 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
 
     setCurrentJob(jobFromApi);
     setCurrentCategory(jobFromApi.category);
+    setJobStatus(jobFromApi.status);
   }, [job_id]);
 
   const showConfirmDialog = () => {
@@ -138,6 +141,16 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
     source = require(`../../assets/Shopping.png`);
   if (currentCategory === 'Other') source = require(`../../assets/logo.png`);
 
+  let iconName;
+
+  if (currentJob.status)
+    iconName = <ion-icon name="lock-closed-outline"></ion-icon>;
+
+  if (!jobStatus) iconName = <Ionicons name="lock-open-outline" size={40} />;
+
+  console.log(iconName);
+  // console.log(iconName);
+
   if (currentCategory === '' || currentCategory === undefined)
     return <Text>...loading</Text>;
 
@@ -155,16 +168,14 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
       <Text style={styles.jobDescription}>{currentJob.description}</Text>
       <View style={styles.jobStatusRow}>
         <View style={styles.statusCards}>
-          <Text>{categories[currentCategory].icon}</Text>
+          {categories[currentCategory].icon}
+        </View>
+        <View style={styles.statusCards}>{iconName}</View>
+        <View style={styles.statusCards}>
+          <Text style={{ fontSize: 20 }}>£{currentJob.price.toFixed(2)}</Text>
         </View>
         <View style={styles.statusCards}>
-          <Text>Status</Text>
-        </View>
-        <View style={styles.statusCards}>
-          <Text>£{currentJob.price.toFixed(2)}</Text>
-        </View>
-        <View style={styles.statusCards}>
-          <Text>Chat - toggle visibility</Text>
+          <Ionicons name={'chatbubbles-outline'} size={40} />
         </View>
       </View>
       <View style={styles.deleteButtonRow}>
