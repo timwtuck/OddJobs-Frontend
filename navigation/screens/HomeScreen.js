@@ -12,8 +12,8 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.mapBackground}>
-        <Map />
-        {/* <Text>Map Render</Text> */}
+        {/* <Map /> */}
+        <Text>Map Render</Text>
       </View>
       <Pressable
         style={styles.postJob}

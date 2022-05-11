@@ -20,11 +20,20 @@ import { LoginScreen } from './LoginScreen';
 import { SignupScreen } from './SignupScreen';
 import { EditUsernameScreen } from './EditUsernameScreen';
 import { EditPostcodeScreen } from './EditPostcodeScreen';
+import { ImageUpload } from '../../components/ImageUpload';
 
 export const EndPointsScreen = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
+        <>
+          <Pressable
+            style={styles.endpoints}
+            onPressOut={() => navigation.navigate(ImageUpload)}>
+            <Text style={styles.cardHeader}>Image Upload</Text>
+            <Text style={styles.cardSubText}>Go to Page</Text>
+          </Pressable>
+        </>
         <>
           <Pressable
             style={styles.doneEndpoints}

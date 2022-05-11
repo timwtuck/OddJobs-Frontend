@@ -45,7 +45,7 @@ import { MyAccountScreen } from './navigation/screens/MyAccountScreen';
 import { EditNameScreen } from './navigation/screens/EditNameScreen';
 import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
 import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
-
+import { ImageUpload } from './components/ImageUpload';
 // global login context
 export const AuthContext = React.createContext(null);
 export const setAuthContext = React.createContext(null);
@@ -204,6 +204,10 @@ export default function App() {
                       <Stack.Screen
                         name="EditPostcodeScreen"
                         component={EditPostcodeScreen}
+                      />
+                      <Stack.Screen
+                        name="ImageUpload"
+                        component={ImageUpload}
                       />
                     </Stack.Navigator>
                   )}
