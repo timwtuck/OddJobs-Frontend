@@ -115,19 +115,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardGroup: {
+    flex: 1,
+    backgroundColor: 'pink',
     flexDirection: 'column',
     width: '100%',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     marginLeft: 15,
   },
   cardHeader: {
+    backgroundColor: 'pink',
     fontFamily: 'Inter_700Bold',
     fontSize: 18,
     marginVertical: 5,
+    // width: '100%',
   },
+  subtextWrap: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+
   cardSubText: {
     fontSize: 12,
-    flexShrink: 1,
+    flex: 1,
+
+    // width: 1,
     // flexWrap: 'wrap',
   },
 });
