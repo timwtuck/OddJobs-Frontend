@@ -6,26 +6,23 @@ import { AuthContext } from '../../App';
 import { JobChatScreen } from './JobChatScreen';
 import { SocketContext } from '../../App';
 import { SetNotificationContext } from '../../App';
+import { SetAllMessagesContext } from '../../App';
+import { AllMessagesContext } from '../../App';
 import {setNotificationState} from '../../utils.js';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export const ChatLogScreen = ({ navigation }) => {
 
 
   const loginState = useContext(AuthContext);
-  const [messages, setMessages] = React.useState(null);
   const socket = useContext(SocketContext);
   const setNotifications = useContext(SetNotificationContext);
+  const isFocused = useIsFocused();
+  const messages = useContext(AllMessagesContext);
+  const setMessages = useContext(SetAllMessagesContext);
 
   React.useEffect(async () => {
-
-    const toSet = await getUserMessages(loginState._id);
-
-    // count the number of notifications for the home bar
-    const allNotifications = toSet.reduce((sum, m) => sum += m.unread, 0);
-    setNotificationState(setNotifications, allNotifications, true);
-
-    setMessages(toSet);
 
     socket.socket.on('update-chatlog', (info) => {
 
@@ -43,7 +40,7 @@ export const ChatLogScreen = ({ navigation }) => {
     });
 
   }, []);
- 
+
 
 return (
     <>
@@ -57,8 +54,10 @@ return (
             return <Pressable key={message.user.fullName} style={styles.conversation_container}
                 onPressOut={() => {
 
-                  setNotificationState(setNotifications, message.unread*-1, false);
-                  message.unread = 0;
+                  if (message.unread > 0){
+                    setNotificationState(setNotifications, -1, false);
+          //        message.unread = 0;
+                  }
 
                   navigation.navigate('Chat', {
                     screen: 'JobChatScreen', 

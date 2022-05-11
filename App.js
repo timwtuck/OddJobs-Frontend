@@ -47,7 +47,7 @@ import { EditNameScreen } from './navigation/screens/EditNameScreen';
 import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
 import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
-import {setUpSocket, setNotificationState} from './utils.js';
+import {setUpSocket, setNotificationState, updateUserMessages} from './utils.js';
 import { getUserMessages } from './api';
 
 // global login context
@@ -55,6 +55,8 @@ export const AuthContext = React.createContext(null);
 export const setAuthContext = React.createContext(null);
 export const SocketContext = React.createContext(null);
 export const SetNotificationContext = React.createContext(null);
+export const AllMessagesContext = React.createContext(null);
+export const SetAllMessagesContext = React.createContext(null);
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -72,6 +74,7 @@ export default function App() {
   // Login, Socket and Notification State
   const [loggedIn, setLoggedIn] = React.useState(null);
   const [socket, setSocket] = React.useState(null);
+  const [messages, setMessages] = React.useState(null);
 
   const [notifications, setNotifications] = React.useState(
     { 
@@ -81,12 +84,9 @@ export default function App() {
   );
 
   const onNewNotification = (fromUser) => {
-
-    if (inPrivateChat){
-      return;
-    }
-
+    console.log('notification recieved')
     setNotificationState(setNotifications, 1, false);
+    updateUserMessages(setMessages, setNotifications, loggedIn._id);
   }
 
   React.useEffect( async () => {
@@ -97,10 +97,7 @@ export default function App() {
     } 
 
     setUpSocket(setSocket, loggedIn._id, onNewNotification);
-    const messages = await getUserMessages(loggedIn._id);
-
-    const allNotifications = messages.reduce((sum, m) => sum += m.unread, 0);
-    setNotificationState(setNotifications, allNotifications, true);
+    updateUserMessages(setMessages, setNotifications, loggedIn._id);
 
   }, [loggedIn]);
 
@@ -254,17 +251,21 @@ export default function App() {
                  {() => (
                    <SocketContext.Provider value={{socket}}>
                      <SetNotificationContext.Provider value={setNotifications}>
-                      <Stack.Navigator>
-                        <Stack.Screen
-                          name="ChatLogScreen"
-                          component={ChatLogScreen}
-                        />
-                        <Stack.Screen
-                          name="JobChatScreen"
-                          component={JobChatScreen}
-                        />
-                        <Stack.Screen name="JobScreen" component={JobScreen} />
-                      </Stack.Navigator>
+                       <SetAllMessagesContext.Provider value={setMessages}>
+                         <AllMessagesContext.Provider value={messages}>
+                          <Stack.Navigator>
+                            <Stack.Screen
+                              name="ChatLogScreen"
+                              component={ChatLogScreen}
+                            />
+                            <Stack.Screen
+                              name="JobChatScreen"
+                              component={JobChatScreen}
+                            />
+                            <Stack.Screen name="JobScreen" component={JobScreen} />
+                          </Stack.Navigator>
+                        </AllMessagesContext.Provider>
+                      </SetAllMessagesContext.Provider>
                     </SetNotificationContext.Provider>
                   </SocketContext.Provider>
                   )}
