@@ -111,7 +111,7 @@ export const LoginScreen = ({ navigation }) => {
                 }}>
                 Odd Jobs
               </Text>
-              <Logo />
+              <Text style={{ textAlign: 'center', fontSize: 150 }}>🎩</Text>
               <Text
                 style={{
                   fontFamily: 'Inter_300Light',
