@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignSelf: 'flex-end',
     backgroundColor: '#FFEDDF',
+    borderRadius: 10,
   },
   textBox_otherUser: {
     justifyContent: 'flex-start',
