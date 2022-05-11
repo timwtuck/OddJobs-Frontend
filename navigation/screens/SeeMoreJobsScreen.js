@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
 
   list: {
     flex: 1,
-    backgroundColor: 'green',
     // backgroundColor: '#c7f9cc',
     paddingTop: 30,
     paddingLeft: 30,
@@ -114,28 +113,35 @@ const styles = StyleSheet.create({
 
   filterItem: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFEDDF',
     borderRadius: 20,
     padding: 8,
     paddingHorizontal: 20,
     marginHorizontal: 10,
+    marginVertical: 0,
     height: 35,
+    borderColor: '#FEC899',
+    borderWidth: 1,
   },
   item: {
-    backgroundColor: '#c7f9cc',
+    backgroundColor: '#FFEDDF',
     borderRadius: 15,
     width: '90%',
     marginBottom: 20,
     padding: 10,
     paddingLeft: 15,
+    borderColor: '#FEC899',
+    borderWidth: 1,
   },
   title: {
     fontSize: 18,
   },
   scrollView: {
-    backgroundColor: 'blue',
     position: 'absolute',
-    top: Platform.os === 'ios' ? 90 : 80,
+    top: 0,
+    width: '100%',
+    height: 36,
+    padding: 0,
     paddingHorizontal: 10,
   },
 });
