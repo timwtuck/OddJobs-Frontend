@@ -20,3 +20,23 @@ exports.setUpSocket = (setSocket, userId, onNewNotification) => {
     setSocket(socket);
 
 }
+
+exports.setNotificationState = (setState, amount, reset) => {
+
+  setState((current) => {
+    
+        const options = {...current};
+        
+        // if doesn't exist create it
+        if(!options.tabBarBadge || reset)
+          options.tabBarBadge = 0;
+
+        options.tabBarBadge += amount;
+
+        //if no notifcations, delete it
+        if(options.tabBarBadge <= 0)
+          delete options.tabBarBadge;
+        
+        return options;
+    });
+}

@@ -45,7 +45,16 @@ export const JobChatScreen = ({route, navigation}) => {
     });
 
     socket.socket.on('update-private-message', (info) => {
-      console.log('got a private message!')
+      
+      const newMessage = {
+        name: info.from,
+        style: styles.textBox_otherUser,
+        content: info.content
+      }
+      setConversation((current) =>{
+        return [...current, newMessage]
+      });
+
     });
 
     setConversation(formattedMessages);
@@ -86,12 +95,12 @@ export const JobChatScreen = ({route, navigation}) => {
           content: text,
         };
 
+        if (socket) { // should have connection established, but just in case...
+          socket.socket.emit('send', {to: otherUser.userId._id, from: loginState._id, content: text} );
+        }
+
         setConversation((current) => [...current, newMessage]);
         setText('');
-
-        if (socket) { // should have connection established, but just in case...
-          socket.socket.emit('send', {to: otherUser.userId._id, from: loginState._id} );
-        }
       })
       .catch((err) => {
         console.log(err);

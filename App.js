@@ -46,7 +46,7 @@ import { EditNameScreen } from './navigation/screens/EditNameScreen';
 import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
 import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
-import {setUpSocket} from './utils.js';
+import {setUpSocket, setNotificationState} from './utils.js';
 
 // global login context
 export const AuthContext = React.createContext(null);
@@ -72,14 +72,12 @@ export default function App() {
   const [socket, setSocket] = React.useState(null);
   const [inPrivateChat, setInPrivateChat] = React.useState(false);
 
-  const [notifications, setNotifications] = React.useState({
-    notifications: 0,
-    displayOptions: 
-      { 
-        headerShown: false,
-        tabBarLabel: "Messages",
-      }
-  });
+  const [notifications, setNotifications] = React.useState(
+    { 
+      headerShown: false,
+      tabBarLabel: "Messages",
+    }
+  );
 
   const onNewNotification = (fromUser) => {
 
@@ -91,17 +89,7 @@ export default function App() {
     }
 
     console.log(`notification from ${fromUser}`);
-
-    // if no current notifications, add the tabBarBadge
-      setNotifications((current) => {
-        const newNotification = {...current};
-
-        newNotification.notifications++;
-        newNotification.displayOptions.tabBarBadge = 
-          newNotification.notifications;
-        
-        return newNotification;
-      });
+    setNotificationState(setNotifications, 1, false);
   }
 
   React.useEffect( () => {
@@ -260,7 +248,7 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name="Chat" options={notifications.displayOptions}>
+                <Tab.Screen name="Chat" options={notifications}>
                  {() => (
                    <SocketContext.Provider value={{socket}}>
                      <SetNotificationContext.Provider value={setNotifications}>

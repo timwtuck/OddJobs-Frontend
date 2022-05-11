@@ -6,6 +6,7 @@ import { AuthContext } from '../../App';
 import { JobChatScreen } from './JobChatScreen';
 import { SocketContext } from '../../App';
 import { SetNotificationContext } from '../../App';
+import {setNotificationState} from '../../utils.js';
 
 
 export const ChatLogScreen = ({ navigation }) => {
@@ -41,25 +42,26 @@ export const ChatLogScreen = ({ navigation }) => {
         return convoBox;
       });
 
+    // count the number of notifications for the home bar
     const allNotifications = toSet.reduce((sum, m) => sum += m.unread, 0);
     console.log(allNotifications);
-
-    setNotifications((current) => {
-      const obj = { ...current};
-      obj.notifications = allNotifications;
-      obj.displayOptions.tabBarBadge = allNotifications;
-      return obj;
-      });
+    setNotificationState(setNotifications, allNotifications, true);
 
     setMessages(toSet);
 
     socket.socket.on('update-chatlog', (info) => {
 
-      const test =  {
-        _id: "627968816380e2689926b9ab",
-        user: 
-          { userId: "6272a5963c6c76416c3ac4e5", fullName: 'New User', isRead: true },
-      }
+      setMessages((current) => {
+
+        const update = [...current];
+
+        for (const message of update){
+          if (message.userId === info.currentId)
+            message.unread++;
+        }
+
+        return update;
+      });
 
       console.log('I am ', loginState.fullName, 'and I am focused: ', navigation.isFocused())
     });
@@ -79,19 +81,7 @@ return (
             return <Pressable key={message.user.fullName} style={styles.conversation_container}
                 onPressOut={() => {
 
-                  setNotifications((current) => {
-                    const obj = { ...current};
-
-                    if (!obj.displayOptions.tabBarBadge || 
-                      obj.displayOptions.tabBarBadge - message.unread <= 0){
-                      delete obj.displayOptions.tabBarBadge;
-                    } else {
-                      obj.displayOptions.tabBarBadge -= message.unread;
-                    }
-  
-                    return obj;
-                  })
-
+                  setNotificationState(setNotifications, message.unread*-1, false);
                   message.unread = 0;
 
                   navigation.navigate('Chat', {
