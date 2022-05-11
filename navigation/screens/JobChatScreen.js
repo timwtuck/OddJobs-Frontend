@@ -34,7 +34,7 @@ export const JobChatScreen = ({route, navigation}) => {
       async function setUpChat() {
 
         // get messages from api
-        const res = await getSingleMessage(route.params.messageId);
+        const res = await getSingleMessage(route.params.messageId, loginState._id);
 
         // find who the user we're talking to is (2 entries from api call, one is us!)
         const otherUser = res.users[0].userId._id === loginState._id ?
@@ -66,6 +66,9 @@ export const JobChatScreen = ({route, navigation}) => {
         // (message from otherUser will get routed through to here 
         // by our server as long as we're focused on this page!)
         socket.socket.on('update-private-message', (info) => {
+
+          // make database call to reset unread message count
+          getSingleMessage(route.params.messageId, loginState._id);
 
           const newMessage = {
             name: info.from,

@@ -37,6 +37,8 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const JobScreen = ({ route, navigation: { goBack } }) => {
   // global user context
@@ -44,13 +46,63 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
   // global user context
 
   const [currentJob, setCurrentJob] = useState({});
-
+  const [currentCategory, setCurrentCategory] = useState('');
   const { job_id } = route.params;
+  const categories = {
+    Cleaning: {
+      icon: (
+        <MaterialIcons
+          style={styles.icon}
+          name={'cleaning-services'}
+          size={18}
+        />
+      ),
+    },
+    Delivery: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'truck-delivery-outline'}
+          size={18}
+        />
+      ),
+    },
+    DIY: {
+      icon: (
+        <MaterialCommunityIcons style={styles.icon} name={'tools'} size={18} />
+      ),
+    },
+    Garden: {
+      icon: <MaterialIcons style={styles.icon} name={'grass'} size={18} />,
+    },
+    Pets: {
+      icon: <MaterialIcons style={styles.icon} name={'pets'} size={18} />,
+    },
+    Shopping: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'shopping-outline'}
+          size={18}
+        />
+      ),
+    },
+    Other: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'dots-horizontal'}
+          size={18}
+        />
+      ),
+    },
+  };
 
-  useEffect(() => {
-    getSingleJob(job_id).then(jobFromApi => {
-      setCurrentJob(jobFromApi);
-    });
+  useEffect(async () => {
+    const jobFromApi = await getSingleJob(job_id);
+
+    setCurrentJob(jobFromApi);
+    setCurrentCategory(jobFromApi.category);
   }, [job_id]);
 
   const showConfirmDialog = () => {
@@ -74,13 +126,25 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
     );
   };
 
+  let source = '';
+  if (currentCategory === 'Cleaning')
+    source = require(`../../assets/Cleaning.png`);
+  if (currentCategory === 'Delivery')
+    source = require(`../../assets/Delivery.png`);
+  if (currentCategory === 'DIY') source = require(`../../assets/DIY.png`);
+  if (currentCategory === 'Garden') source = require(`../../assets/Garden.png`);
+  if (currentCategory === 'Pets') source = require(`../../assets/Pets.png`);
+  if (currentCategory === 'Shopping')
+    source = require(`../../assets/Shopping.png`);
+  if (currentCategory === 'Other') source = require(`../../assets/logo.png`);
+
+  if (currentCategory === '' || currentCategory === undefined)
+    return <Text>...loading</Text>;
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        {/* <Image
-          style={styles.categoryImage}
-          source={require('../../assets/logo.png')}
-        /> */}
+        <Image style={styles.categoryImage} source={source} />
       </View>
       <View style={styles.jobHeadingRow}>
         <Text style={styles.jobHeading}>{currentJob.title}</Text>
@@ -91,13 +155,13 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
       <Text style={styles.jobDescription}>{currentJob.description}</Text>
       <View style={styles.jobStatusRow}>
         <View style={styles.statusCards}>
-          <Text>Category</Text>
+          <Text>{categories[currentCategory].icon}</Text>
         </View>
         <View style={styles.statusCards}>
-          <Text>Status - in progress or complete</Text>
+          <Text>Status</Text>
         </View>
         <View style={styles.statusCards}>
-          <Text>Token - can edit</Text>
+          <Text>£{currentJob.price.toFixed(2)}</Text>
         </View>
         <View style={styles.statusCards}>
           <Text>Chat - toggle visibility</Text>
@@ -165,7 +229,7 @@ const styles = StyleSheet.create({
 
   //---- CONTAINER STYLING ----//
   imageContainer: {
-    backgroundColor: 'grey',
+    // backgroundColor: 'grey',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height * 0.3,
     marginVertical: 10,
@@ -195,6 +259,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     borderRadius: 15,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 
   //---- ROW STYLING ----//

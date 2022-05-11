@@ -50,6 +50,7 @@ exports.updateUserMessages = async (setMessages, setNotifications, userId) => {
     const allNotifications = toSet.reduce((sum, m) => 
       m.unread > 0 ? ++sum : sum , 0);
 
+      console.log(allNotifications);
     exports.setNotificationState(setNotifications, allNotifications, true);
     setMessages(toSet);
 

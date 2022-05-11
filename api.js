@@ -14,8 +14,14 @@ const oddJobsApi = axios.create({
   baseURL: 'https://odd-jobs-backend.herokuapp.com/api',
 });
 
-export const getAllJobs = (category, price, location) => {
+export const getAllJobs = () => {
   return oddJobsApi.get('/jobs').then(({ data }) => {
+    return data.jobs;
+  });
+};
+
+export const getJobsByCategory = category => {
+  return oddJobsApi.get(`/jobs?category=${category}`).then(({ data }) => {
     return data.jobs;
   });
 };
@@ -69,9 +75,15 @@ export const getUserMessages = user_id => {
   });
 };
 
-export const getSingleMessage = (message_id) => {
+export const getSingleMessage = (message_id, userId) => {
+  
+  let path = `/messages/${message_id}`;
+  
+  if(userId)
+    path += `?user=${userId}`;
+
   return oddJobsApi
-    .get(`/messages/${message_id}`)
+    .get(path)
     .then(({ data }) => {
       return data.message;
     });
