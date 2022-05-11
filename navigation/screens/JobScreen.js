@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Alert,
   Pressable,
+  Switch,
   Systrace,
 } from 'react-native';
 import { getSingleJob } from '../../api';
@@ -142,17 +143,22 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
   if (currentCategory === 'Other') source = require(`../../assets/logo.png`);
 
   let iconName;
+  let statusText;
 
-  if (currentJob.status)
-    iconName = <ion-icon name="lock-closed-outline"></ion-icon>;
+  if (jobStatus) {
+    iconName = <Ionicons name="lock-closed-outline" size={40} />;
+    statusText = 'Open job';
+  }
 
-  if (!jobStatus) iconName = <Ionicons name="lock-open-outline" size={40} />;
-
-  console.log(iconName);
-  // console.log(iconName);
+  if (!jobStatus) {
+    iconName = <Ionicons name="lock-open-outline" size={40} />;
+    statusText = 'Close job';
+  }
 
   if (currentCategory === '' || currentCategory === undefined)
     return <Text>...loading</Text>;
+
+  const toggleSwitch = () => setJobStatus(previousState => !previousState);
 
   return (
     <View style={styles.container}>
@@ -180,18 +186,38 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
       </View>
       <View style={styles.deleteButtonRow}>
         {currentJob.user_id === user._id && (
-          <Pressable
-            style={styles.deleteJob}
-            onPress={() => showConfirmDialog()}>
-            <Text
-              style={{
-                fontFamily: 'Inter_600SemiBold',
-                color: '#fff',
-                fontSize: 16,
-              }}>
-              Delete this Job
-            </Text>
-          </Pressable>
+          <>
+            <View style={styles.toggleStatus}>
+              <Text
+                style={{
+                  fontFamily: 'Inter_600SemiBold',
+                  color: '#000000',
+                  fontSize: 16,
+                  padding: 5,
+                }}>
+                {statusText}
+              </Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#FFEDDF' }}
+                thumbColor={jobStatus ? '#FEC899' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={jobStatus}
+              />
+            </View>
+            <Pressable
+              style={styles.deleteJob}
+              onPress={() => showConfirmDialog()}>
+              <Text
+                style={{
+                  fontFamily: 'Inter_600SemiBold',
+                  color: '#fff',
+                  fontSize: 16,
+                }}>
+                Delete this Job
+              </Text>
+            </Pressable>
+          </>
         )}
       </View>
     </View>
@@ -290,7 +316,7 @@ const styles = StyleSheet.create({
   },
 
   deleteButtonRow: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -342,5 +368,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 20,
     borderRadius: 17,
+  },
+
+  toggleStatus: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginTop: 20,
   },
 });
