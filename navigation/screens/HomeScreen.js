@@ -96,7 +96,9 @@ export const HomeScreen = ({ navigation }) => {
       <ScrollView style={styles.scrollView}>
         <Pressable
           style={styles.postJob}
-          onPressOut={() => navigation.navigate(PostJobScreen)}>
+          onPressOut={() =>
+            navigation.navigate('PostJobScreen', { categories: categories })
+          }>
           <View style={styles.postAccent}></View>
           <View style={styles.cardGroup}>
             <Text style={styles.cardHeader}>Post a Job</Text>
@@ -107,7 +109,9 @@ export const HomeScreen = ({ navigation }) => {
         </Pressable>
         <Pressable
           style={styles.seeJobs}
-          onPressOut={() => navigation.navigate(SeeMoreJobsScreen)}>
+          onPressOut={() =>
+            navigation.navigate('SeeMoreJobsScreen', { categories: categories })
+          }>
           <View style={styles.seeAccent}></View>
           <View style={styles.cardGroup}>
             <Text style={styles.cardHeader}>See More Jobs</Text>
