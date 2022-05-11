@@ -45,14 +45,39 @@ export const getSingleUser = user_id => {
 };
 
 export const getUserMessages = user_id => {
-  return oddJobsApi.get(`/users/${user_id}/messages`).then(({ data }) => {
-    return data.messages;
+
+  return oddJobsApi.get(`/messages/chats/${user_id}`)
+    .then(({ data }) => {
+      const promises = data.message.map(m => getSingleMessage(m._id));
+      return Promise.all(promises);
+    })
+    .then(allMessages => {
+
+    // fitler to format data as wanted
+    const formattedMessages = allMessages.map(message => { 
+      
+      const messageInfo = {_id: message._id};
+
+      if(message.users[0].userId._id === user_id) {
+
+        messageInfo.user = message.users[1].userId;
+        messageInfo.unread = message.users[0].unread;
+      } 
+      else {
+        messageInfo.user = message.users[0].userId;
+        messageInfo.unread = message.users[1].unread;
+      }
+
+      return messageInfo;
+    });
+
+    return formattedMessages;
   });
 };
 
-export const getSingleUserMessage = (user_id, message_id) => {
+export const getSingleMessage = (message_id) => {
   return oddJobsApi
-    .get(`/users/${user_id}/messages/${message_id}`)
+    .get(`/messages/${message_id}`)
     .then(({ data }) => {
       return data.message;
     });
@@ -79,9 +104,16 @@ export const postUser = (username, fullName, email, password) => {
 };
 
 //need to check what is being sent from the input and maybe edit the argument??
-export const postMessage = (username, user_id, message) => {
+export const postMessage = (userId, messageId, message) => {
+
+  const newMessage = {
+    userId: userId,
+    content_type: 'text',
+    content: message
+  }
+
   return oddJobsApi
-    .post(`/users/${user_id}/messages`, { username: username, body: message })
+    .post(`/messages/${messageId}`,newMessage)
     .then(({ data }) => {
       return data.newMessage;
     });

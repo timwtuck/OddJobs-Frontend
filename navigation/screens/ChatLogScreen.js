@@ -1,22 +1,92 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import { Button, Pressable, Text, TextInput, View, StyleSheet } from 'react-native';
+import { getSingleMessage, getUserMessages } from '../../api';
+import { useContext } from 'react';
+import { AuthContext } from '../../App';
+import { JobChatScreen } from './JobChatScreen';
+import { SocketContext } from '../../App';
+import { SetNotificationContext } from '../../App';
+import {setNotificationState} from '../../utils.js';
 
-export const ChatLogScreen = () => {
-  return (
+
+export const ChatLogScreen = ({ navigation }) => {
+
+
+  const loginState = useContext(AuthContext);
+  const [messages, setMessages] = React.useState(null);
+  const socket = useContext(SocketContext);
+  const setNotifications = useContext(SetNotificationContext);
+
+  React.useEffect(async () => {
+
+    const toSet = await getUserMessages(loginState._id);
+
+    // count the number of notifications for the home bar
+    const allNotifications = toSet.reduce((sum, m) => sum += m.unread, 0);
+    setNotificationState(setNotifications, allNotifications, true);
+
+    setMessages(toSet);
+
+    socket.socket.on('update-chatlog', (info) => {
+
+      setMessages((current) => {
+
+        const update = [...current];
+
+        for (const message of update){
+          if (message.userId === info.currentId)
+            message.unread++;
+        }
+
+        return update;
+      });
+    });
+
+  }, []);
+ 
+
+return (
     <>
       <View style={styles.container}>
-        <Text>Chat Log Screen</Text>
+
+        {/* TIM: TO DO 
+            CAN ADD USER AVATAR, TIME OF LAST MESSAGE WHEN READY IN API
+          */}
+
+          {messages && messages.map(message => {
+            return <Pressable key={message.user.fullName} style={styles.conversation_container}
+                onPressOut={() => {
+
+                  setNotificationState(setNotifications, message.unread*-1, false);
+                  message.unread = 0;
+
+                  navigation.navigate('Chat', {
+                    screen: 'JobChatScreen', 
+                    params: {messageId: message._id }
+                  })
+                }}>
+                <View >
+                  <Text >{message.user.fullName}</Text>
+                  <Text> Unread: {message.unread}</Text>
+                </View>
+              </Pressable>
+            })
+          }
       </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+
+  buttons_login: {
+    marginBottom:5
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   header: {
     fontSize: 20,
@@ -67,4 +137,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
   },
+  conversation_container: {
+    borderWidth: 2,
+    borderColor: '#000',
+    width: '98%',
+    marginVertical: 2,
+    paddingLeft: 10,
+    minHeight: 70,
+  }
 });
+

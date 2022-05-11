@@ -40,9 +40,10 @@ export const Map = () => {
     });
   }, []);
 
-  if (jobInfo.length === 0) {
+  if (jobInfo.length === 0 || !userLocation.lat || !userLocation.lng) {
     return <Text>...loading</Text>;
   } else if (jobInfo.length > 0) {
+
     return (
       <MapView
         style={styles.map}
