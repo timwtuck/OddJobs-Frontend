@@ -65,7 +65,8 @@ return (
                   message.unread = 0;
 
                   navigation.navigate('Chat', {
-                    screen: 'JobChatScreen', 
+                    screen: 'JobChatScreen',
+                    title: '', 
                     params: {messageId: message._id }
                   })
                 }}>

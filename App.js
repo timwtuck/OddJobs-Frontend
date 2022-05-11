@@ -249,10 +249,12 @@ export default function App() {
                           <Stack.Screen
                             name="ChatLogScreen"
                             component={ChatLogScreen}
+                            options={{title: 'Messages'}}
                           />
                           <Stack.Screen
                             name="JobChatScreen"
                             component={JobChatScreen}
+                            options={{title: ''}}
                           />
                           <Stack.Screen
                             name="JobScreen"
