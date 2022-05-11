@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   scrollView: {
-    paddingLeft: 30,
+    paddingLeft: 10,
   },
   mapBackground: {
     width: '90%',
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FFEDDF',
     borderRadius: 15,
-    width: '90%',
+    width: '95%',
     height: 130,
     marginBottom: 20,
     alignItems: 'center',
@@ -113,14 +113,14 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     backgroundColor: '#FFEDDF50',
     borderRadius: 15,
-    width: '90%',
+    width: '95%',
     height: 130,
     marginBottom: 20,
     alignItems: 'center',
   },
   cardGroup: {
     flexDirection: 'column',
-    width: '100%',
+    width: '80%',
     justifyContent: 'flex-start',
     marginLeft: 15,
   },
@@ -132,6 +132,6 @@ const styles = StyleSheet.create({
   cardSubText: {
     fontSize: 12,
     flexShrink: 1,
-    // flexWrap: 'wrap',
+    flexWrap: 'wrap',
   },
 });
