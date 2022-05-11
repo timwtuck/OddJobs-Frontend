@@ -105,7 +105,6 @@ export const JobChatScreen = ({route, navigation}) => {
       });
   }
 
-
   return (
     <>
       <View style={styles.container}>

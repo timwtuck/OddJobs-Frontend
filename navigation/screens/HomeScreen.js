@@ -5,6 +5,22 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PostJobScreen } from './PostJobScreen';
 import { SeeMoreJobsScreen } from './SeeMoreJobsScreen';
 import { Map } from '../../components/Map';
+import { AutoFocus } from 'expo-camera';
+
+// Custom Fonts
+import AppLoading from 'expo-app-loading';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -12,24 +28,29 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.mapBackground}>
-        {/* <Map /> */}
-        {/* <Text>Map Render</Text> */}
+        <Map />
       </View>
       <Pressable
         style={styles.postJob}
         onPressOut={() => navigation.navigate(PostJobScreen)}>
-        {/* <View style={styles.postJob}> */}
-        <Text style={styles.cardHeader}>Post a Job</Text>
-        <Text style={styles.cardSubText}>List an odd job today</Text>
-        {/* </View> */}
+        <View style={styles.postAccent}></View>
+        <View style={styles.cardGroup}>
+          <Text style={styles.cardHeader}>Post a Job</Text>
+          <Text style={styles.cardSubText}>
+            Getting odd jobs done has never been this easy!
+          </Text>
+        </View>
       </Pressable>
       <Pressable
         style={styles.seeJobs}
         onPressOut={() => navigation.navigate(SeeMoreJobsScreen)}>
-        {/* <View style={styles.seeJobs}> */}
-        <Text style={styles.cardHeader}>See More Jobs</Text>
-        <Text style={styles.cardSubText}>List an odd job today</Text>
-        {/* </View> */}
+        <View style={styles.seeAccent}></View>
+        <View style={styles.cardGroup}>
+          <Text style={styles.cardHeader}>See More Jobs</Text>
+          <Text style={styles.cardSubText}>
+            Feeling handy? Join the community and complete an OddJob.
+          </Text>
+        </View>
       </Pressable>
     </View>
   );
@@ -51,34 +72,62 @@ const styles = StyleSheet.create({
     height: '48%',
     justifyContent: 'center',
     backgroundColor: 'lightgrey',
-    borderRadius: 15,
-    marginVertical: 20,
+    marginBottom: 30,
     alignItems: 'center',
   },
   postJob: {
-    justifyContent: 'center',
-    backgroundColor: '#c7f9cc',
+    flexDirection: 'row',
+    backgroundColor: '#FFEDDF',
+    borderRadius: 15,
+    width: '90%',
+    height: 130,
+    marginBottom: 20,
+    alignItems: 'center',
+    // justifyContent: 'center',
+  },
+
+  postAccent: {
+    width: 10,
+    height: '100%',
+    backgroundColor: '#FEC899',
+    alignItems: 'flex-start',
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+  },
+
+  seeAccent: {
+    width: 10,
+    height: '100%',
+    backgroundColor: '#FEC899',
+    alignItems: 'flex-start',
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+  },
+
+  seeJobs: {
+    flexDirection: 'row',
+    // justifyContent: 'center',
+    backgroundColor: '#FFEDDF50',
     borderRadius: 15,
     width: '90%',
     height: 130,
     marginBottom: 20,
     alignItems: 'center',
   },
-  seeJobs: {
-    justifyContent: 'center',
-    backgroundColor: '#c7f9cc',
-    borderRadius: 15,
-    width: '90%',
-    height: 130,
-    marginBottom: 20,
-    alignItems: 'center',
+  cardGroup: {
+    flexDirection: 'column',
+    width: '100%',
+    justifyContent: 'flex-start',
+    marginLeft: 15,
   },
   cardHeader: {
-    fontStyle: 'normal',
-    fontSize: 16,
-    // margin: '.4rem,
+    fontFamily: 'Inter_700Bold',
+    fontSize: 18,
+    marginVertical: 5,
   },
   cardSubText: {
     fontSize: 12,
+    flexShrink: 1,
+    // flexWrap: 'wrap',
   },
 });

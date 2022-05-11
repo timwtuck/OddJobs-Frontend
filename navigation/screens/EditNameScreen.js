@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useContext } from 'react';
-import { AuthContext } from '../../App';
+import { AuthContext, setAuthContext } from '../../App';
 import { patchUser } from '../../api';
 import {
   useFonts,
@@ -34,7 +34,7 @@ const validation = yup.object().shape({
     .max(50, 'Max length 50 characters.'),
 });
 
-export const EditNameScreen = () => {
+export const EditNameScreen = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
     Inter_100Thin,
     Inter_200ExtraLight,
@@ -48,16 +48,19 @@ export const EditNameScreen = () => {
   });
   // global user context
   const loginState = useContext(AuthContext);
+  const setLoginState = useContext(setAuthContext);
   // global user context
-  console.log(loginState);
+
   return (
     <Formik
       initialValues={{
         fullName: '',
       }}
-      // onSubmit={(values, actions) => {
-      //   patchUser(loginState._id, { fullName: values.fullName });
-      // }}
+      onSubmit={(values, actions) => {
+        patchUser(loginState._id, { fullName: values.fullName });
+        setLoginState({ ...loginState, fullName: values.fullName });
+        navigation.navigate('MyAccountScreen');
+      }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>
@@ -75,7 +78,7 @@ export const EditNameScreen = () => {
              */}
 
             <TextInput
-              placeholder="Full Name"
+              placeholder={loginState.fullName}
               style={styles.formInput}
               onChangeText={formikProps.handleChange('fullName')}
               onBlur={formikProps.handleBlur('fullName')}

@@ -49,20 +49,20 @@ const validation = yup.object().shape({
 
 export const PostJobScreen = ({ navigation }) => {
   const [categories, setCategories] = React.useState([
+    { label: 'Cleaning', value: 'Cleaning' },
     { label: 'Delivery', value: 'Delivery' },
     { label: 'DIY', value: 'DIY' },
     { label: 'Garden', value: 'Garden' },
     { label: 'Pets', value: 'Pets' },
     { label: 'Shopping', value: 'Shopping' },
-    { label: 'Transport', value: 'Transport' },
     { label: 'Other', value: 'Other' },
   ]);
-
+  const [currentJob, setCurrentJob] = React.useState([]);
   // global user context
   const user = useContext(AuthContext);
   // global user context
 
-  //image function currently not working on backend
+  //image function currently not working on backend - DO NOT DELETE THIS SECTION
 
   // async function pickImage(handleChange) {
   //   let result = await ImagePicker.launchImageLibraryAsync({
@@ -81,32 +81,31 @@ export const PostJobScreen = ({ navigation }) => {
         postcode: '',
         category: '',
         description: '',
-        image: '',
+        // image: '',
         price: 0,
       }}
-      onSubmit={(values, actions) => {
-        axios
-          .get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-            params: {
-              address: values.postcode,
-              key: REACT_APP_API_KEY,
-            },
-          })
-          .then(response => {
-            const newValues = { ...values };
-            newValues.postcode = response.data.results[0].geometry.location;
-            newValues.price = Number.parseInt(newValues.price).toFixed(2);
-            return newValues;
-          })
-          .then(newValues => {
-            const postRequestObject = { ...newValues, user_id: user._id };
-            postJob(postRequestObject);
+      onSubmit={async (values, actions) => {
+        const res = await axios
+          .get(
+            `https://maps.googleapis.com/maps/api/geocode/json?address=${values.postcode}&key=${REACT_APP_API_KEY}`,
+          )
+          .catch(err => {
+            console.log(err);
           });
+
+        const newValues = { ...values };
+        newValues.postcode = res.data.results[0].geometry.location;
+        newValues.price = Number.parseInt(newValues.price).toFixed(2);
+
+        const postRequestObject = { ...newValues, user_id: user._id };
+
+        const postedJob = await postJob(postRequestObject);
+
+        setCurrentJob(postedJob);
+
+        navigation.navigate('JobScreen', { job_id: postedJob._id });
+
         Keyboard.dismiss();
-        setTimeout(() => {
-          actions.setSubmitting(false);
-          navigation.navigate(JobScreen);
-        }, 1000);
       }}
       validationSchema={validation}>
       {formikProps => (
@@ -157,7 +156,10 @@ export const PostJobScreen = ({ navigation }) => {
               {formikProps.touched.description &&
                 formikProps.errors.description}
             </Text>
-            {/* <View style={styles.buttonContainer}>
+
+            {/* 
+            //image function currently not working on backend - DO NOT DELETE THIS SECTION
+            <View style={styles.buttonContainer}>
               <Button
                 title="Upload photo"
                 mode="contained"

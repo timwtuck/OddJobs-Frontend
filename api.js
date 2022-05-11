@@ -1,4 +1,14 @@
 import axios from 'axios';
+import { REACT_APP_API_KEY } from '@env';
+
+/*
+ *
+ *
+ *
+ * database API
+ *
+ *
+ */
 
 const oddJobsApi = axios.create({
   baseURL: 'https://odd-jobs-backend.herokuapp.com/api',
@@ -70,7 +80,7 @@ export const getSingleMessage = (message_id) => {
 //need to check what is being sent from the input and maybe edit the argument??
 export const postJob = job => {
   return oddJobsApi.post('/jobs', job).then(({ data }) => {
-    return data.newJob;
+    return data.job;
   });
 };
 
@@ -112,11 +122,7 @@ export const patchJob = (job_id, patch) => {
 
 //need to check what is being sent from the input and maybe edit the argument??
 export const patchUser = (user_id, value) => {
-  console.log(user_id, value, 'Sending data<----------');
-
   return oddJobsApi.put(`users/${user_id}`, value).then(({ data }) => {
-    console.log(data, 'Received data<----------------');
-
     return data.user;
   });
 };

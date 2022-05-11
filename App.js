@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // React Navigation
 import { NavigationContainer } from '@react-navigation/native';
+import { navigationRef } from './RootNavigation';
 
 // Custom Fonts
 import AppLoading from 'expo-app-loading';
@@ -115,7 +116,7 @@ export default function App() {
           {/* expo code starts */}
           <StatusBar style="auto" />
           {/* expo code ends */}
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
@@ -148,6 +149,9 @@ export default function App() {
               <Tab.Navigator
                 initialRouteName={'Home'}
                 screenOptions={({ route }) => ({
+                  tabBarStyle: {
+                    backgroundColor: '#000',
+                  },
                   tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
                     let rn = route.name;
@@ -165,7 +169,7 @@ export default function App() {
                     }
 
                     return (
-                      <Ionicons name={iconName} size={size} color={color} />
+                      <Ionicons name={iconName} size={size} color="#fff" />
                     );
                   },
                 })}>
@@ -234,17 +238,14 @@ export default function App() {
                       <Stack.Screen
                         name="EditNameScreen"
                         component={EditNameScreen}
-                        setLoggedIn={setLoggedIn}
                       />
                       <Stack.Screen
                         name="EditUsernameScreen"
                         component={EditUsernameScreen}
-                        setLoggedIn={setLoggedIn}
                       />
                       <Stack.Screen
                         name="EditPostcodeScreen"
                         component={EditPostcodeScreen}
-                        setLoggedIn={setLoggedIn}
                       />
                     </Stack.Navigator>
                   )}
@@ -268,7 +269,28 @@ export default function App() {
                   </SocketContext.Provider>
                   )}
                   </Tab.Screen>
-                <Tab.Screen name="Account" component={MyAccountScreen} />
+                <Tab.Screen name="Account" options={{ headerShown: false }}>
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="MyAccountScreen"
+                        component={MyAccountScreen}
+                      />
+                      <Stack.Screen
+                        name="EditNameScreen"
+                        component={EditNameScreen}
+                      />
+                      <Stack.Screen
+                        name="EditUsernameScreen"
+                        component={EditUsernameScreen}
+                      />
+                      <Stack.Screen
+                        name="EditPostcodeScreen"
+                        component={EditPostcodeScreen}
+                      />
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
               </Tab.Navigator>
             </NavigationContainer>
           </SafeAreaProvider>

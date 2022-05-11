@@ -9,6 +9,9 @@ import {
   Button,
   ActivityIndicator,
 } from 'react-native';
+import { useContext } from 'react';
+import { AuthContext, setAuthContext } from '../../App';
+import { patchUser } from '../../api';
 
 const validation = yup.object().shape({
   username: yup
@@ -23,13 +26,21 @@ const validation = yup.object().shape({
     ),
 });
 
-export const EditUsernameScreen = () => {
+export const EditUsernameScreen = ({ navigation }) => {
+  // global user context
+  const loginState = useContext(AuthContext);
+  const setLoginState = useContext(setAuthContext);
+
   return (
     <Formik
       initialValues={{
         username: '',
       }}
-      // onSubmit={}
+      onSubmit={(values, actions) => {
+        patchUser(loginState._id, { username: values.username });
+        setLoginState({ ...loginState, username: values.username });
+        navigation.navigate('MyAccountScreen');
+      }}
       validationSchema={validation}>
       {formikProps => (
         <React.Fragment>

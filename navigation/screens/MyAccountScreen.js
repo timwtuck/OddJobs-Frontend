@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
+import { setAuthContext } from '../../App';
 
 import { EditNameScreen } from './EditNameScreen';
 import { EditUsernameScreen } from './EditUsernameScreen';
@@ -20,14 +21,13 @@ import { ChatLogScreen } from './ChatLogScreen';
 export const MyAccountScreen = ({ navigation }) => {
   // global user context
   const loginState = useContext(AuthContext);
+  const setLoginState = useContext(setAuthContext);
   // global user context
 
   return (
     <>
       <View style={styles.container}>
-        <Pressable
-          style={styles.logout}
-          onPressOut={() => navigation.navigate(ChatLogScreen)}>
+        <Pressable style={styles.logout} onPressOut={() => setLoginState(null)}>
           <Text>Logout</Text>
         </Pressable>
         <Pressable onPressOut={() => alert('offer camera or upload photo')}>
@@ -37,38 +37,42 @@ export const MyAccountScreen = ({ navigation }) => {
         <View style={styles.buttonRow}>
           <Pressable
             style={styles.messages}
-            onPressOut={() => navigation.navigate(ChatLogScreen)}>
+            onPressOut={() => navigation.navigate('ChatLogScreen')}>
             <Text>Messages</Text>
           </Pressable>
           <Pressable
             style={styles.seeJobs}
-            onPressOut={() => navigation.navigate(JobLogScreen)}>
+            onPressOut={() => navigation.navigate('JobLogScreen')}>
             <Text>🎩</Text>
           </Pressable>
         </View>
         <Text style={styles.about}>About you</Text>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => navigation.navigate(EditNameScreen)}>
-            <Text>Name</Text>
+          <Pressable onPressOut={() => navigation.navigate('EditNameScreen')}>
+            <Text>{loginState.fullName}</Text>
           </Pressable>
-          <Pressable onPressOut={() => navigation.navigate(EditNameScreen)}>
-            <Text>Edit Name</Text>
-          </Pressable>
-        </View>
-        <View style={styles.infoRows}>
-          <Pressable onPressOut={() => navigation.navigate(EditUsernameScreen)}>
-            <Text>Username</Text>
-          </Pressable>
-          <Pressable onPressOut={() => navigation.navigate(EditUsernameScreen)}>
-            <Text>Edit Username</Text>
+          <Pressable onPressOut={() => navigation.navigate('EditNameScreen')}>
+            <Text>Edit Name -&gt;</Text>
           </Pressable>
         </View>
         <View style={styles.infoRows}>
-          <Pressable onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
-            <Text>Postcode</Text>
+          <Pressable
+            onPressOut={() => navigation.navigate('EditUsernameScreen')}>
+            <Text>{loginState.username}</Text>
           </Pressable>
-          <Pressable onPressOut={() => navigation.navigate(EditPostcodeScreen)}>
-            <Text>Edit Postcode</Text>
+          <Pressable
+            onPressOut={() => navigation.navigate('EditUsernameScreen')}>
+            <Text>Edit Username -&gt;</Text>
+          </Pressable>
+        </View>
+        <View style={styles.infoRows}>
+          <Pressable
+            onPressOut={() => navigation.navigate('EditPostcodeScreen')}>
+            <Text>{loginState.postcode}</Text>
+          </Pressable>
+          <Pressable
+            onPressOut={() => navigation.navigate('EditPostcodeScreen')}>
+            <Text>Edit Postcode -&gt;</Text>
           </Pressable>
         </View>
       </View>
