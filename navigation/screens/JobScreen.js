@@ -126,15 +126,25 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
     );
   };
 
-  if (currentCategory === '') return <Text>...loading</Text>;
+  let source = '';
+  if (currentCategory === 'Cleaning')
+    source = require(`../../assets/Cleaning.png`);
+  if (currentCategory === 'Delivery')
+    source = require(`../../assets/Delivery.png`);
+  if (currentCategory === 'DIY') source = require(`../../assets/DIY.png`);
+  if (currentCategory === 'Garden') source = require(`../../assets/Garden.png`);
+  if (currentCategory === 'Pets') source = require(`../../assets/Pets.png`);
+  if (currentCategory === 'Shopping')
+    source = require(`../../assets/Shopping.png`);
+  if (currentCategory === 'Other') source = require(`../../assets/logo.png`);
+
+  if (currentCategory === '' || currentCategory === undefined)
+    return <Text>...loading</Text>;
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        {/* <Image
-          style={styles.categoryImage}
-          source={require('../../assets/logo.png')}
-        /> */}
+        <Image style={styles.categoryImage} source={source} />
       </View>
       <View style={styles.jobHeadingRow}>
         <Text style={styles.jobHeading}>{currentJob.title}</Text>
@@ -148,7 +158,7 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
           <Text>{categories[currentCategory].icon}</Text>
         </View>
         <View style={styles.statusCards}>
-          <Text>Status - in progress or complete</Text>
+          <Text>Status</Text>
         </View>
         <View style={styles.statusCards}>
           <Text>£{currentJob.price.toFixed(2)}</Text>
@@ -219,7 +229,7 @@ const styles = StyleSheet.create({
 
   //---- CONTAINER STYLING ----//
   imageContainer: {
-    backgroundColor: 'grey',
+    // backgroundColor: 'grey',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height * 0.3,
     marginVertical: 10,
@@ -249,6 +259,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     borderRadius: 15,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 
   //---- ROW STYLING ----//

@@ -12,7 +12,7 @@ export const Cleaning = () => {
 export const Delivery = () => {
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/Delivery.jpeg')} style={styles.image} />
+      <Image source={require('../assets/Delivery.png')} style={styles.image} />
     </View>
   );
 };
@@ -36,7 +36,7 @@ export const Garden = () => {
 export const Pets = () => {
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/Pets.webp')} style={styles.image} />
+      <Image source={require('../assets/Pets.png')} style={styles.image} />
     </View>
   );
 };

@@ -209,12 +209,40 @@ export default function App() {
                     </SocketContext.Provider>
                   )}
                 </Tab.Screen>
+
+                <Tab.Screen name="Chat" options={notifications}>
+                  {() => (
+                    <SocketContext.Provider value={{ socket }}>
+                      <SetNotificationContext.Provider value={setNotifications}>
+                        <Stack.Navigator>
+                          <Stack.Screen
+                            name="ChatLogScreen"
+                            component={ChatLogScreen}
+                          />
+                          <Stack.Screen
+                            name="JobChatScreen"
+                            component={JobChatScreen}
+                          />
+                          <Stack.Screen
+                            name="JobScreen"
+                            component={JobScreen}
+                          />
+                        </Stack.Navigator>
+                      </SetNotificationContext.Provider>
+                    </SocketContext.Provider>
+                  )}
+                </Tab.Screen>
+
                 <Tab.Screen name="Account" options={{ headerShown: false }}>
                   {() => (
                     <Stack.Navigator>
                       <Stack.Screen
                         name="MyAccountScreen"
                         component={MyAccountScreen}
+                      />
+                      <Stack.Screen
+                        name="JobLogScreen"
+                        component={JobLogScreen}
                       />
                       <Stack.Screen
                         name="EditNameScreen"
