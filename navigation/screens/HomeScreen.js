@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { PostJobScreen } from './PostJobScreen';
-import { SeeMoreJobsScreen } from './SeeMoreJobsScreen';
 import { Map } from '../../components/Map';
 import { AutoFocus } from 'expo-camera';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Custom Fonts
 import AppLoading from 'expo-app-loading';
@@ -25,6 +25,69 @@ import {
 const HomeStack = createNativeStackNavigator();
 
 export const HomeScreen = ({ navigation }) => {
+  const [categories, setCategories] = React.useState([
+    {
+      label: 'Cleaning',
+      value: 'Cleaning',
+      icon: (
+        <MaterialIcons
+          style={styles.icon}
+          name={'cleaning-services'}
+          size={18}
+        />
+      ),
+    },
+    {
+      label: 'Delivery',
+      value: 'Delivery',
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'truck-delivery-outline'}
+          size={18}
+        />
+      ),
+    },
+    {
+      label: 'DIY',
+      value: 'DIY',
+      icon: (
+        <MaterialCommunityIcons style={styles.icon} name={'tools'} size={18} />
+      ),
+    },
+    {
+      label: 'Garden',
+      value: 'Garden',
+      icon: <MaterialIcons style={styles.icon} name={'grass'} size={18} />,
+    },
+    {
+      label: 'Pets',
+      value: 'Pets',
+      icon: <MaterialIcons style={styles.icon} name={'pets'} size={18} />,
+    },
+    {
+      label: 'Shopping',
+      value: 'Shopping',
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'shopping-outline'}
+          size={18}
+        />
+      ),
+    },
+    {
+      label: 'Other',
+      value: 'Other',
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'dots-horizontal'}
+          size={18}
+        />
+      ),
+    },
+  ]);
   return (
     <View style={styles.container}>
       <View style={styles.mapBackground}>
@@ -32,7 +95,9 @@ export const HomeScreen = ({ navigation }) => {
       </View>
       <Pressable
         style={styles.postJob}
-        onPressOut={() => navigation.navigate(PostJobScreen)}>
+        onPressOut={() =>
+          navigation.navigate('PostJobScreen', { categories: categories })
+        }>
         <View style={styles.postAccent}></View>
         <View style={styles.cardGroup}>
           <Text style={styles.cardHeader}>Post a Job</Text>
@@ -43,7 +108,9 @@ export const HomeScreen = ({ navigation }) => {
       </Pressable>
       <Pressable
         style={styles.seeJobs}
-        onPressOut={() => navigation.navigate(SeeMoreJobsScreen)}>
+        onPressOut={() =>
+          navigation.navigate('SeeMoreJobsScreen', { categories: categories })
+        }>
         <View style={styles.seeAccent}></View>
         <View style={styles.cardGroup}>
           <Text style={styles.cardHeader}>See More Jobs</Text>

@@ -7,6 +7,7 @@ import {
   TextInput,
   StyleSheet,
   View,
+  LogBox,
 } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
@@ -47,16 +48,13 @@ const validation = yup.object().shape({
     .max(350, 'Max length 350 characters.'),
 });
 
-export const PostJobScreen = ({ navigation }) => {
-  const [categories, setCategories] = React.useState([
-    { label: 'Cleaning', value: 'Cleaning' },
-    { label: 'Delivery', value: 'Delivery' },
-    { label: 'DIY', value: 'DIY' },
-    { label: 'Garden', value: 'Garden' },
-    { label: 'Pets', value: 'Pets' },
-    { label: 'Shopping', value: 'Shopping' },
-    { label: 'Other', value: 'Other' },
-  ]);
+//ignoring a warning about passing data in params
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+
+export const PostJobScreen = ({ route, navigation }) => {
+  const { categories } = route.params;
   const [currentJob, setCurrentJob] = React.useState([]);
   // global user context
   const user = useContext(AuthContext);

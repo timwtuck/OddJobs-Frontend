@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext, setAuthContext } from '../../App';
 import {
   Text,
@@ -10,80 +10,18 @@ import {
   ScrollView,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { getAllJobs } from '../../api';
+import { getAllJobs, getJobsByCategory } from '../../api';
 import { Map } from '../../components/Map';
 import { Platform } from 'expo-modules-core';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const SeeMoreJobsScreen = ({ navigation }) => {
-  const [jobs, setJobs] = React.useState([]);
-  const [categories, setCategories] = React.useState([
-    {
-      label: 'Cleaning',
-      value: 'Cleaning',
-      icon: (
-        <MaterialIcons
-          style={styles.icon}
-          name={'cleaning-services'}
-          size={18}
-        />
-      ),
-    },
-    {
-      label: 'Delivery',
-      value: 'Delivery',
-      icon: (
-        <MaterialCommunityIcons
-          style={styles.icon}
-          name={'truck-delivery-outline'}
-          size={18}
-        />
-      ),
-    },
-    {
-      label: 'DIY',
-      value: 'DIY',
-      icon: (
-        <MaterialCommunityIcons style={styles.icon} name={'tools'} size={18} />
-      ),
-    },
-    {
-      label: 'Garden',
-      value: 'Garden',
-      icon: <MaterialIcons style={styles.icon} name={'grass'} size={18} />,
-    },
-    {
-      label: 'Pets',
-      value: 'Pets',
-      icon: <MaterialIcons style={styles.icon} name={'pets'} size={18} />,
-    },
-    {
-      label: 'Shopping',
-      value: 'Shopping',
-      icon: (
-        <MaterialCommunityIcons
-          style={styles.icon}
-          name={'shopping-outline'}
-          size={18}
-        />
-      ),
-    },
-    {
-      label: 'Other',
-      value: 'Other',
-      icon: (
-        <MaterialCommunityIcons
-          style={styles.icon}
-          name={'dots-horizontal'}
-          size={18}
-        />
-      ),
-    },
-  ]);
+export const SeeMoreJobsScreen = ({ route, navigation }) => {
+  const [jobs, setJobs] = useState([]);
+
+  const { categories } = route.params;
+
   const isFocused = useIsFocused();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllJobs().then(jobsFromApi => {
       setJobs(jobsFromApi);
     });
@@ -111,18 +49,31 @@ export const SeeMoreJobsScreen = ({ navigation }) => {
           bottom: 20,
           right: 20,
         }}>
+        <Pressable
+          key={'all'}
+          style={styles.filterItem}
+          onPressOut={() => {
+            getAllJobs().then(jobsFromApi => {
+              setJobs(jobsFromApi);
+            });
+          }}>
+          <Text>Show all</Text>
+        </Pressable>
         {categories.map((category, index) => (
           <Pressable
             key={index}
             style={styles.filterItem}
             onPressOut={() => {
-              console.log('pressed');
+              getJobsByCategory(category.label).then(jobsFromApi => {
+                setJobs(jobsFromApi);
+              });
             }}>
             {category.icon}
             <Text>{category.label}</Text>
           </Pressable>
         ))}
       </ScrollView>
+
       <View style={styles.list}>
         <FlatList
           data={jobs}
@@ -147,10 +98,12 @@ export const SeeMoreJobsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   list: {
     flex: 1,
     backgroundColor: 'green',
@@ -158,6 +111,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 30,
   },
+
   filterItem: {
     flexDirection: 'row',
     backgroundColor: '#fff',
@@ -169,10 +123,8 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#c7f9cc',
-
     borderRadius: 15,
     width: '90%',
-    // height: 130,
     marginBottom: 20,
     padding: 10,
     paddingLeft: 15,
