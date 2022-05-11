@@ -35,7 +35,7 @@ export const Map = () => {
           .split(' ')
           .join('%20')}&key=${REACT_APP_API_KEY}`,
       );
-      
+
       setUserLocation(userPin.data.results[0].geometry.location);
     });
   }, []);
