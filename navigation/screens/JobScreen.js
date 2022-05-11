@@ -37,6 +37,8 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const JobScreen = ({ route, navigation: { goBack } }) => {
   // global user context
@@ -44,13 +46,63 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
   // global user context
 
   const [currentJob, setCurrentJob] = useState({});
-
+  const [currentCategory, setCurrentCategory] = useState('');
   const { job_id } = route.params;
+  const categories = {
+    Cleaning: {
+      icon: (
+        <MaterialIcons
+          style={styles.icon}
+          name={'cleaning-services'}
+          size={18}
+        />
+      ),
+    },
+    Delivery: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'truck-delivery-outline'}
+          size={18}
+        />
+      ),
+    },
+    DIY: {
+      icon: (
+        <MaterialCommunityIcons style={styles.icon} name={'tools'} size={18} />
+      ),
+    },
+    Garden: {
+      icon: <MaterialIcons style={styles.icon} name={'grass'} size={18} />,
+    },
+    Pets: {
+      icon: <MaterialIcons style={styles.icon} name={'pets'} size={18} />,
+    },
+    Shopping: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'shopping-outline'}
+          size={18}
+        />
+      ),
+    },
+    Other: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'dots-horizontal'}
+          size={18}
+        />
+      ),
+    },
+  };
 
-  useEffect(() => {
-    getSingleJob(job_id).then(jobFromApi => {
-      setCurrentJob(jobFromApi);
-    });
+  useEffect(async () => {
+    const jobFromApi = await getSingleJob(job_id);
+
+    setCurrentJob(jobFromApi);
+    setCurrentCategory(jobFromApi.category);
   }, [job_id]);
 
   const showConfirmDialog = () => {
@@ -74,6 +126,8 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
     );
   };
 
+  if (currentCategory === '') return <Text>...loading</Text>;
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -91,13 +145,13 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
       <Text style={styles.jobDescription}>{currentJob.description}</Text>
       <View style={styles.jobStatusRow}>
         <View style={styles.statusCards}>
-          <Text>Category</Text>
+          <Text>{categories[currentCategory].icon}</Text>
         </View>
         <View style={styles.statusCards}>
           <Text>Status - in progress or complete</Text>
         </View>
         <View style={styles.statusCards}>
-          <Text>Token - can edit</Text>
+          <Text>£{currentJob.price.toFixed(2)}</Text>
         </View>
         <View style={styles.statusCards}>
           <Text>Chat - toggle visibility</Text>
