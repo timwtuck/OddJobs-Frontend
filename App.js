@@ -47,9 +47,14 @@ import { EditNameScreen } from './navigation/screens/EditNameScreen';
 import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
 import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
+import {setUpSocket, setNotificationState} from './utils.js';
+import { getUserMessages } from './api';
+
 // global login context
 export const AuthContext = React.createContext(null);
 export const setAuthContext = React.createContext(null);
+export const SocketContext = React.createContext(null);
+export const SetNotificationContext = React.createContext(null);
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -64,8 +69,41 @@ export default function App() {
     Inter_900Black,
   });
 
-  // Login State
+  // Login, Socket and Notification State
   const [loggedIn, setLoggedIn] = React.useState(null);
+  const [socket, setSocket] = React.useState(null);
+
+  const [notifications, setNotifications] = React.useState(
+    { 
+      headerShown: false,
+      tabBarLabel: "Messages",
+    }
+  );
+
+  const onNewNotification = (fromUser) => {
+
+    if (inPrivateChat){
+      return;
+    }
+
+    setNotificationState(setNotifications, 1, false);
+  }
+
+  React.useEffect( async () => {
+
+    if(!loggedIn){ // need userId to set up the socket
+      // if socket already exists, disconnect it
+      return;
+    } 
+
+    setUpSocket(setSocket, loggedIn._id, onNewNotification);
+    const messages = await getUserMessages(loggedIn._id);
+
+    const allNotifications = messages.reduce((sum, m) => sum += m.unread, 0);
+    setNotificationState(setNotifications, allNotifications, true);
+
+  }, [loggedIn]);
+
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -212,7 +250,25 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                <Tab.Screen name="Chat" component={ChatLogScreen} />
+                <Tab.Screen name="Chat" options={notifications}>
+                 {() => (
+                   <SocketContext.Provider value={{socket}}>
+                     <SetNotificationContext.Provider value={setNotifications}>
+                      <Stack.Navigator>
+                        <Stack.Screen
+                          name="ChatLogScreen"
+                          component={ChatLogScreen}
+                        />
+                        <Stack.Screen
+                          name="JobChatScreen"
+                          component={JobChatScreen}
+                        />
+                        <Stack.Screen name="JobScreen" component={JobScreen} />
+                      </Stack.Navigator>
+                    </SetNotificationContext.Provider>
+                  </SocketContext.Provider>
+                  )}
+                  </Tab.Screen>
                 <Tab.Screen name="Account" options={{ headerShown: false }}>
                   {() => (
                     <Stack.Navigator>

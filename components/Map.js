@@ -35,13 +35,15 @@ export const Map = () => {
           .split(' ')
           .join('%20')}&key=${REACT_APP_API_KEY}`,
       );
+      
       setUserLocation(userPin.data.results[0].geometry.location);
     });
   }, []);
 
-  if (jobInfo.length === 0) {
+  if (jobInfo.length === 0 || !userLocation.lat || !userLocation.lng) {
     return <Text>...loading</Text>;
   } else if (jobInfo.length > 0) {
+
     return (
       <MapView
         style={styles.map}
