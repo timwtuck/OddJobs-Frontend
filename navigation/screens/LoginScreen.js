@@ -29,7 +29,6 @@ import { setAuthContext } from '../../App';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { getAllUsers } from '../../api';
-import { SignupScreen } from './SignupScreen';
 
 export const LoginScreen = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -122,6 +121,8 @@ export const LoginScreen = ({ navigation }) => {
                 Login
               </Text>
               <TextInput
+                keyboardType="email-address"
+                autoCapitalize="none"
                 placeholder="JohnDoe@Emample.com"
                 style={styles.formInput}
                 onChangeText={formikProps.handleChange('email')}

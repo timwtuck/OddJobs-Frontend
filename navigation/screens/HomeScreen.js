@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Pressable } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PostJobScreen } from './PostJobScreen';
@@ -30,28 +30,30 @@ export const HomeScreen = ({ navigation }) => {
       <View style={styles.mapBackground}>
         <Map />
       </View>
-      <Pressable
-        style={styles.postJob}
-        onPressOut={() => navigation.navigate(PostJobScreen)}>
-        <View style={styles.postAccent}></View>
-        <View style={styles.cardGroup}>
-          <Text style={styles.cardHeader}>Post a Job</Text>
-          <Text style={styles.cardSubText}>
-            Getting odd jobs done has never been this easy!
-          </Text>
-        </View>
-      </Pressable>
-      <Pressable
-        style={styles.seeJobs}
-        onPressOut={() => navigation.navigate(SeeMoreJobsScreen)}>
-        <View style={styles.seeAccent}></View>
-        <View style={styles.cardGroup}>
-          <Text style={styles.cardHeader}>See More Jobs</Text>
-          <Text style={styles.cardSubText}>
-            Feeling handy? Join the community and complete an OddJob.
-          </Text>
-        </View>
-      </Pressable>
+      <ScrollView style={styles.scrollView}>
+        <Pressable
+          style={styles.postJob}
+          onPressOut={() => navigation.navigate(PostJobScreen)}>
+          <View style={styles.postAccent}></View>
+          <View style={styles.cardGroup}>
+            <Text style={styles.cardHeader}>Post a Job</Text>
+            <Text style={styles.cardSubText}>
+              Getting odd jobs done has never been this easy!
+            </Text>
+          </View>
+        </Pressable>
+        <Pressable
+          style={styles.seeJobs}
+          onPressOut={() => navigation.navigate(SeeMoreJobsScreen)}>
+          <View style={styles.seeAccent}></View>
+          <View style={styles.cardGroup}>
+            <Text style={styles.cardHeader}>See More Jobs</Text>
+            <Text style={styles.cardSubText}>
+              Feeling handy? Join the community and complete an OddJob.
+            </Text>
+          </View>
+        </Pressable>
+      </ScrollView>
     </View>
   );
 };
@@ -66,7 +68,9 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
   },
-
+  scrollView: {
+    paddingLeft: 10,
+  },
   mapBackground: {
     width: '90%',
     height: '48%',
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FFEDDF',
     borderRadius: 15,
-    width: '90%',
+    width: '95%',
     height: 130,
     marginBottom: 20,
     alignItems: 'center',
@@ -109,14 +113,14 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     backgroundColor: '#FFEDDF50',
     borderRadius: 15,
-    width: '90%',
+    width: '95%',
     height: 130,
     marginBottom: 20,
     alignItems: 'center',
   },
   cardGroup: {
     flexDirection: 'column',
-    width: '100%',
+    width: '80%',
     justifyContent: 'flex-start',
     marginLeft: 15,
   },
@@ -128,6 +132,6 @@ const styles = StyleSheet.create({
   cardSubText: {
     fontSize: 12,
     flexShrink: 1,
-    // flexWrap: 'wrap',
+    flexWrap: 'wrap',
   },
 });
