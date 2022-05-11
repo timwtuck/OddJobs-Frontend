@@ -29,8 +29,33 @@ export const getSingleUser = user_id => {
 };
 
 export const getUserMessages = user_id => {
-  return oddJobsApi.get(`/messages/chats/${user_id}`).then(({ data }) => {
-    return data.message;
+
+  return oddJobsApi.get(`/messages/chats/${user_id}`)
+    .then(({ data }) => {
+      const promises = data.message.map(m => getSingleMessage(m._id));
+      return Promise.all(promises);
+    })
+    .then(allMessages => {
+
+    // fitler to format data as wanted
+    const formattedMessages = allMessages.map(message => { 
+      
+      const messageInfo = {_id: message._id};
+
+      if(message.users[0].userId._id === user_id) {
+
+        messageInfo.user = message.users[1].userId;
+        messageInfo.unread = message.users[0].unread;
+      } 
+      else {
+        messageInfo.user = message.users[0].userId;
+        messageInfo.unread = message.users[1].unread;
+      }
+
+      return messageInfo;
+    });
+
+    return formattedMessages;
   });
 };
 

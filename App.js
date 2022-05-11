@@ -47,6 +47,7 @@ import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
 import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
 import {setUpSocket, setNotificationState} from './utils.js';
+import { getUserMessages } from './api';
 
 // global login context
 export const AuthContext = React.createContext(null);
@@ -70,7 +71,6 @@ export default function App() {
   // Login, Socket and Notification State
   const [loggedIn, setLoggedIn] = React.useState(null);
   const [socket, setSocket] = React.useState(null);
-  const [inPrivateChat, setInPrivateChat] = React.useState(false);
 
   const [notifications, setNotifications] = React.useState(
     { 
@@ -81,25 +81,26 @@ export default function App() {
 
   const onNewNotification = (fromUser) => {
 
-    console.log('In chat>>> ', inPrivateChat)
-
     if (inPrivateChat){
-      console.log('In Private chat, will ignore');
       return;
     }
 
-    console.log(`notification from ${fromUser}`);
     setNotificationState(setNotifications, 1, false);
   }
 
-  React.useEffect( () => {
+  React.useEffect( async () => {
 
     if(!loggedIn){ // need userId to set up the socket
       // if socket already exists, disconnect it
       return;
     } 
 
-   setUpSocket(setSocket, loggedIn._id, onNewNotification);
+    setUpSocket(setSocket, loggedIn._id, onNewNotification);
+    const messages = await getUserMessages(loggedIn._id);
+
+    const allNotifications = messages.reduce((sum, m) => sum += m.unread, 0);
+    setNotificationState(setNotifications, allNotifications, true);
+
   }, [loggedIn]);
 
 

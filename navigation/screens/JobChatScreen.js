@@ -69,13 +69,11 @@ export const JobChatScreen = ({route, navigation}) => {
       //   return; // if it starts crashing, uncomment this
 
       // Do something when the screen is focused
-        console.log('joining....')
         socket.socket.emit('join-private-chat', {user: loginState._id}); 
 
       return () => {
         
         // Do something when the screen is unfocused
-        console.log('leaving....')
         socket.socket.emit('leave-private-chat',  {user: loginState._id});
       };
     }, []));

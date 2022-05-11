@@ -19,32 +19,10 @@ export const ChatLogScreen = ({ navigation }) => {
 
   React.useEffect(async () => {
 
-      const res = await getUserMessages(loginState._id);
-
-      const promises = res.map(m => getSingleMessage(m._id));
-      const allMessages = await Promise.all(promises);
-
-      // fitler to format data as wanted
-      const toSet = allMessages.map(message => { 
-        
-        const convoBox = {_id: message._id};
-
-        if(message.users[0].userId._id === loginState._id) {
-
-          convoBox.user = message.users[1].userId;
-          convoBox.unread = message.users[0].unread;
-        } 
-        else {
-          convoBox.user = message.users[0].userId;
-          convoBox.unread = message.users[1].unread;
-        }
-
-        return convoBox;
-      });
+    const toSet = await getUserMessages(loginState._id);
 
     // count the number of notifications for the home bar
     const allNotifications = toSet.reduce((sum, m) => sum += m.unread, 0);
-    console.log(allNotifications);
     setNotificationState(setNotifications, allNotifications, true);
 
     setMessages(toSet);
@@ -62,8 +40,6 @@ export const ChatLogScreen = ({ navigation }) => {
 
         return update;
       });
-
-      console.log('I am ', loginState.fullName, 'and I am focused: ', navigation.isFocused())
     });
 
   }, []);
