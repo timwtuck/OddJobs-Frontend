@@ -153,13 +153,14 @@ export const LoginScreen = ({ navigation }) => {
               ) : (
                 <Pressable
                   onPress={formikProps.handleSubmit}
-                  style={{
+                  style={({pressed}) => [{
                     borderColor: '#AA6C39',
                     borderWidth: 2,
                     borderRadius: 15,
                     width: 100,
                     alignSelf: 'center',
-                  }}>
+                  }, {backgroundColor: pressed ?
+                    '#FFEDDF' : '#fff'}]}>
                   <Text
                     style={{
                       color: '#AA6C39',
