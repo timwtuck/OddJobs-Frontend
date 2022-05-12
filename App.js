@@ -202,7 +202,7 @@ export default function App() {
                           <Stack.Screen
                             name="JobChatScreen"
                             component={JobChatScreen}
-                            options={{ title: 'Chat' }}
+                            options={{ title: '' }}
                           />
                           <Stack.Screen
                             name="JobScreen"
