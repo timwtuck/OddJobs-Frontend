@@ -184,7 +184,11 @@ export default function App() {
                         component={SeeMoreJobsScreen}
                         options={{ title: 'See Jobs' }}
                       />
-                      <Stack.Screen name="JobScreen" component={JobScreen} />
+                      <Stack.Screen
+                        name="JobScreen"
+                        component={JobScreen}
+                        options={{ title: 'Jobs' }}
+                      />
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
@@ -197,14 +201,17 @@ export default function App() {
                           <Stack.Screen
                             name="ChatLogScreen"
                             component={ChatLogScreen}
+                            options={{ title: 'Messages' }}
                           />
                           <Stack.Screen
                             name="JobChatScreen"
                             component={JobChatScreen}
+                            options={{ title: 'Chat' }}
                           />
                           <Stack.Screen
                             name="JobScreen"
                             component={JobScreen}
+                            options={{ title: 'Job' }}
                           />
                         </Stack.Navigator>
                       </SetNotificationContext.Provider>
@@ -220,26 +227,32 @@ export default function App() {
                           <Stack.Screen
                             name="MyAccountScreen"
                             component={MyAccountScreen}
+                            options={{ title: 'My Account' }}
                           />
                           <Stack.Screen
                             name="ChatLogScreen"
                             component={ChatLogScreen}
+                            options={{ title: 'Messages' }}
                           />
                           <Stack.Screen
                             name="JobLogScreen"
                             component={JobLogScreen}
+                            options={{ title: 'Jobs' }}
                           />
                           <Stack.Screen
                             name="EditNameScreen"
                             component={EditNameScreen}
+                            options={{ title: 'Account' }}
                           />
                           <Stack.Screen
                             name="EditUsernameScreen"
                             component={EditUsernameScreen}
+                            options={{ title: 'Account' }}
                           />
                           <Stack.Screen
                             name="EditPostcodeScreen"
                             component={EditPostcodeScreen}
+                            options={{ title: 'Account' }}
                           />
                         </Stack.Navigator>
                       </SetNotificationContext.Provider>
