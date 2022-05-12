@@ -221,36 +221,6 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
         )}
       </View>
     </View>
-
-    // <View style={styles.jobContainer}>
-    //   {currentJob.category === 'Cleaning' && <Cleaning />}
-    //   {currentJob.category === 'Delivery' && <Delivery />}
-    //   {currentJob.category === 'DIY' && <DIY />}
-    //   {currentJob.category === 'Garden' && <Garden />}
-    //   {currentJob.category === 'Pets' && <Pets />}
-    //   {currentJob.category === 'Shopping' && <Shopping />}
-    //   {currentJob.category === 'Other' && (
-    //     <View style={styles.imageContainer}>
-    //       <Image
-    //         style={styles.categoryImage}
-    //         source={require('../../assets/logo.png')}
-    //       />
-    //     </View>
-    //   )}
-    //   {/* </View> */}
-    //   <View style={styles.imageContainer}>
-    //     <Text style={styles.jobHeading}>{currentJob.title}</Text>
-    //     <Text style={styles.jobCategory}>{currentJob.category}</Text>
-    //     <Text style={styles.jobDescription}>{currentJob.description}</Text>
-    //     <Text style={styles.jobPrice}>{currentJob.price}</Text>
-    //   </View>
-    //   {/* {currentJob.user_id === user._id && (
-    //     <Button title="🗒" onPress={onPressLearnMore} />
-    //   )} */}
-    //   {currentJob.user_id === user._id && (
-    //     <Button title="🗑" onPress={() => showConfirmDialog()} />
-    //   )}
-    // </View>
   );
 };
 
@@ -260,8 +230,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     flexDirection: 'column',
-    // justifyContent: 'flex-start',
-    // alignItems: 'center',
   },
 
   //---- CONTAINER STYLING ----//
@@ -282,7 +250,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: '95%',
     backgroundColor: 'white',
-    // marginTop: 5,
     marginHorizontal: 5,
     borderRadius: 10,
   },
@@ -303,14 +270,12 @@ const styles = StyleSheet.create({
   jobHeadingRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // backgroundColor: 'pink',
     alignItems: 'center',
   },
   jobStatusRow: {
     flexDirection: 'row',
     marginHorizontal: 20,
     justifyContent: 'space-between',
-    // backgroundColor: 'pink',
     alignItems: 'center',
     height: 100,
   },
