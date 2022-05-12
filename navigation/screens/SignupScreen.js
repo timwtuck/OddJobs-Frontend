@@ -116,10 +116,7 @@ export const SignupScreen = ({ navigation }) => {
                 }}>
                 Odd Jobs
               </Text>
-              <Logo />
-              {/*
-             full Name
-             */}
+              <Text style={{ textAlign: 'center', fontSize: 150 }}>🎩</Text>
               <Text
                 style={{
                   fontFamily: 'Inter_300Light',
@@ -128,6 +125,9 @@ export const SignupScreen = ({ navigation }) => {
                 }}>
                 Sign Up
               </Text>
+              {/*
+               full Name
+               */}
               <TextInput
                 placeholder="Full Name"
                 style={styles.formInput}
