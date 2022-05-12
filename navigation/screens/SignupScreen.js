@@ -197,13 +197,16 @@ export const SignupScreen = ({ navigation }) => {
               ) : (
                 <Pressable
                   onPress={formikProps.handleSubmit}
-                  style={{
-                    borderColor: '#AA6C39',
-                    borderWidth: 2,
-                    borderRadius: 15,
-                    width: 100,
-                    alignSelf: 'center',
-                  }}>
+                  style={({ pressed }) => [
+                    {
+                      borderColor: '#AA6C39',
+                      borderWidth: 2,
+                      borderRadius: 15,
+                      width: 100,
+                      alignSelf: 'center',
+                    },
+                    { backgroundColor: pressed ? '#FFEDDF' : '#fff' },
+                  ]}>
                   <Text
                     style={{
                       color: '#AA6C39',
