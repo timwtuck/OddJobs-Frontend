@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   View,
+  Image,
   StyleSheet,
   Pressable,
   Dimensions,
@@ -25,7 +26,8 @@ export const MyAccountScreen = ({ navigation }) => {
           <Text>Logout</Text>
         </Pressable>
         <Pressable onPressOut={() => alert('offer camera or upload photo')}>
-          <View style={styles.avatar}></View>
+          {/* <View style={styles.avatar}></View> */
+          <Image style={styles.avatar} source={require(`../../assets/tim.png`)}/>}
         </Pressable>
         <Text style={styles.username}>Username</Text>
         <View style={styles.buttonRow}>

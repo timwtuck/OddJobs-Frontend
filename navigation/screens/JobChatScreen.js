@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Button,
+  Image,
   Text,
   TextInput,
   View,
@@ -173,7 +174,7 @@ export const JobChatScreen = ({ route, navigation }) => {
             conversation.map(convo => (
               <View key={convo._id} style={[{ flexDirection: 'row' }, convo.style]}>
                 {convo.style === styles.textBox_otherUser && (
-                  <View style={styles.avatar} /> // add image code here
+                  <Image style={styles.avatar} source={require(`../../assets/shaun.png`)}/>
                 )}
                 <View key={convo._id} style={[styles.textBoxes]}>
                   <Text style={styles.bodyText}>{convo.content}</Text>
