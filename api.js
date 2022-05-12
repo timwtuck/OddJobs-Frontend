@@ -86,7 +86,7 @@ export const getSingleMessage = (message_id, userId) => {
     .get(path)
     .then(({ data }) => {
       return data.message;
-    });
+    })
 };
 
 //need to check what is being sent from the input and maybe edit the argument??
@@ -108,6 +108,22 @@ export const postUser = (username, fullName, email, password) => {
     return data.user;
   });
 };
+
+export const createConversation = (user1, user2) => {
+
+  const users = {
+    users: [
+      {userId: user1},
+      {userId: user2}
+    ]
+  };
+
+  return oddJobsApi.post('/messages', users)
+    .then(({data}) => {
+      return data.message;
+    })
+    .catch(err => console.log(err))
+}
 
 //need to check what is being sent from the input and maybe edit the argument??
 export const postMessage = (userId, messageId, message) => {

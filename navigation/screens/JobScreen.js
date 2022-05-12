@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../App';
+import { AllMessagesContext } from '../../App';
 import {
   Button,
   Dimensions,
@@ -13,8 +14,7 @@ import {
   Switch,
   Systrace,
 } from 'react-native';
-import { getSingleJob } from '../../api';
-import { deleteJob } from '../../api';
+import { getSingleJob, deleteJob, createConversation } from '../../api';
 import {
   Cleaning,
   Delivery,
@@ -41,10 +41,12 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { create } from 'yup/lib/Reference';
 
-export const JobScreen = ({ route, navigation: { goBack } }) => {
-  // global user context
+export const JobScreen = ({ route,navigation, navigation: { goBack } }) => {
+  // global user & messages context
   const user = useContext(AuthContext);
+  const messages = useContext(AllMessagesContext);
   // global user context
 
   const [currentJob, setCurrentJob] = useState({});
@@ -130,6 +132,44 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
     );
   };
 
+  const startConversation = () => {
+
+    if (user._id === currentJob.user_id)
+      return;
+
+    // console.log(messages);
+    // console.log(currentJob);
+
+    const convoPath = 
+      {
+        screen: 'JobChatScreen',
+        title: '',
+      };
+
+    for (const message of messages){
+      if (message.user._id === currentJob.user_id){
+        console.log(message)
+        // chat already exists, go to chat screen
+        convoPath.params = { messageId: message._id };
+        console.log('messageId --> ',message._id)
+        navigation.navigate('Chat', convoPath);
+        return;
+      }
+    }
+
+    // chat doesn't exist, set it up
+    createConversation(user._id, currentJob.user_id)
+      .then(conversation => {
+        console.log('whole convo --> ',conversation)
+        convoPath.params = { messageId: conversation._id }
+        console.log('convoId --> ',conversation._id)
+        navigation.navigate('Chat', convoPath);
+      })
+      .catch(() => {
+        alert("Cannot Start Conversation, try again");
+      });
+  }
+
   let source = '';
   if (currentCategory === 'Cleaning')
     source = require(`../../assets/Cleaning.png`);
@@ -180,9 +220,11 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
         <View style={styles.statusCards}>
           <Text style={{ fontSize: 20 }}>£{currentJob.price.toFixed(2)}</Text>
         </View>
-        <View style={styles.statusCards}>
+        <Pressable style={({pressed}) => [styles.statusCards, 
+          {backgroundColor: pressed ? '#FEC89990' : '#FEC899'}]}
+          onPressOut={() => startConversation()}>
           <Ionicons name={'chatbubbles-outline'} size={40} />
-        </View>
+        </Pressable>
       </View>
       <View style={styles.deleteButtonRow}>
         {currentJob.user_id === user._id && (

@@ -172,28 +172,30 @@ export default function App() {
                 })}>
                 <Tab.Screen name="Home" options={{ headerShown: false }}>
                   {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="HomeScreen"
-                        component={HomeScreen}
-                        options={{ title: 'Home' }}
-                      />
-                      <Stack.Screen
-                        name="PostJobScreen"
-                        component={PostJobScreen}
-                        options={{ title: 'Post a Job' }}
-                      />
-                      <Stack.Screen
-                        name="SeeMoreJobsScreen"
-                        component={SeeMoreJobsScreen}
-                        options={{ title: 'See Jobs' }}
-                      />
-                      <Stack.Screen
-                        name="JobScreen"
-                        component={JobScreen}
-                        options={{ title: 'Jobs' }}
-                      />
-                    </Stack.Navigator>
+                    <AllMessagesContext.Provider value={messages}>
+                      <Stack.Navigator>        
+                        <Stack.Screen
+                          name="HomeScreen"
+                          component={HomeScreen}
+                          options={{ title: 'Home' }}
+                        />
+                        <Stack.Screen
+                          name="PostJobScreen"
+                          component={PostJobScreen}
+                          options={{ title: 'Post a Job' }}
+                        />
+                        <Stack.Screen
+                          name="SeeMoreJobsScreen"
+                          component={SeeMoreJobsScreen}
+                          options={{ title: 'See Jobs' }}
+                        />
+                        <Stack.Screen
+                          name="JobScreen"
+                          component={JobScreen}
+                          options={{ title: 'Jobs' }}
+                        />
+                      </Stack.Navigator>
+                    </AllMessagesContext.Provider>
                   )}
                 </Tab.Screen>
                 <Tab.Screen name="Chat" options={notifications}>
