@@ -61,6 +61,9 @@ export const AllMessagesContext = React.createContext(null);
 export const SetAllMessagesContext = React.createContext(null);
 
 export default function App() {
+  /// disable app warnings for demo video ///
+  console.disableYellowBox = true;
+
   let [fontsLoaded] = useFonts({
     Inter_100Thin,
     Inter_200ExtraLight,
