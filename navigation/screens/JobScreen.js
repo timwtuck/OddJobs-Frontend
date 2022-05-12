@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Alert,
   Pressable,
+  Switch,
   Systrace,
 } from 'react-native';
 import { getSingleJob } from '../../api';
@@ -37,6 +38,9 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const JobScreen = ({ route, navigation: { goBack } }) => {
   // global user context
@@ -44,13 +48,65 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
   // global user context
 
   const [currentJob, setCurrentJob] = useState({});
-
+  const [currentCategory, setCurrentCategory] = useState('');
+  const [jobStatus, setJobStatus] = useState(false);
   const { job_id } = route.params;
+  const categories = {
+    Cleaning: {
+      icon: (
+        <MaterialIcons
+          style={styles.icon}
+          name={'cleaning-services'}
+          size={40}
+        />
+      ),
+    },
+    Delivery: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'truck-delivery-outline'}
+          size={40}
+        />
+      ),
+    },
+    DIY: {
+      icon: (
+        <MaterialCommunityIcons style={styles.icon} name={'tools'} size={40} />
+      ),
+    },
+    Garden: {
+      icon: <MaterialIcons style={styles.icon} name={'grass'} size={40} />,
+    },
+    Pets: {
+      icon: <MaterialIcons style={styles.icon} name={'pets'} size={40} />,
+    },
+    Shopping: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'shopping-outline'}
+          size={40}
+        />
+      ),
+    },
+    Other: {
+      icon: (
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name={'dots-horizontal'}
+          size={40}
+        />
+      ),
+    },
+  };
 
-  useEffect(() => {
-    getSingleJob(job_id).then(jobFromApi => {
-      setCurrentJob(jobFromApi);
-    });
+  useEffect(async () => {
+    const jobFromApi = await getSingleJob(job_id);
+
+    setCurrentJob(jobFromApi);
+    setCurrentCategory(jobFromApi.category);
+    setJobStatus(jobFromApi.status);
   }, [job_id]);
 
   const showConfirmDialog = () => {
@@ -74,13 +130,40 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
     );
   };
 
+  let source = '';
+  if (currentCategory === 'Cleaning')
+    source = require(`../../assets/Cleaning.png`);
+  if (currentCategory === 'Delivery')
+    source = require(`../../assets/Delivery.png`);
+  if (currentCategory === 'DIY') source = require(`../../assets/DIY.png`);
+  if (currentCategory === 'Garden') source = require(`../../assets/Garden.png`);
+  if (currentCategory === 'Pets') source = require(`../../assets/Pets.png`);
+  if (currentCategory === 'Shopping')
+    source = require(`../../assets/Shopping.png`);
+  if (currentCategory === 'Other') source = require(`../../assets/logo.png`);
+
+  let iconName;
+  let statusText;
+
+  if (jobStatus) {
+    iconName = <Ionicons name="lock-closed-outline" size={40} />;
+    statusText = 'Open job';
+  }
+
+  if (!jobStatus) {
+    iconName = <Ionicons name="lock-open-outline" size={40} />;
+    statusText = 'Close job';
+  }
+
+  if (currentCategory === '' || currentCategory === undefined)
+    return <Text>...loading</Text>;
+
+  const toggleSwitch = () => setJobStatus(previousState => !previousState);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        {/* <Image
-          style={styles.categoryImage}
-          source={require('../../assets/logo.png')}
-        /> */}
+        <Image style={styles.categoryImage} source={source} />
       </View>
       <View style={styles.jobHeadingRow}>
         <Text style={styles.jobHeading}>{currentJob.title}</Text>
@@ -91,65 +174,53 @@ export const JobScreen = ({ route, navigation: { goBack } }) => {
       <Text style={styles.jobDescription}>{currentJob.description}</Text>
       <View style={styles.jobStatusRow}>
         <View style={styles.statusCards}>
-          <Text>Category</Text>
+          {categories[currentCategory].icon}
+        </View>
+        <View style={styles.statusCards}>{iconName}</View>
+        <View style={styles.statusCards}>
+          <Text style={{ fontSize: 20 }}>£{currentJob.price.toFixed(2)}</Text>
         </View>
         <View style={styles.statusCards}>
-          <Text>Status - in progress or complete</Text>
-        </View>
-        <View style={styles.statusCards}>
-          <Text>Token - can edit</Text>
-        </View>
-        <View style={styles.statusCards}>
-          <Text>Chat - toggle visibility</Text>
+          <Ionicons name={'chatbubbles-outline'} size={40} />
         </View>
       </View>
       <View style={styles.deleteButtonRow}>
         {currentJob.user_id === user._id && (
-          <Pressable
-            style={styles.deleteJob}
-            onPress={() => showConfirmDialog()}>
-            <Text
-              style={{
-                fontFamily: 'Inter_600SemiBold',
-                color: '#fff',
-                fontSize: 16,
-              }}>
-              Delete this Job
-            </Text>
-          </Pressable>
+          <>
+            <View style={styles.toggleStatus}>
+              <Text
+                style={{
+                  fontFamily: 'Inter_600SemiBold',
+                  color: '#000000',
+                  fontSize: 16,
+                  padding: 5,
+                }}>
+                {statusText}
+              </Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#FFEDDF' }}
+                thumbColor={jobStatus ? '#FEC899' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={jobStatus}
+              />
+            </View>
+            <Pressable
+              style={styles.deleteJob}
+              onPress={() => showConfirmDialog()}>
+              <Text
+                style={{
+                  fontFamily: 'Inter_600SemiBold',
+                  color: '#fff',
+                  fontSize: 16,
+                }}>
+                Delete this Job
+              </Text>
+            </Pressable>
+          </>
         )}
       </View>
     </View>
-
-    // <View style={styles.jobContainer}>
-    //   {currentJob.category === 'Cleaning' && <Cleaning />}
-    //   {currentJob.category === 'Delivery' && <Delivery />}
-    //   {currentJob.category === 'DIY' && <DIY />}
-    //   {currentJob.category === 'Garden' && <Garden />}
-    //   {currentJob.category === 'Pets' && <Pets />}
-    //   {currentJob.category === 'Shopping' && <Shopping />}
-    //   {currentJob.category === 'Other' && (
-    //     <View style={styles.imageContainer}>
-    //       <Image
-    //         style={styles.categoryImage}
-    //         source={require('../../assets/logo.png')}
-    //       />
-    //     </View>
-    //   )}
-    //   {/* </View> */}
-    //   <View style={styles.imageContainer}>
-    //     <Text style={styles.jobHeading}>{currentJob.title}</Text>
-    //     <Text style={styles.jobCategory}>{currentJob.category}</Text>
-    //     <Text style={styles.jobDescription}>{currentJob.description}</Text>
-    //     <Text style={styles.jobPrice}>{currentJob.price}</Text>
-    //   </View>
-    //   {/* {currentJob.user_id === user._id && (
-    //     <Button title="🗒" onPress={onPressLearnMore} />
-    //   )} */}
-    //   {currentJob.user_id === user._id && (
-    //     <Button title="🗑" onPress={() => showConfirmDialog()} />
-    //   )}
-    // </View>
   );
 };
 
@@ -159,13 +230,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     flexDirection: 'column',
-    // justifyContent: 'flex-start',
-    // alignItems: 'center',
   },
 
   //---- CONTAINER STYLING ----//
   imageContainer: {
-    backgroundColor: 'grey',
+    // backgroundColor: 'grey',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height * 0.3,
     marginVertical: 10,
@@ -181,7 +250,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: '95%',
     backgroundColor: 'white',
-    // marginTop: 5,
     marginHorizontal: 5,
     borderRadius: 10,
   },
@@ -195,26 +263,25 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     borderRadius: 15,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 
   //---- ROW STYLING ----//
   jobHeadingRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // backgroundColor: 'pink',
     alignItems: 'center',
   },
   jobStatusRow: {
     flexDirection: 'row',
     marginHorizontal: 20,
     justifyContent: 'space-between',
-    // backgroundColor: 'pink',
     alignItems: 'center',
     height: 100,
   },
 
   deleteButtonRow: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -266,5 +333,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 20,
     borderRadius: 17,
+  },
+
+  toggleStatus: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginTop: 20,
   },
 });

@@ -12,12 +12,6 @@ import { useContext } from 'react';
 import { AuthContext } from '../../App';
 import { setAuthContext } from '../../App';
 
-import { EditNameScreen } from './EditNameScreen';
-import { EditUsernameScreen } from './EditUsernameScreen';
-import { EditPostcodeScreen } from './EditPostcodeScreen';
-import { JobLogScreen } from './JobLogScreen';
-import { ChatLogScreen } from './ChatLogScreen';
-
 export const MyAccountScreen = ({ navigation }) => {
   // global user context
   const loginState = useContext(AuthContext);
