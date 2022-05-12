@@ -132,7 +132,7 @@ export const JobLogScreen = ({ navigation }) => {
               return (
                 <Pressable
                   key={job._id}
-                  onPressOut={() => {
+                  onLongPress={() => {
                     navigation.navigate('JobScreen', { job_id: job._id });
                   }}>
                   <View style={styles.jobCard} key={job._id}>

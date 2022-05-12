@@ -226,38 +226,42 @@ export default function App() {
                   {() => (
                     <SocketContext.Provider value={{ socket }}>
                       <SetNotificationContext.Provider value={setNotifications}>
-                        <Stack.Navigator>
-                          <Stack.Screen
-                            name="MyAccountScreen"
-                            component={MyAccountScreen}
-                            options={{ title: 'My Account' }}
-                          />
-                          <Stack.Screen
-                            name="ChatLogScreen"
-                            component={ChatLogScreen}
-                            options={{ title: 'Messages' }}
-                          />
-                          <Stack.Screen
-                            name="JobLogScreen"
-                            component={JobLogScreen}
-                            options={{ title: 'Jobs' }}
-                          />
-                          <Stack.Screen
-                            name="EditNameScreen"
-                            component={EditNameScreen}
-                            options={{ title: 'Account' }}
-                          />
-                          <Stack.Screen
-                            name="EditUsernameScreen"
-                            component={EditUsernameScreen}
-                            options={{ title: 'Account' }}
-                          />
-                          <Stack.Screen
-                            name="EditPostcodeScreen"
-                            component={EditPostcodeScreen}
-                            options={{ title: 'Account' }}
-                          />
-                        </Stack.Navigator>
+                        <SetAllMessagesContext.Provider value={setMessages}>
+                          <AllMessagesContext.Provider value={messages}>
+                            <Stack.Navigator>
+                              <Stack.Screen
+                                name="MyAccountScreen"
+                                component={MyAccountScreen}
+                                options={{ title: 'My Account' }}
+                              />
+                              <Stack.Screen
+                                name="ChatLogScreen"
+                                component={ChatLogScreen}
+                                options={{ title: 'Messages' }}
+                              />
+                              <Stack.Screen
+                                name="JobLogScreen"
+                                component={JobLogScreen}
+                                options={{ title: 'Jobs' }}
+                              />
+                              <Stack.Screen
+                                name="EditNameScreen"
+                                component={EditNameScreen}
+                                options={{ title: 'Account' }}
+                              />
+                              <Stack.Screen
+                                name="EditUsernameScreen"
+                                component={EditUsernameScreen}
+                                options={{ title: 'Account' }}
+                              />
+                              <Stack.Screen
+                                name="EditPostcodeScreen"
+                                component={EditPostcodeScreen}
+                                options={{ title: 'Account' }}
+                              />
+                            </Stack.Navigator>
+                          </AllMessagesContext.Provider>
+                        </SetAllMessagesContext.Provider>
                       </SetNotificationContext.Provider>
                     </SocketContext.Provider>
                   )}
