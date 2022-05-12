@@ -187,17 +187,19 @@ const styles = StyleSheet.create({
   },
   cardGroup: {
     flexDirection: 'column',
-    width: '80%',
+    width: '90%',
     justifyContent: 'flex-start',
     marginLeft: 15,
   },
   cardHeader: {
     fontFamily: 'Inter_700Bold',
-    fontSize: 18,
+    fontSize: 20,
     marginVertical: 5,
+    // width: '100%',
   },
+
   cardSubText: {
-    fontSize: 12,
+    fontSize: 14,
     flexShrink: 1,
     flexWrap: 'wrap',
   },

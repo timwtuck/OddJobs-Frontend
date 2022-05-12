@@ -77,10 +77,6 @@ export default function App() {
   });
 
   const onNewNotification = fromUser => {
-    if (inPrivateChat) {
-      return;
-    }
-
     setNotificationState(setNotifications, 1, false);
   };
 
@@ -206,7 +202,7 @@ export default function App() {
                           <Stack.Screen
                             name="JobChatScreen"
                             component={JobChatScreen}
-                            options={{ title: 'Chat' }}
+                            options={{ title: '' }}
                           />
                           <Stack.Screen
                             name="JobScreen"
@@ -218,7 +214,6 @@ export default function App() {
                     </SocketContext.Provider>
                   )}
                 </Tab.Screen>
-
                 <Tab.Screen name="Account" options={{ headerShown: false }}>
                   {() => (
                     <SocketContext.Provider value={{ socket }}>

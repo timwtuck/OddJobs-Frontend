@@ -51,11 +51,16 @@ export const ChatLogScreen = ({ navigation }) => {
           */}
 
         {messages &&
-          messages.map(message => {
+          messages.map((message, i) => {
+            const boxColour = i % 2 ? '#FFEDDF90' : '#FEC89990';
+
             return (
               <Pressable
                 key={message.user.fullName}
-                style={styles.conversation_container}
+                style={({ pressed }) => [
+                  styles.conversation_container,
+                  { backgroundColor: pressed ? '#FEC899' : boxColour },
+                ]}
                 onPressOut={() => {
                   setNotificationState(
                     setNotifications,
@@ -66,13 +71,17 @@ export const ChatLogScreen = ({ navigation }) => {
 
                   navigation.navigate('Chat', {
                     screen: 'JobChatScreen',
+                    title: '',
                     params: { messageId: message._id },
                   });
                 }}>
                 <View>
-                  <Text>{message.user.fullName}</Text>
-                  <Text> Unread: {message.unread}</Text>
+                  <Text style={styles.chatName}>{message.user.fullName}</Text>
+                  <Text style={styles.username}>{message.user.username}</Text>
                 </View>
+                {message.unread > 0 && (
+                  <Text style={styles.unread}>{message.unread}</Text>
+                )}
               </Pressable>
             );
           })}
@@ -94,58 +103,36 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
   },
-  formInput: {
-    borderWidth: 2,
-    borderColor: '#000',
-    width: '80%',
-    marginVertical: 15,
-    padding: 10,
-    borderRadius: 15,
-  },
-  gesture: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '80%',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginBottom: 20,
-  },
-  tokenInfo: {
-    width: '60%',
-    fontSize: 12,
-    color: '#00000080',
-    justifyContent: 'flex-end',
-  },
-  tokenContainer: {
-    width: '40%',
-  },
-  tokenForm: {
-    borderWidth: 2,
-    borderColor: '#000',
-    width: '80%',
-    marginTop: 15,
-    padding: 10,
-    borderRadius: 15,
-  },
-  submit: {
-    padding: 10,
-  },
-  textInput: {
-    borderWidth: 2,
-    borderColor: '#000',
-    width: '80%',
-    height: '25%',
-    marginVertical: 15,
-    paddingTop: 10,
-    padding: 10,
-    borderRadius: 15,
-  },
   conversation_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     borderWidth: 2,
     borderColor: '#000',
     width: '98%',
     marginVertical: 2,
     paddingLeft: 10,
     minHeight: 70,
+    borderRadius: 5,
+  },
+  chatName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  username: {
+    fontSize: 15,
+    fontStyle: 'italic',
+  },
+  unread: {
+    height: 30,
+    width: 30,
+    color: '#FFF',
+    backgroundColor: '#DC143C',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    // alignSelf: 'flex-start',
+    marginTop: 10,
+    marginRight: 10,
+    borderRadius: 50,
   },
 });
