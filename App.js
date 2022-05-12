@@ -45,7 +45,11 @@ import { EditNameScreen } from './navigation/screens/EditNameScreen';
 import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
 import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
-import {setUpSocket, setNotificationState, updateUserMessages} from './utils.js';
+import {
+  setUpSocket,
+  setNotificationState,
+  updateUserMessages,
+} from './utils.js';
 import { getUserMessages } from './api';
 
 // global login context
@@ -74,21 +78,17 @@ export default function App() {
   const [socket, setSocket] = React.useState(null);
   const [messages, setMessages] = React.useState(null);
 
-  const [notifications, setNotifications] = React.useState(
-    { 
-      headerShown: false,
-      tabBarLabel: "Messages",
-    }
-  );
+  const [notifications, setNotifications] = React.useState({
+    headerShown: false,
+    tabBarLabel: 'Messages',
+  });
 
-  const onNewNotification = (fromUser) => {
-    console.log('notification recieved')
+  const onNewNotification = fromUser => {
     setNotificationState(setNotifications, 1, false);
     updateUserMessages(setMessages, setNotifications, loggedIn._id);
-  }
+  };
 
   React.useEffect(async () => {
-
     if (!loggedIn) {
       // need userId to set up the socket
       // if socket already exists, disconnect it
@@ -97,7 +97,6 @@ export default function App() {
 
     setUpSocket(setSocket, loggedIn._id, onNewNotification);
     updateUserMessages(setMessages, setNotifications, loggedIn._id);
-
   }, [loggedIn]);
 
   if (!fontsLoaded) {
@@ -186,33 +185,43 @@ export default function App() {
                         component={SeeMoreJobsScreen}
                         options={{ title: 'See Jobs' }}
                       />
-                      <Stack.Screen name="JobScreen" component={JobScreen} />
+                      <Stack.Screen
+                        name="JobScreen"
+                        component={JobScreen}
+                        options={{ title: 'Jobs' }}
+                      />
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
                 <Tab.Screen name="Chat" options={notifications}>
-                 {() => (
-                   <SocketContext.Provider value={{socket}}>
-                     <SetNotificationContext.Provider value={setNotifications}>
-                       <SetAllMessagesContext.Provider value={setMessages}>
-                         <AllMessagesContext.Provider value={messages}>
-                          <Stack.Navigator>
-                            <Stack.Screen
-                              name="ChatLogScreen"
-                              component={ChatLogScreen}
-                            />
-                            <Stack.Screen
-                              name="JobChatScreen"
-                              component={JobChatScreen}
-                            />
-                            <Stack.Screen name="JobScreen" component={JobScreen} />
-                          </Stack.Navigator>
-                        </AllMessagesContext.Provider>
-                      </SetAllMessagesContext.Provider>
-                    </SetNotificationContext.Provider>
-                  </SocketContext.Provider>
+                  {() => (
+                    <SocketContext.Provider value={{ socket }}>
+                      <SetNotificationContext.Provider value={setNotifications}>
+                        <SetAllMessagesContext.Provider value={setMessages}>
+                          <AllMessagesContext.Provider value={messages}>
+                            <Stack.Navigator>
+                              <Stack.Screen
+                                name="ChatLogScreen"
+                                component={ChatLogScreen}
+                                options={{ title: 'Messages' }}
+                              />
+                              <Stack.Screen
+                                name="JobChatScreen"
+                                component={JobChatScreen}
+                                options={{ title: '' }}
+                              />
+                              <Stack.Screen
+                                name="JobScreen"
+                                component={JobScreen}
+                                options={{ title: 'Job' }}
+                              />
+                            </Stack.Navigator>
+                          </AllMessagesContext.Provider>
+                        </SetAllMessagesContext.Provider>
+                      </SetNotificationContext.Provider>
+                    </SocketContext.Provider>
                   )}
-                  </Tab.Screen>
+                </Tab.Screen>
                 <Tab.Screen name="Account" options={{ headerShown: false }}>
                   {() => (
                     <SocketContext.Provider value={{ socket }}>
@@ -221,26 +230,32 @@ export default function App() {
                           <Stack.Screen
                             name="MyAccountScreen"
                             component={MyAccountScreen}
+                            options={{ title: 'My Account' }}
                           />
                           <Stack.Screen
                             name="ChatLogScreen"
                             component={ChatLogScreen}
+                            options={{ title: 'Messages' }}
                           />
                           <Stack.Screen
                             name="JobLogScreen"
                             component={JobLogScreen}
+                            options={{ title: 'Jobs' }}
                           />
                           <Stack.Screen
                             name="EditNameScreen"
                             component={EditNameScreen}
+                            options={{ title: 'Account' }}
                           />
                           <Stack.Screen
                             name="EditUsernameScreen"
                             component={EditUsernameScreen}
+                            options={{ title: 'Account' }}
                           />
                           <Stack.Screen
                             name="EditPostcodeScreen"
                             component={EditPostcodeScreen}
+                            options={{ title: 'Account' }}
                           />
                         </Stack.Navigator>
                       </SetNotificationContext.Provider>
@@ -255,4 +270,3 @@ export default function App() {
     );
   }
 }
-
