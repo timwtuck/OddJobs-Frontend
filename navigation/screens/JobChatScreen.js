@@ -171,7 +171,7 @@ export const JobChatScreen = ({ route, navigation }) => {
         <View style={styles.messageContainer}>
           {conversation &&
             conversation.map(convo => (
-              <View style={[{ flexDirection: 'row' }, convo.style]}>
+              <View key={convo._id} style={[{ flexDirection: 'row' }, convo.style]}>
                 {convo.style === styles.textBox_otherUser && (
                   <View style={styles.avatar} /> // add image code here
                 )}
