@@ -271,6 +271,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   jobStatusRow: {
     flexDirection: 'row',
@@ -292,7 +293,9 @@ const styles = StyleSheet.create({
   jobHeading: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 30,
-    margin: 20,
+    marginLeft: 20,
+    backgroundColor: 'pink',
+    maxWidth: '70%',
   },
   jobCategory: {
     fontSize: 15,
