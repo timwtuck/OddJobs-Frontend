@@ -45,7 +45,11 @@ import { EditNameScreen } from './navigation/screens/EditNameScreen';
 import { EditUsernameScreen } from './navigation/screens/EditUsernameScreen';
 import { EditPostcodeScreen } from './navigation/screens/EditPostcodeScreen';
 
-import { setUpSocket, setNotificationState } from './utils.js';
+import {
+  setUpSocket,
+  setNotificationState,
+  updateUserMessages,
+} from './utils.js';
 import { getUserMessages } from './api';
 
 // global login context
@@ -53,6 +57,8 @@ export const AuthContext = React.createContext(null);
 export const setAuthContext = React.createContext(null);
 export const SocketContext = React.createContext(null);
 export const SetNotificationContext = React.createContext(null);
+export const AllMessagesContext = React.createContext(null);
+export const SetAllMessagesContext = React.createContext(null);
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -70,6 +76,7 @@ export default function App() {
   // Login, Socket and Notification State
   const [loggedIn, setLoggedIn] = React.useState(null);
   const [socket, setSocket] = React.useState(null);
+  const [messages, setMessages] = React.useState(null);
 
   const [notifications, setNotifications] = React.useState({
     headerShown: false,
@@ -78,6 +85,7 @@ export default function App() {
 
   const onNewNotification = fromUser => {
     setNotificationState(setNotifications, 1, false);
+    updateUserMessages(setMessages, setNotifications, loggedIn._id);
   };
 
   React.useEffect(async () => {
@@ -88,10 +96,7 @@ export default function App() {
     }
 
     setUpSocket(setSocket, loggedIn._id, onNewNotification);
-    const messages = await getUserMessages(loggedIn._id);
-
-    const allNotifications = messages.reduce((sum, m) => (sum += m.unread), 0);
-    setNotificationState(setNotifications, allNotifications, true);
+    updateUserMessages(setMessages, setNotifications, loggedIn._id);
   }, [loggedIn]);
 
   if (!fontsLoaded) {
@@ -188,28 +193,31 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-
                 <Tab.Screen name="Chat" options={notifications}>
                   {() => (
                     <SocketContext.Provider value={{ socket }}>
                       <SetNotificationContext.Provider value={setNotifications}>
-                        <Stack.Navigator>
-                          <Stack.Screen
-                            name="ChatLogScreen"
-                            component={ChatLogScreen}
-                            options={{ title: 'Messages' }}
-                          />
-                          <Stack.Screen
-                            name="JobChatScreen"
-                            component={JobChatScreen}
-                            options={{ title: '' }}
-                          />
-                          <Stack.Screen
-                            name="JobScreen"
-                            component={JobScreen}
-                            options={{ title: 'Job' }}
-                          />
-                        </Stack.Navigator>
+                        <SetAllMessagesContext.Provider value={setMessages}>
+                          <AllMessagesContext.Provider value={messages}>
+                            <Stack.Navigator>
+                              <Stack.Screen
+                                name="ChatLogScreen"
+                                component={ChatLogScreen}
+                                options={{ title: 'Messages' }}
+                              />
+                              <Stack.Screen
+                                name="JobChatScreen"
+                                component={JobChatScreen}
+                                options={{ title: '' }}
+                              />
+                              <Stack.Screen
+                                name="JobScreen"
+                                component={JobScreen}
+                                options={{ title: 'Job' }}
+                              />
+                            </Stack.Navigator>
+                          </AllMessagesContext.Provider>
+                        </SetAllMessagesContext.Provider>
                       </SetNotificationContext.Provider>
                     </SocketContext.Provider>
                   )}

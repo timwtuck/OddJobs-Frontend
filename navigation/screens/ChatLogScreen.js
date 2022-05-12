@@ -13,35 +13,36 @@ import { AuthContext } from '../../App';
 import { JobChatScreen } from './JobChatScreen';
 import { SocketContext } from '../../App';
 import { SetNotificationContext } from '../../App';
-import { setNotificationState } from '../../utils.js';
+import { SetAllMessagesContext } from '../../App';
+import { AllMessagesContext } from '../../App';
+import {setNotificationState} from '../../utils.js';
+import { useIsFocused } from '@react-navigation/native';
+
 
 export const ChatLogScreen = ({ navigation }) => {
   const loginState = useContext(AuthContext);
-  const [messages, setMessages] = React.useState(null);
   const socket = useContext(SocketContext);
   const setNotifications = useContext(SetNotificationContext);
+  const isFocused = useIsFocused();
+  const messages = useContext(AllMessagesContext);
+  const setMessages = useContext(SetAllMessagesContext);
 
-  React.useEffect(async () => {
-    const toSet = await getUserMessages(loginState._id);
+  // React.useEffect(async () => {
 
-    // count the number of notifications for the home bar
-    const allNotifications = toSet.reduce((sum, m) => (sum += m.unread), 0);
-    setNotificationState(setNotifications, allNotifications, true);
+  //   socket.socket.on('update-chatlog', (info) => {
 
-    setMessages(toSet);
+  //     setMessages((current) => {
 
-    socket.socket.on('update-chatlog', info => {
-      setMessages(current => {
-        const update = [...current];
+  //       const update = [...current];
 
-        for (const message of update) {
-          if (message.userId === info.currentId) message.unread++;
-        }
+  //       for (const message of update) {
+  //         if (message.userId === info.currentId) message.unread++;
+  //       }
 
-        return update;
-      });
-    });
-  }, []);
+  //       return update;
+  //     });
+  //   });
+  // }, []);
 
   return (
     <>
@@ -62,18 +63,17 @@ export const ChatLogScreen = ({ navigation }) => {
                   { backgroundColor: pressed ? '#FEC899' : boxColour },
                 ]}
                 onPressOut={() => {
-                  setNotificationState(
-                    setNotifications,
-                    message.unread * -1,
-                    false,
-                  );
-                  message.unread = 0;
 
                   navigation.navigate('Chat', {
                     screen: 'JobChatScreen',
                     title: '',
                     params: { messageId: message._id },
                   });
+
+                  if (message.unread > 0){
+                    setNotificationState(setNotifications, -1, false);
+                    message.unread = 0;
+                  }
                 }}>
                 <View>
                   <Text style={styles.chatName}>{message.user.fullName}</Text>

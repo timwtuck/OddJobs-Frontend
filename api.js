@@ -75,9 +75,15 @@ export const getUserMessages = user_id => {
   });
 };
 
-export const getSingleMessage = (message_id) => {
+export const getSingleMessage = (message_id, userId) => {
+  
+  let path = `/messages/${message_id}`;
+  
+  if(userId)
+    path += `?user=${userId}`;
+
   return oddJobsApi
-    .get(`/messages/${message_id}`)
+    .get(path)
     .then(({ data }) => {
       return data.message;
     });

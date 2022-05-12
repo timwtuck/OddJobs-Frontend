@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import {getUserMessages} from './api.js';
 
 exports.setUpSocket = (setSocket, userId, onNewNotification) => {
 
@@ -39,4 +40,32 @@ exports.setNotificationState = (setState, amount, reset) => {
         
         return options;
     });
+}
+
+exports.updateUserMessages = async (setMessages, setNotifications, userId) => {
+
+  const toSet = await getUserMessages(userId);
+
+    // count the number of notifications for the home bar
+    const allNotifications = toSet.reduce((sum, m) => 
+      m.unread > 0 ? ++sum : sum , 0);
+
+      console.log(allNotifications);
+    exports.setNotificationState(setNotifications, allNotifications, true);
+    setMessages(toSet);
+
+
+    // socket.socket.on('update-chatlog', (info) => {
+
+    //   setMessages((current) => {
+
+    //     const update = [...current];
+
+    //     for (const message of update){
+    //       if (message.userId === info.currentId)
+    //         message.unread++;
+    //     }
+
+    //     return update;
+    //   });
 }
