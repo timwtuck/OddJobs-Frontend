@@ -294,7 +294,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_600SemiBold',
     fontSize: 30,
     marginLeft: 20,
-    backgroundColor: 'pink',
     maxWidth: '70%',
   },
   jobCategory: {
