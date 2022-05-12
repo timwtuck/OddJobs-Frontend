@@ -151,7 +151,25 @@ export const LoginScreen = ({ navigation }) => {
               {formikProps.isSubmitting ? (
                 <ActivityIndicator />
               ) : (
-                <Button title="submit" onPress={formikProps.handleSubmit} />
+                <Pressable
+                  onPress={formikProps.handleSubmit}
+                  style={{
+                    borderColor: '#AA6C39',
+                    borderWidth: 2,
+                    borderRadius: 15,
+                    width: 100,
+                    alignSelf: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#AA6C39',
+                      fontSize: 20,
+                      padding: 10,
+                      textAlign: 'center',
+                    }}>
+                    Submit
+                  </Text>
+                </Pressable>
               )}
             </View>
             {/* Test */}
@@ -212,6 +230,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   signInClickable: {
-    color: '#1b7ced',
+    color: '#AA6C39',
   },
 });

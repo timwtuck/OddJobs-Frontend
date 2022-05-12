@@ -6,6 +6,7 @@ import {
   TextInput,
   Button,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import * as yup from 'yup';
 import { Formik } from 'formik';
@@ -194,7 +195,25 @@ export const SignupScreen = ({ navigation }) => {
               {formikProps.isSubmitting ? (
                 <ActivityIndicator />
               ) : (
-                <Button title="submit" onPress={formikProps.handleSubmit} />
+                <Pressable
+                  onPress={formikProps.handleSubmit}
+                  style={{
+                    borderColor: '#AA6C39',
+                    borderWidth: 2,
+                    borderRadius: 15,
+                    width: 100,
+                    alignSelf: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#AA6C39',
+                      fontSize: 20,
+                      padding: 10,
+                      textAlign: 'center',
+                    }}>
+                    Submit
+                  </Text>
+                </Pressable>
               )}
             </View>
             {/* Test */}
@@ -232,7 +251,7 @@ const styles = StyleSheet.create({
   formInput: {
     borderWidth: 2,
     borderColor: '#000',
-    marginVertical: 15,
+    marginVertical: 10,
     padding: 10,
     borderRadius: 15,
   },
@@ -242,6 +261,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   signInClickable: {
-    color: '#1b7ced',
+    color: '#AA6C39',
   },
 });
