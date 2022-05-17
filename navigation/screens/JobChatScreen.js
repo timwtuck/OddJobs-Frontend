@@ -116,10 +116,6 @@ export const JobChatScreen = ({ route, navigation }) => {
           to: otherUser.userId._id,
           from: loginState._id,
         });
-        console.log('joining chat with ', {
-          to: otherUser.userId._id,
-          from: loginState._id,
-        });
       }
 
       setUpChat();

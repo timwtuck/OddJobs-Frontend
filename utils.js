@@ -3,7 +3,7 @@ import {getUserMessages} from './api.js';
 
 exports.setUpSocket = (setSocket, userId, onNewNotification) => {
 
-    const ROOT_URL = 'https://oddjobs-test.herokuapp.com';
+    const ROOT_URL = 'https://odd-jobs-backend.herokuapp.com';
     const socket = io(ROOT_URL, {
       transports: ['websocket']});
 
@@ -54,18 +54,4 @@ exports.updateUserMessages = async (setMessages, setNotifications, userId) => {
     exports.setNotificationState(setNotifications, allNotifications, true);
     setMessages(toSet);
 
-
-    // socket.socket.on('update-chatlog', (info) => {
-
-    //   setMessages((current) => {
-
-    //     const update = [...current];
-
-    //     for (const message of update){
-    //       if (message.userId === info.currentId)
-    //         message.unread++;
-    //     }
-
-    //     return update;
-    //   });
 }
