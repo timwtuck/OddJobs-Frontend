@@ -7,10 +7,8 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import { getSingleMessage, getUserMessages } from '../../api';
 import { useContext } from 'react';
 import { AuthContext } from '../../App';
-import { JobChatScreen } from './JobChatScreen';
 import { SocketContext } from '../../App';
 import { SetNotificationContext } from '../../App';
 import { SetAllMessagesContext } from '../../App';
@@ -27,29 +25,9 @@ export const ChatLogScreen = ({ navigation }) => {
   const messages = useContext(AllMessagesContext);
   const setMessages = useContext(SetAllMessagesContext);
 
-  // React.useEffect(async () => {
-
-  //   socket.socket.on('update-chatlog', (info) => {
-
-  //     setMessages((current) => {
-
-  //       const update = [...current];
-
-  //       for (const message of update) {
-  //         if (message.userId === info.currentId) message.unread++;
-  //       }
-
-  //       return update;
-  //     });
-  //   });
-  // }, []);
-
   return (
     <>
       <View style={styles.container}>
-        {/* TIM: TO DO 
-            CAN ADD USER AVATAR, TIME OF LAST MESSAGE WHEN READY IN API
-          */}
 
         {messages &&
           messages.map((message, i) => {
@@ -130,7 +108,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    // alignSelf: 'flex-start',
     marginTop: 10,
     marginRight: 10,
     borderRadius: 50,
